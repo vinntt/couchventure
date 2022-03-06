@@ -1,0 +1,156 @@
+const router = require("express").Router();
+const User = require('../models/User')
+const Couch = require('../models/Couch')
+const Trip = require('../models/Trip')
+
+// Get a user profile
+router.get('/:id', (req, res, next) => {
+    if (req.params.id == "me") {
+        req.params.id = req.user._id
+    }
+
+    Promise.all([
+            User.findById(req.params.id),
+            Couch.findOne({ creator: req.params.id })
+        ])
+        .then(([user, couch]) => {
+            const { name, city, country, profileImg } = user
+            let status = ""
+
+            if (couch) {
+                status = couch.status
+            }
+
+            res.status(200).json({ name, city, country, profileImg, status })
+        })
+        .catch(err => next(err))
+})
+
+// Update the user's profile.
+router.put('/', (req, res, next) => {
+    const {
+        name,
+        city,
+        country,
+        age,
+        gender,
+        language,
+        visitedCountries,
+        introduction,
+        interestedTopics,
+        profileImg
+    } = req.body
+
+    Couch.findByIdAndUpdate(req.user._id, {
+            name,
+            city,
+            country,
+            age,
+            gender,
+            language,
+            visitedCountries,
+            introduction,
+            interestedTopics,
+            profileImg
+        }, { new: true })
+        .then(updatedProfile => {
+            if (updatedProfile) {
+                res.status(204).json()
+            } else {
+                res.status(404).json({ message: 'Profile not found' })
+            }
+        })
+        .catch(err => next(err))
+})
+
+
+//  Get a couch of specific user.
+router.get('/:id/couch', (req, res, next) => {
+    if (req.params.id == "me") {
+        req.params.id = req.user._id
+    }
+
+    Couch.findOne({ creator: req.params.id })
+        .then(couch => {
+            if (couch) {
+                const {
+                    _id,
+                    status,
+                    city,
+                    country,
+                    arrangement,
+                    numberOfPeople,
+                    allowChildren,
+                    allowPets,
+                    allowSmoking,
+                    allowWheelchair,
+                    description,
+                    publicTransportation,
+                    distanceCityCenter,
+                    couchImg
+                } = couch
+
+                res.status(200).json({
+                    id: _id,
+                    status,
+                    city,
+                    country,
+                    arrangement,
+                    numberOfPeople,
+                    allowChildren,
+                    allowPets,
+                    allowSmoking,
+                    allowWheelchair,
+                    description,
+                    publicTransportation,
+                    distanceCityCenter,
+                    couchImg
+                })
+            } else {
+                res.status(404).json({ message: 'Couch not found' })
+            }
+        })
+        .catch(err => next(err))
+})
+
+//  Get a trip of specific user.
+router.get('/:id/trip', (req, res, next) => {
+    if (req.params.id == "me") {
+        req.params.id = req.user._id
+    }
+
+    Trip.findOne({ creator: req.params.id })
+        .then(trip => {
+            if (trip) {
+                const {
+                    _id,
+                    startDate,
+                    endDate,
+                    country,
+                    city,
+                    numberOfPeople,
+                    content
+                } = trip
+
+                res.status(200).json({
+                    id: _id,
+                    startDate,
+                    endDate,
+                    country,
+                    city,
+                    numberOfPeople,
+                    content
+                })
+            } else {
+                res.status(404).json({ message: 'Trip not found' })
+            }
+        })
+        .catch(err => next(err))
+})
+
+
+
+
+
+
+module.exports = router;
