@@ -13,6 +13,7 @@ import CardMedia from '@mui/material/CardMedia';
 import { Divider } from '@mui/material';
 
 export default function FeaturedPost(props) {
+  const { post } = props;
 
   return (
     <Grid item xs={12} md={4} >

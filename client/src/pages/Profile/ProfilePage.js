@@ -22,7 +22,7 @@ export default function ProfilePage() {
                         <ProfileTabs userId={userId} />
                     </Grid>
                     <Grid item >
-                        {/* <TripCard /> */}
+                        <TripCard userId={userId} />
                     </Grid>
                     <Grid item >
                         <ProfileDetail userId={userId} />

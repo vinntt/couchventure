@@ -4,10 +4,10 @@ import { Container, Grid } from '@mui/material';
 
 import ProfileCardSideFeature from '../../components/Profile/ProfileCardSideFeature';
 import ProfileTabs from '../../components/ProfileTabs';
-import CouchDetail from '../../components/Couches/CouchDetail';
-import Footer from '../../components/Footer';
+import Footer from '../../components/Footer.js'
+import EditTrip from '../../components/Trips/EditTrip';
 
-export default function ProfileCouchPage() {
+export default function ProfileEditTripPage() {
     const { userId } = useParams()
 
     return (
@@ -18,15 +18,15 @@ export default function ProfileCouchPage() {
                         <ProfileCardSideFeature userId={userId} />
                     </Grid>
                     <Grid item xs={6} md={8}>
-                        <Grid item sx={{mb: 2}}>
+                        <Grid item >
                             <ProfileTabs userId={userId} />
                         </Grid>
                         <Grid item >
-                            <CouchDetail userId={userId} />
+                            <EditTrip userId={userId} />
                         </Grid>
                     </Grid>
                 </Grid>
-                < Footer />
+                <Footer />
             </Container>
         </>
     )

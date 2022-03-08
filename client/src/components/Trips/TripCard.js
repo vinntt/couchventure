@@ -1,121 +1,133 @@
 import * as React from 'react';
 import Typography from '@mui/material/Typography';
-import { Grid, Item, Button } from '@mui/material';
+import { Grid, Button, Container, Accordion, AccordionSummary, AccordionDetails, Divider } from '@mui/material';
+import LuggageIcon from '@mui/icons-material/Luggage';
+import AddCircleOutline from '@mui/icons-material/AddCircleOutline';
 import PushPinOutlinedIcon from '@mui/icons-material/PushPinOutlined';
 import PeopleAltOutlinedIcon from '@mui/icons-material/PeopleAltOutlined';
 import EventOutlinedIcon from '@mui/icons-material/EventOutlined';
-import AccessTimeOutlinedIcon from '@mui/icons-material/AccessTimeOutlined';
-import EmailOutlinedIcon from '@mui/icons-material/EmailOutlined';
-import AutoAwesomeOutlinedIcon from '@mui/icons-material/AutoAwesomeOutlined';
+// import AccessTimeOutlinedIcon from '@mui/icons-material/AccessTimeOutlined';
+// import AutoAwesomeOutlinedIcon from '@mui/icons-material/AutoAwesomeOutlined';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
 import service from '../../api/service';
 
 export default function TripCard(props) {
-	const [city, setCity] = useState(undefined)
-	const [country, setCountry] = useState(undefined)
-	const [startDate, setStartDate] = useState(undefined);
-	const [endDate, setEndDate] = useState(undefined);
-	const [numberOfPeople, setNumberOfPeople] = useState(undefined);
-	const [content, setContent] = useState(undefined);
-	const [duration, setDuration] = useState(undefined);
+    const [trips, setTrips] = useState([]);
+    // const [duration, setDuration] = useState(undefined);
 
-	useEffect(() => {
-		service.get(`/trips`)
-			.then(response => {
-				// console.log(response)
-				setCity(response.data[0].city)
-				setCountry(response.data[0].country)
-				setStartDate(() => {
-					let date = new Date(response.data[0].startDate).toDateString()
-					// console.log(date)
-					return date
-				})
-				setEndDate(() => {
-					let date = new Date(response.data[0].endDate).toDateString()
-					// console.log(date)
-					return date
-				})
-				setDuration(() => {
-					// let checkIn = new Date(response.data[0].startDate)
-					// let checkout = new Date(response.data[0].endDate)
-					// let date = checkout-checkIn
-					// console.log(date.toDateString())
-					// return date
-				})
-				setNumberOfPeople(response.data[0].numberOfPeople)
-				setContent(response.data[0].setContent)
-			}
-			)
-			.catch(err => console.log(err))
-	}, [])
+    useEffect(() => {
+        service.get(`/profile/${props.userId}/trips`)
+            .then(({data: trips}) => {
+                setTrips(trips);
+                // setCity(response.data[0].city)
+                // setCountry(response.data[0].country)
+                // setStartDate(() => {
+                // 	let date = new Date(response.data[0].startDate).toDateString()
+                // 	// console.log(date)
+                // 	return date
+                // })
+                // setEndDate(() => {
+                // 	let date = new Date(response.data[0].endDate).toDateString()
+                // 	// console.log(date)
+                // 	return date
+                // })
+                // // setDuration(() => {
+                // // let checkIn = new Date(response.data[0].startDate)
+                // // let checkout = new Date(response.data[0].endDate)
+                // // let date = checkout-checkIn
+                // // console.log(date.toDateString())
+                // // return date
+                // // })
+                // setNumberOfPeople(response.data[0].numberOfPeople)
+                // setContent(response.data[0].setContent)
+            }
+            )
+            .catch(err => console.log(err))
+    }, [props.userId]);
+
+    if (trips.length === 0 && props.userId !== "me") {
+        return (<></>);
+    }
+
+    // if (!trip) {
+    //     if (props.userId === "me") {
+    //         return (
+    //             <>
+    //                 <Container maxWidth="lg">
+    //                     <Grid item xs={12} >
+    //                         <Button href="/profile/me/couch/edit" variant="contained" sx={{ mt: 3, mb: 1, py: 1 }} endIcon={<EditOutlinedIcon />}>
+    //                             Are you planning a trip?
+    //                         </Button>
+                                // <Typography align="justify" color="text.secondary">
+                                // 	Let make your trip great with a new adventure, have a thousand of memory, meet new friends, and stay with local hosts.
+                                // </Typography>
+    //                     </Grid>
+    //                 </Container>
+    //             </>
+    //         )
+    //     }
+
+    //     // Case of other people profile goes here.
+    // }
 
 
-	return (
-		<>
-			<Grid container spacing={2}>
-				<Grid item xs={8}>
-					<Typography variant="h6" >
-						PUBLIC TRIPS
-					</Typography>
-				</Grid>
-				<Grid item xs={4}>
-					<Button type="submit" variant="contained" sx={{ mt: 3, mb: 2, py: 2 }} endIcon={<AutoAwesomeOutlinedIcon />}>
-						OFFER TO HOST
-					</Button>
-				</Grid>
-				<Grid item xs={12}>
-					<Grid container direction="row" alignItems="center">
-						<Grid item>
-							<PushPinOutlinedIcon sx={{ mr: 1 }} />
-						</Grid>
-						<Grid item>
-							{city}, {country}
-						</Grid>
-					</Grid>
-					<Grid container direction="row" alignItems="center">
-						<Grid item>
-							<PeopleAltOutlinedIcon sx={{ mr: 1 }} />
-						</Grid>
-						<Grid item>
-							{numberOfPeople} Travellers
-						</Grid>
-					</Grid>
-					<Grid container direction="row" alignItems="center">
-						<Grid item>
-							<AccessTimeOutlinedIcon sx={{ mr: 1 }} />
-						</Grid>
-						<Grid item>
-							duration
-						</Grid>
-					</Grid>
-					<Grid container direction="row" alignItems="center">
-						<Grid item>
-							<EventOutlinedIcon sx={{ mr: 1 }} />
-						</Grid>
-						<Grid item>
-							{startDate} - {endDate}
-						</Grid>
-					</Grid>
-					<Typography variant="body1" gutterBottom>
-						{content}
-					</Typography>
-				</Grid>
-				<Grid item xs={12} >
-					<Link>
-						<Button type="submit" variant="contained" sx={{ mt: 3, mb: 2, py: 2 }} endIcon={<EditOutlinedIcon />}>
-							Edit
-						</Button>
-					</Link>
-					<Link>
-						<Button type="submit" variant="contained" sx={{ mt: 3, mb: 2, py: 2 }} endIcon={<DeleteOutlinedIcon />}>
-							Remove
-						</Button>
-					</Link>
-				</Grid>
-			</Grid>
-		</>
-	);
+    return (
+        <>
+            <Container maxWidth="md" disableGutters>
+                <br />
+                {/* https://codesandbox.io/s/lioc4z?file=/demo.js:924-1359 */}
+                <Accordion expanded>
+                    <AccordionSummary sx={{ margin: 0 }} content={{ margin: 0 }}>
+                        <Grid container direction="row" alignItems="center">
+                            <LuggageIcon sx={{ mr: 1 }} />
+                            <Typography variant="h6" align="justify" >
+                                My Travel Plan
+                            </Typography>
+                        </Grid>
+                        {props.userId === "me" && (
+                            <Button href='/profile/me/trip/edit' endIcon={<AddCircleOutline/>}>Add</Button>
+                        )}
+                    </AccordionSummary>
+                    <AccordionDetails>
+                        <Divider textAlign="left"></Divider>
+                        <br />
+                        {/* <Grid container direction="row" alignItems="center">
+                            <PushPinOutlinedIcon sx={{ mr: 1 }} />
+                            <Typography align="justify" color="text.secondary">
+                                {city}, {country}
+                            </Typography>
+                        </Grid>
+                        <Grid container direction="row" alignItems="center">
+                            <PeopleAltOutlinedIcon sx={{ mr: 1 }} />
+                            <Typography align="justify" color="text.secondary">
+                                {numberOfPeople} Travellers
+                            </Typography>
+                        </Grid>
+                        <Grid container direction="row" alignItems="center">
+                            <EventOutlinedIcon sx={{ mr: 1 }} />
+                            <Typography align="justify" color="text.secondary">
+                                {startDate} - {endDate}
+                            </Typography>
+                        </Grid>
+                        <Typography align="justify" color="text.secondary" paragraph>
+                            {content}
+                        </Typography> */}
+                    </AccordionDetails>
+                    <Grid container direction="row" justifyContent="center" alignItems="center">
+                        <Button href="/profile/me/trip/edit" variant="contained" sx={{ mt: 2, mb: 1, py: 1 }} endIcon={<EditOutlinedIcon />}>
+                            Edit
+                        </Button>
+                    </Grid>
+                </Accordion>
+            </Container>
+            {/*
+            <Grid item xs={4}>
+                <Button type="submit" variant="contained" sx={{ mt: 3, mb: 2, py: 2 }} endIcon={<AutoAwesomeOutlinedIcon />}>
+                    OFFER TO HOST
+                </Button>
+            </Grid> */}
+        </>
+    );
 }

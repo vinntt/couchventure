@@ -423,12 +423,12 @@ export default function EditProfile(props) {
                             />
                         </Grid>
                         <Grid item xs={12} sm={6}>
-                            <Button href='/profile/me' fullWidth variant="contained" sx={{ mt: 3, mb: 2, py: 2 }} startIcon={<BackspaceIcon />}>
+                            <Button href='/profile/me' fullWidth variant="outlined" sx={{ mt: 3, mb: 2, py: 1 }} startIcon={<BackspaceIcon />}>
                                 Cancel
                             </Button>
                         </Grid>
                         <Grid item xs={12} sm={6}>
-                            <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2, py: 2 }} endIcon={<SaveOutlinedIcon />}>
+                            <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2, py: 1 }} endIcon={<SaveOutlinedIcon />}>
                                 Save
                             </Button>
                         </Grid>

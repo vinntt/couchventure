@@ -27,7 +27,7 @@ export default function ProfileTabs(props) {
         },
     ];
 
-    let activeTab = tabs.findIndex(tab => tab.href === window.location.pathname);
+    let activeTab = tabs.findIndex((tab, idx) => idx > 0 && window.location.pathname.includes(tab.href));
 
     if (activeTab < 0) {
         activeTab = 0;
@@ -46,7 +46,7 @@ export default function ProfileTabs(props) {
                     aria-label="scrollable force tabs example"
                 >
                     {tabs.map((tab, index) => (
-                        <LinkTab key={`profile-${props.userId}-${index}`} href={tab.href} label={tab.text} style={{ color: "orange", textDecoration: "none" }} />
+                        <LinkTab key={`profile-${props.userId}-${index}`} href={tab.href} label={tab.text} style={{ color: "#ff9800", textDecoration: "none" }} />
                     ))}
                 </Tabs>
             </Box>

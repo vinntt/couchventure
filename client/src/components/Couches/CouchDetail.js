@@ -7,6 +7,7 @@ import AccessibleOutlinedIcon from '@mui/icons-material/AccessibleOutlined';
 import BedroomChildOutlinedIcon from '@mui/icons-material/BedroomChildOutlined';
 import LocationCityOutlinedIcon from '@mui/icons-material/LocationCityOutlined';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
+import FormatQuoteIcon from '@mui/icons-material/FormatQuote';
 import { useEffect, useState } from "react";
 import service from '../../api/service';
 import cloudinaryResize from '../../utils/cloudinary';
@@ -43,15 +44,22 @@ export default function CouchDetail(props) {
                 // setCouchImg(couch.couchImg);
             })
             .catch(err => {
+                setCouch(false);
                 console.log(err)
             })
     }, [props.userId]);
 
-    if (!couch) {
+    if (couch === false) {
         if (props.userId === "me") {
             return (
                 <>
-                    <Container maxWidth="lg">
+                    <Container maxWidth="lg" disableGutters>
+                        <Grid item xs={12} >
+                            <Typography align="justify" color="text.secondary" sx={{fontStyle: 'italic'}} variant="h6">
+                                <FormatQuoteIcon />
+                                There is a thousand "cool way" to meet people around the world, and Couchventure is one of them. Open the door, get to know more friends, exchange culture, and listen to amazing stories
+                            </Typography>
+                        </Grid>
                         <Grid item xs={12} >
                             <Button href="/profile/me/couch/edit" variant="contained" sx={{ mt: 3, mb: 1, py: 1 }} endIcon={<EditOutlinedIcon />}>
                                 Are you ready to host travellers?
@@ -68,14 +76,13 @@ export default function CouchDetail(props) {
     return (
         <>
             {couch &&
-                <Container maxWidth="md">
-                    <br />
+                <Container maxWidth="md" disableGutters>
                     <Accordion expanded>
-                        <AccordionSummary sx={{ margin: 0 }} content={{ margin: 0 }}>
+                        <AccordionSummary sx={{ margin: 0 }}>
                             <Typography
-                                variant="h5"
+                                variant="h6"
                             // gutterBottom
-                            // sx={{ marginTop: "30px", marginLeft: "0", padding: "0" }}
+                            // sx={{ marginTop: "10px", marginLeft: "0", padding: "0" }}
                             >
                                 Preferences
                             </Typography>
@@ -83,40 +90,40 @@ export default function CouchDetail(props) {
                         <AccordionDetails>
                             <Divider textAlign="left"></Divider>
                             <br />
-                            <Grid container direction="row" alignItems="center">
-                                <EmojiPeopleOutlinedIcon sx={{ mr: 1 }} />
-                                <Typography align="jutify" color="text.secondary">
-                                    Max Number of Guests: {couch.numberOfPeople}
+                            <Grid container direction="row" alignItems="center" sx={{ mb: 1 }}>
+                                <EmojiPeopleOutlinedIcon sx={{ mr: 1 }} color="disabled" />
+                                <Typography align="justify" color="text.secondary">
+                                    <b>Max Number of Guests:</b> {couch.numberOfPeople}
                                 </Typography>
                             </Grid>
-                            <Grid container direction="row" alignItems="center">
-                                <ChildCareOutlinedIcon sx={{ mr: 1 }} />
-                                <Typography align="jutify" color="text.secondary">
-                                    Kid Friendly: {couch.allowChildren ? "Yes" : "No"}
+                            <Grid container direction="row" alignItems="center" sx={{ mb: 1 }}>
+                                <ChildCareOutlinedIcon sx={{ mr: 1 }} color="disabled" />
+                                <Typography align="justify" color="text.secondary">
+                                    <b>Kid Friendly:</b> {couch.allowChildren ? "Yes" : "No"}
                                 </Typography>
                             </Grid>
-                            <Grid container direction="row" alignItems="center">
-                                <PetsOutlinedIcon sx={{ mr: 1 }} />
-                                <Typography align="jutify" color="text.secondary">
-                                    Pet Friendly: {couch.allowPets ? "Yes" : "No"}
+                            <Grid container direction="row" alignItems="center" sx={{ mb: 1 }}>
+                                <PetsOutlinedIcon sx={{ mr: 1 }} color="disabled" />
+                                <Typography align="justify" color="text.secondary">
+                                    <b>Pet Friendly:</b> {couch.allowPets ? "Yes" : "No"}
                                 </Typography>
                             </Grid>
-                            <Grid container direction="row" alignItems="center">
-                                <SmokingRoomsOutlinedIcon sx={{ mr: 1 }} />
-                                <Typography align="jutify" color="text.secondary">
-                                    Smoking Allowed: {couch.allowSmoking ? "Yes" : "No"}
+                            <Grid container direction="row" alignItems="center" sx={{ mb: 1 }}>
+                                <SmokingRoomsOutlinedIcon sx={{ mr: 1 }} color="disabled" />
+                                <Typography align="justify" color="text.secondary">
+                                    <b>Smoking Allowed:</b> {couch.allowSmoking ? "Yes" : "No"}
                                 </Typography>
                             </Grid>
-                            <Grid container direction="row" alignItems="center">
-                                <AccessibleOutlinedIcon sx={{ mr: 1 }} />
-                                <Typography align="jutify" color="text.secondary">
-                                    Wheelchair Accessible: {couch.allowWheelchair ? "Yes" : "No"}
+                            <Grid container direction="row" alignItems="center" sx={{ mb: 1 }}>
+                                <AccessibleOutlinedIcon sx={{ mr: 1 }} color="disabled" />
+                                <Typography align="justify" color="text.secondary">
+                                    <b>Wheelchair Accessible:</b> {couch.allowWheelchair ? "Yes" : "No"}
                                 </Typography>
                             </Grid>
                         </AccordionDetails>
                         <AccordionSummary sx={{ margin: 0 }} content={{ margin: 0 }}>
                             <Typography
-                                variant="h5"
+                                variant="h6"
                             // sx={{ marginTop: "30px", marginLeft: "0", padding: "0" }}
                             >
                                 Sleeping Arrangement
@@ -126,15 +133,15 @@ export default function CouchDetail(props) {
                             <Divider textAlign="left"></Divider>
                             <br />
                             <Grid container direction="row" alignItems="center">
-                                <BedroomChildOutlinedIcon sx={{ mr: 1 }} />
-                                <Typography align="jutify" color="text.secondary">
+                                <BedroomChildOutlinedIcon sx={{ mr: 1 }} color="disabled" />
+                                <Typography align="justify" color="text.secondary">
                                     {couch.arrangement}
                                 </Typography>
                             </Grid>
                         </AccordionDetails>
                         <AccordionSummary sx={{ margin: 0 }} content={{ margin: 0 }}>
                             <Typography
-                                variant="h5"
+                                variant="h6"
                             // sx={{ marginTop: "30px", marginLeft: "0", padding: "0" }}
                             >
                                 More details
@@ -144,18 +151,20 @@ export default function CouchDetail(props) {
                             <Divider textAlign="left"></Divider>
                             <br />
                             <Grid container direction="row" alignItems="center">
-                                <LocationCityOutlinedIcon sx={{ mr: 1 }} />
-                                <Typography align="jutify" color="text.secondary">
-                                    Distance to the city center: {couch.distanceCityCenter}km
+                                <LocationCityOutlinedIcon sx={{ mr: 1 }} color="disabled" />
+                                <Typography align="justify" color="text.secondary">
+                                    <b>Distance to the city center:</b> {couch.distanceCityCenter}km
                                 </Typography>
                             </Grid>
-                            <Typography align="jutify" color="text.secondary" paragraph>
-                                {couch.description}
-                            </Typography>
+                            <Grid container direction="row" sx={{ mt: 2 }}>
+                                <Typography align="justify" color="text.secondary" paragraph>
+                                    {couch.description}
+                                </Typography>
+                            </Grid>
                         </AccordionDetails>
                         <AccordionSummary sx={{ margin: 0 }} content={{ margin: 0 }}>
                             <Typography
-                                variant="h5"
+                                variant="h6"
                             // sx={{ marginTop: "30px", marginLeft: "0", padding: "0" }}
                             >
                                 Photos
@@ -166,7 +175,7 @@ export default function CouchDetail(props) {
                             <br />
                             <ImageList sx={{ width: '100%' }} cols={4}>
                                 {couch.couchImg.map((img, idx) => (
-                                    <ImageListItem key={`couch-image-${idx}`} onClick={() => handleOpenModal(img)} sx={{cursor: 'pointer'}}>
+                                    <ImageListItem key={`couch-image-${idx}`} onClick={() => handleOpenModal(img)} sx={{ cursor: 'pointer' }}>
                                         <img src={cloudinaryResize(img, "c_fill,w_336,h_336")} alt="" />
                                     </ImageListItem>
                                 ))}

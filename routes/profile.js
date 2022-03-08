@@ -27,11 +27,12 @@ router.get('/:id', (req, res, next) => {
                 introduction,
                 interestedTopics,
                 profileImg
-            } = user
-            let status = ""
+            } = user;
+
+            let status = "";
 
             if (couch) {
-                status = couch.status
+                status = couch.status;
             }
 
             res.status(200).json({
@@ -45,7 +46,8 @@ router.get('/:id', (req, res, next) => {
                 visitedCountries,
                 introduction,
                 interestedTopics,
-                profileImg
+                profileImg,
+                status,
             })
         })
         .catch(err => next(err));
@@ -152,38 +154,42 @@ router.get('/:id/couch', (req, res, next) => {
 })
 
 //  Get a trip of specific user.
-router.get('/:id/trip', (req, res, next) => {
+router.get('/:id/trips', (req, res, next) => {
     if (req.params.id == "me") {
         req.params.id = req.user._id
     }
 
-    Trip.findOne({ creator: req.params.id })
-        .then(trip => {
-            if (trip) {
-                const {
-                    _id,
-                    startDate,
-                    endDate,
-                    country,
-                    city,
-                    numberOfPeople,
-                    content
-                } = trip
+    Trip.find({ creator: req.params.id })
+        .then(trips => {
+            const result = [];
 
-                res.status(200).json({
-                    id: _id,
-                    startDate,
-                    endDate,
-                    country,
-                    city,
-                    numberOfPeople,
-                    content
-                })
-            } else {
-                res.status(404).json({ message: 'Trip not found' })
+            if (Array.isArray(trips)) {
+                result.push(...trips.map(trip => {
+                    const {
+                        _id,
+                        startDate,
+                        endDate,
+                        country,
+                        city,
+                        numberOfPeople,
+                        content,
+                    } = trip;
+
+                    return {
+                        id: _id,
+                        startDate,
+                        endDate,
+                        country,
+                        city,
+                        numberOfPeople,
+                        content
+                    };
+                }))
             }
+
+            res.status(200).json(result);
         })
-        .catch(err => next(err))
+        .catch(err => next(err));
 })
 
 

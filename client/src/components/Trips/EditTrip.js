@@ -10,7 +10,8 @@ import Box from '@mui/material/Box';
 import { MenuItem } from '@mui/material';
 import Grid from '@mui/material/Grid';
 import TravelExploreOutlinedIcon from '@mui/icons-material/TravelExploreOutlined';
-import SendOutlinedIcon from '@mui/icons-material/SendOutlined';
+import SaveOutlinedIcon from '@mui/icons-material/SaveOutlined';
+import BackspaceIcon from '@mui/icons-material/Backspace';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { Link, useNavigate } from 'react-router-dom';
@@ -18,7 +19,7 @@ import { useState } from 'react';
 import Footer from '../Footer';
 import service from '../../api/service';
 
-export default function AddTrip(props) {
+export default function EditTrip (props) {
     const [city, setCity] = useState('');
     const [country, setCountry] = useState('');
     const [startDate, setStartDate] = useState(null);
@@ -74,24 +75,20 @@ export default function AddTrip(props) {
         service.post('/trips', requestBody)
             .then(response => {
                 // redirect to login
-                navigate('/trips')
+                navigate('/profile/me')
             })
             .catch(err => {
                 const errorDescription = err.response.data.message
                 setErrorMessage(errorDescription)
             })
-            // reset the form
             setCity('')
             setCountry('')
             setNumberOfPeople('')
             setContent('')
-		props.refreshProjects()
     };
 
     const handleCity = e => setCity(e.target.value)
     const handleCountry = e => setCountry(e.target.value)
-    // const handleStartDate = e => setStartDate(e.target.value)
-    // const handleEndDate = e => setEndDate(e.target.value)
     const handleNumberOfPeople = e => setNumberOfPeople(e.target.value)
     const handleContent = e => setContent(e.target.value)
     const [errorMessage, setErrorMessage] = useState(undefined);
@@ -134,7 +131,7 @@ export default function AddTrip(props) {
                                     renderInput={(startProps, endProps) => (
                                         <React.Fragment>
                                             <TextField {...startProps} />
-                                            <Box sx={{ mx: 2 }}> to </Box>
+                                            <Box sx={{ mx: 2 }}> - </Box>
                                             <TextField {...endProps} />
                                         </React.Fragment>
                                     )}
@@ -151,7 +148,6 @@ export default function AddTrip(props) {
                                 label="Country"
                                 value={country}
                                 onChange={handleCountry}
-                            // helperText="Please select your country"
                             >
                                 {countries.map((option) => (
                                     <MenuItem key={option.value} value={option.value}>
@@ -169,7 +165,6 @@ export default function AddTrip(props) {
                                 label="City"
                                 value={city}
                                 onChange={handleCity}
-                            // helperText="Please select your city"
                             >
                                 {cities.map((option) => (
                                     <MenuItem key={option.value} value={option.value}>
@@ -178,9 +173,6 @@ export default function AddTrip(props) {
                                 ))}
                             </TextField>
                         </Grid>
-
-
-
                         <Grid item xs={12} sm={6}>
                             <TextField
                                 id="numberOfPeople"
@@ -209,29 +201,26 @@ export default function AddTrip(props) {
                                 rows={3}
                                 variant="outlined"
                                 label="Message to your host"
-                                helperText="Decribe your travel plan"
+                                helperText="Decribe your travel plan to your future hosts"
                                 value={content}
                                 onChange={handleContent}
                             />
                         </Grid>
 
-                        <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2, py: 2}} endIcon={<SendOutlinedIcon />}>
-                            Create a Trip
-                        </Button>
-
-                        {errorMessage && <h5>{errorMessage}</h5>}
-
-                        <Grid container justifyContent="flex-end">
-                            <Grid item>
-                                <Link to="/" variant="body2">
-                                    Back to the Homepage
-                                </Link>
-                            </Grid>
+                        <Grid item xs={12} sm={6}>
+                            <Button href='/profile/me' type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 1, py: 1 }} startIcon={<BackspaceIcon />}>
+                                Cancel
+                            </Button>
                         </Grid>
+                        <Grid item xs={12} sm={6}>
+                            <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 1, py: 1 }} endIcon={<SaveOutlinedIcon />}>
+                                Save
+                            </Button>
+                        </Grid>
+                        {errorMessage && <h5>{errorMessage}</h5>}
                     </Grid>
                 </Box>
             </Box>
-            <Footer sx={{ mt: 5 }} />
         </Container>
     );
 }

@@ -7,7 +7,7 @@ import ProfileTabs from '../../components/ProfileTabs';
 import EditCouch from '../../components/Couches/EditCouch';
 import Footer from '../../components/Footer.js'
 
-export default function ProfileCouchPage() {
+export default function ProfileEditCouchPage() {
     const { userId } = useParams()
 
     return (

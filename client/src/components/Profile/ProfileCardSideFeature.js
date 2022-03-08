@@ -3,7 +3,7 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 // import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
-import { CardActionArea, CardActions, Button } from '@mui/material';
+import { CardActionArea, CardActions, Button, Skeleton } from '@mui/material';
 import { Menu, MenuItem } from '@mui/material';
 import ChairOutlinedIcon from '@mui/icons-material/ChairOutlined';
 import EmailIcon from '@mui/icons-material/Email';
@@ -77,23 +77,11 @@ export default function ProfileCardSideFeature(props) {
     useEffect(() => {
         service.get(`/profile/${props.userId}`)
             .then(({ data: profile }) => {
-                setName(profile.name)
-                setCity(profile.city)
-                setCountry(profile.country)
-                // setStatus(profile.status)
-                setStatus(() => {
-                    if (profile.status === 'availableToHost') {
-                        return 'Available To Host'
-                    }
-                    if (profile.status === 'iAmBusy') {
-                        return 'I am Busy'
-                    }
-                    if (profile.status === 'mayBeAcceptingGuests') {
-                        return 'Maybe Accepting Guests'
-                    }
-                })
-
-                setProfileImg(profile.profileImg);
+                setName(profile.name);
+                setCity(profile.city);
+                setCountry(profile.country);
+                setStatus(profile.status);
+                setProfileImg(profile.profileImg || "");
             })
             .catch(err => console.log(err))
     }, [props.userId])
@@ -102,7 +90,12 @@ export default function ProfileCardSideFeature(props) {
         <>
             <Card elevation={1} sx={{ maxWidth: 330, textAlign: 'center', marginTop: 6 }}>
                 <CardActionArea>
-                    <CloudinaryAvatar alt={name} src={profileImg} width={150} height={150} />
+                    <br/>
+                    {typeof profileImg !== "undefined" ? (
+                        <CloudinaryAvatar alt={name} src={profileImg} width={150} height={150} />
+                    ) : (
+                        <Skeleton variant="circular" width={150} height={150} sx={{margin: '0 auto'}} />
+                    )}
                     <CardContent>
                         <Typography gutterBottom variant="h4" component="div">
                             {name}
@@ -110,25 +103,24 @@ export default function ProfileCardSideFeature(props) {
                         <Typography variant="body1" color="black">
                             {city}, {country}
                         </Typography>
-                        <Typography variant="h5" color="orange">
+                        <Typography variant="h5" color={status === "Available To Host" ? "green" : "orange"}>
                             <strong> {status} </strong>
                         </Typography>
                     </CardContent>
                 </CardActionArea>
-                <CardActions sx={{ margin: "0 auto"}}>
+                <CardActions style={{justifyContent: 'center', marginTop: 10, marginBottom: 10}}>
                     <Button
                         type="submit"
                         variant="contained"
-                        sx={{ mt: 2, mb: 1, py: 1}}
-                        endIcon={<ChairOutlinedIcon
-                        />}
+                        // sx={{ mt: 2, mb: 1, py: 1 }}
+                        endIcon={<ChairOutlinedIcon />}
                     >
                         Send Request
                     </Button >
                     <Button
                         type="submit"
                         variant="contained"
-                        sx={{ mt: 2, mb: 1, py: 1 }}
+                        // sx={{ mt: 2, mb: 1, py: 1 }}
                         onClick={handleClick}
                         aria-controls={open ? 'demo-customized-menu' : undefined}
                         aria-haspopup="true"
@@ -140,9 +132,7 @@ export default function ProfileCardSideFeature(props) {
                     </Button >
                     <StyledMenu
                         id="demo-customized-menu"
-                        MenuListProps={{
-                            'aria-labelledby': 'demo-customized-button',
-                        }}
+                        MenuListProps={{ 'aria-labelledby': 'demo-customized-button' }}
                         anchorEl={anchorEl}
                         open={open}
                         onClose={handleClose}

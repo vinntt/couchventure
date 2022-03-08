@@ -8,35 +8,16 @@ import FeaturedPost from '../components/Homepage/FeaturePost';
 import Footer from '../components/Footer';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
+import service from '../api/service';
+import CloudinaryAvatar from '../components/UI/CloudinaryAvatar';
 
-const featuredPosts = [
-    {
-        title: 'Local Hosts',
-        description:
-            'Stay with the local host in your upcoming trips',
-        image: 'https://source.unsplash.com/random',
-        imageLabel: 'Image Text',
-    },
-    {
-        title: 'Upcoming Visitors',
-        description:
-            'Meet or Host the upcoming visitors in your city',
-        image: 'https://source.unsplash.com/random',
-        imageLabel: 'Image Text',
-    },
-    {
-        title: 'Hangouts',
-        description:
-            'Some nearby members are available to meet now',
-        image: 'https://source.unsplash.com/random',
-        imageLabel: 'Image Text',
-    },
-];
 
-function Homepage(props) {
+export default function Homepage(props) {
     const [mainFeaturedPost, setMainFeaturedPost] = useState('')
     const [name, setName] = useState(undefined)
+    const [profileImg, setProfileImg] = useState(undefined);
 
+    // Setup for the main feature post
     useEffect(() => {
         axios.get(`https://api.quotable.io/random?tags=life&minLength=120`)
             .then(quote => {
@@ -55,26 +36,45 @@ function Homepage(props) {
             .catch(err => console.log(err))
     }, [])
 
-    // useEffect(() => {
-    //     axios.get(`http://localhost:5005/profile/${props.userId}`)
-    //         .then(response => {
-    //             console.log(response)
-    //             // Promise.all([
-    //             //     User.findById(req.params.id),
-    //             //     Couch.findOne({ creator: req.params.id })
-    //             // ])
-    //             //     .then(([user, couch]) => {
-    //             //         const { name, city, country, profileImg } = user
-    //             //         let status = ""
+    // Setup for the 3 side feature posts
+    useEffect(() => {
+        service.get(`/profile/${props.userId}`)
+            .then(({ data: profile }) => {
+                // console.log(profile)
+                if (profile.status === 'Available To Host' || profile.status === 'May Be Accepting Guests' & profile._id !== {}) {
+                    setProfileImg(profile.profileImg)
+                    setName(profile.name)
+                } else {
+                    setProfileImg(false)
+                    setName(false)
+                }
+            })
+            .catch(err => console.log(err))
+    }, [props.userId])
 
-    //             //         if (couch) {
-    //             //             status = couch.status
-    //             //         }
-
-    //             //         res.status(200).json({ name, city, country, profileImg, status })
-    //                 })
-    //                 .catch(err => console.log(err))
-    //         })
+    const featuredPosts = [
+        {
+            title: 'Local Hosts',
+            description:
+                'Stay with the local host in your upcoming trips',
+            image: 'https://source.unsplash.com/random',
+            imageLabel: 'User"s icons',
+        },
+        {
+            title: 'Upcoming Visitors',
+            description:
+                'Meet or Host the upcoming visitors in your city',
+            image: 'https://source.unsplash.com/random',
+            imageLabel: 'User"s icons',
+        },
+        {
+            title: 'Hangouts',
+            description:
+                'Some nearby members are available to meet now',
+            image: 'https://source.unsplash.com/random',
+            imageLabel: 'User"s icons',
+        },
+    ];
 
 
         return (
@@ -85,12 +85,9 @@ function Homepage(props) {
                         {featuredPosts.map((post) => (
                             <FeaturedPost key={post.title} post={post} />
                         ))}
-                        {/* <FeaturedPost /> */}
                     </Grid>
                 </Container>
                 <Footer />
             </article>
         );
     }
-
-export default Homepage;

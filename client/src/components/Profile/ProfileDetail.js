@@ -56,13 +56,13 @@ export default function ProfileDetail(props) {
             {profile &&
                 // https://mui.com/api/container/
                 // https://blog.theashishmaurya.me/how-to-create-a-tag-input-feature-in-reactjs-and-material-ui
-                <Container maxWidth="md">
+                <Container maxWidth="md" disableGutters>
                     <br />
                     {/* https://codesandbox.io/s/lioc4z?file=/demo.js:924-1359 */}
                     <Accordion expanded>
                         <AccordionSummary sx={{ margin: 0 }} content={{ margin: 0 }}>
                             <Typography
-                                variant="h5"
+                                variant="h6"
                             // gutterBottom
                             // sx={{ marginTop: "30px", marginLeft: "0", padding: "0" }}
                             >
@@ -72,14 +72,14 @@ export default function ProfileDetail(props) {
                         <AccordionDetails>
                             <Divider textAlign="left"></Divider>
                             <br />
-                            <Grid container direction="row" alignItems="center">
-                                <AccessibilityNewIcon sx={{ mr: 1 }} />
+                            <Grid container direction="row" alignItems="center" sx={{ mb: 1 }}>
+                                <AccessibilityNewIcon sx={{ mr: 1 }} color="disabled" />
                                 <Typography align="justify" color="text.secondary">
                                     {profile.age}, {profile.gender}
                                 </Typography>
                             </Grid>
-                            <Grid container direction="row" alignItems="center">
-                                <SmsIcon sx={{ mr: 1 }} />
+                            <Grid container direction="row" alignItems="center" sx={{ mb: 1 }}>
+                                <SmsIcon sx={{ mr: 1 }} color="disabled" />
                                 <Typography align="justify" color="text.secondary">
                                     Fluent in {profile.language.join(", ")}
                                 </Typography>
