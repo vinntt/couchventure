@@ -1,23 +1,17 @@
-import * as React from "react";
-import Typography from "@mui/material/Typography";
-import { Grid, Button, Container, Accordion, AccordionSummary, AccordionDetails, Divider, Link, IconButton } from "@mui/material";
-import LuggageIcon from "@mui/icons-material/Luggage";
 import AddCircleOutline from "@mui/icons-material/AddCircleOutline";
-import PushPinOutlinedIcon from "@mui/icons-material/PushPinOutlined";
-import PeopleAltOutlinedIcon from "@mui/icons-material/PeopleAltOutlined";
-import EventOutlinedIcon from "@mui/icons-material/EventOutlined";
-import FormatQuoteIcon from "@mui/icons-material/FormatQuote";
-// import AccessTimeOutlinedIcon from '@mui/icons-material/AccessTimeOutlined';
-// import AutoAwesomeOutlinedIcon from '@mui/icons-material/AutoAwesomeOutlined';
-import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
-import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
-import { useState, useEffect } from "react";
-import service from "../../api/service";
-import TripDetail from "./TripDetail";
+import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
-import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
+import EventOutlinedIcon from "@mui/icons-material/EventOutlined";
+import FormatQuoteIcon from "@mui/icons-material/FormatQuote";
+import LuggageIcon from "@mui/icons-material/Luggage";
+import PeopleAltOutlinedIcon from "@mui/icons-material/PeopleAltOutlined";
+import { Accordion, AccordionDetails, AccordionSummary, Button, Container, Divider, Grid, IconButton, Link } from "@mui/material";
+import Typography from "@mui/material/Typography";
 import moment from "moment";
+import * as React from "react";
+import { useEffect, useState } from "react";
+import service from "../../api/service";
 
 export default function TripCard(props) {
     const [trips, setTrips] = useState([]);
