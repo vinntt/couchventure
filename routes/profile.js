@@ -52,7 +52,7 @@ router.get('/:id', (req, res, next) => {
 })
 
 // Update the user's profile.
-router.put('/', cloudinaryUploader("profileImg", "couchventure/profiles"), (req, res, next) => {
+router.put('/', cloudinaryUploader.single("profileImg", "couchventure/profiles"), (req, res, next) => {
     const {
         name,
         city,
@@ -118,8 +118,6 @@ router.get('/:id/couch', (req, res, next) => {
                 const {
                     _id,
                     status,
-                    city,
-                    country,
                     arrangement,
                     numberOfPeople,
                     allowChildren,
@@ -135,8 +133,6 @@ router.get('/:id/couch', (req, res, next) => {
                 res.status(200).json({
                     id: _id,
                     status,
-                    city,
-                    country,
                     arrangement,
                     numberOfPeople,
                     allowChildren,

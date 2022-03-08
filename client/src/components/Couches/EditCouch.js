@@ -38,6 +38,7 @@ const DeleteImageButton = styled(Button)(({ theme }) => ({
 }));
 
 export default function EditCouch() {
+    const [couchId, setCouchId] = useState(undefined);
     const [status, setStatus] = useState('');
     const [arrangement, setArrangement] = useState('');
     const [numberOfPeople, setNumberOfPeople] = useState('');
@@ -107,27 +108,32 @@ export default function EditCouch() {
             couchImg
         };
 
-        service.post('/couches', requestBody)
+        // https://github.com/axios/axios#request-method-aliases
+        service.request({
+            url: couchId ? `/couches/${couchId}` : '/couches',
+            method: couchId ? "put" : "post",
+            data: requestBody,
+        })
             .then(response => {
                 // redirect to login
-                navigate('/')
+                navigate('/profile/me/couch')
             })
             .catch(err => {
                 const errorDescription = err.response.data.message
                 setErrorMessage(errorDescription)
             })
 
-        setStatus('');
-        setArrangement('');
-        setNumberOfPeople('');
-        setAllowChildren('');
-        setAllowPets('');
-        setAllowSmoking('');
-        setAllowWheelchair('');
-        setDescription('');
-        setPublicTransportation('');
-        setDistanceCityCenter('');
-        setCouchImg([]);
+        // setStatus('');
+        // setArrangement('');
+        // setNumberOfPeople('');
+        // setAllowChildren('');
+        // setAllowPets('');
+        // setAllowSmoking('');
+        // setAllowWheelchair('');
+        // setDescription('');
+        // setPublicTransportation('');
+        // setDistanceCityCenter('');
+        // setCouchImg([]);
     };
 
     const handleStatus = e => setStatus(e.target.value)
@@ -185,6 +191,7 @@ export default function EditCouch() {
     useEffect(() => {
         service.get("/profile/me/couch")
             .then(({ data: couch }) => {
+                setCouchId(couch.id);
                 setStatus(couch.status);
                 setArrangement(couch.arrangement);
                 setNumberOfPeople(couch.numberOfPeople);
@@ -364,7 +371,7 @@ export default function EditCouch() {
                                             </DeleteImageButton>
                                         }
                                     >
-                                        <ImageListItem sx={{ maxHeight: 164, overflow: "hidden"}}>
+                                        <ImageListItem sx={{ maxHeight: 164, overflow: "hidden" }}>
                                             <img src={img} alt="" />
                                         </ImageListItem>
                                     </Badge>
@@ -394,12 +401,12 @@ export default function EditCouch() {
                         </Grid> */}
 
                         <Grid item xs={12} sm={6}>
-                            <Button href='/' type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 1, py: 1 }} startIcon={<BackspaceIcon />}>
+                            <Button href='/profile/me/couch' type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 1, py: 1 }} startIcon={<BackspaceIcon />}>
                                 Cancel
                             </Button>
                         </Grid>
                         <Grid item xs={12} sm={6}>
-                            <Button href='/' type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 1, py: 1 }} endIcon={<SaveOutlinedIcon />}>
+                            <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 1, py: 1 }} endIcon={<SaveOutlinedIcon />}>
                                 Save
                             </Button>
                         </Grid>

@@ -1,8 +1,6 @@
 const router = require("express").Router();
+const { cloudinaryUploader } = require("../middleware/cloudinary");
 const Couch = require("../models/Couch");
-const User = require('../models/User');
-const { uploader, cloudinary } = require('../config/cloudinary');
-
 
 // Get all the couch - search
 router.get('/', (req, res, next) => {
@@ -11,19 +9,19 @@ router.get('/', (req, res, next) => {
     Couch.find()
         .then(couches => {
             res.status(200).json(couches)
-        })
+        });
 });
 
-// Create a couch.
 router.get("/", (req, res, next) => {
     Couch.find({})
         .then(couch => {
             res.render('couches/:id', { couch })
         })
-        .catch(err => next(err))
+        .catch(err => next(err));
 })
 
-router.post('/', (req, res, next) => {
+// Create or udpate a couch.
+router.post('/', cloudinaryUploader.multiple("couchImg", (req) => `couchventure/couches/${req.user._id}`), (req, res, next) => {
     const {
         status,
         arrangement,
@@ -35,9 +33,9 @@ router.post('/', (req, res, next) => {
         description,
         distanceCityCenter,
         couchImg
-    } = req.body
+    } = req.body;
 
-    const creator = req.user._id
+    const creator = req.user._id;
 
     const newCouch = {
         creator,
@@ -55,10 +53,38 @@ router.post('/', (req, res, next) => {
 
     Couch.create(newCouch)
         .then(couch => {
-            res.status(201).json(couch)
+            const {
+                _id,
+                status,
+                arrangement,
+                numberOfPeople,
+                allowChildren,
+                allowPets,
+                allowSmoking,
+                allowWheelchair,
+                description,
+                publicTransportation,
+                distanceCityCenter,
+                couchImg
+            } = couch
+
+            res.status(201).json({
+                id: _id,
+                status,
+                arrangement,
+                numberOfPeople,
+                allowChildren,
+                allowPets,
+                allowSmoking,
+                allowWheelchair,
+                description,
+                publicTransportation,
+                distanceCityCenter,
+                couchImg
+            })
         })
-        .catch(err => next(err))
-        // res.render('couches/')
+        .catch(err => next(err));
+    // res.render('couches/')
 })
 
 // Get a specific couch.
@@ -71,11 +97,11 @@ router.get('/:id', (req, res, next) => {
             } else {
                 res.status(404).json({ message: 'Couch not found' })
             }
-        })
+        });
 })
 
 // Update a couch.
-router.put('/:id', (req, res, next) => {
+router.put('/:id', cloudinaryUploader.multiple("couchImg", (req) => `couchventure/couches/${req.user._id}`), (req, res, next) => {
     const {
         status,
         arrangement,
@@ -92,12 +118,10 @@ router.put('/:id', (req, res, next) => {
     const query = {
         _id: req.params.id,
         creator: req.user._id
-    }
+    };
 
     Couch.findOneAndUpdate(query, {
             status,
-            city,
-            country,
             arrangement,
             numberOfPeople,
             allowChildren,
@@ -115,7 +139,7 @@ router.put('/:id', (req, res, next) => {
                 res.status(404).json({ message: 'Couch not found' })
             }
         })
-        .catch(err => next(err))
+        .catch(err => next(err));
 })
 
 // Delete a Couch.

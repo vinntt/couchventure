@@ -1,4 +1,4 @@
-import { Typography, Grid, Button, Container, Divider, Accordion, AccordionSummary, AccordionDetails, ImageList, ImageListItem } from '@mui/material';
+import { Typography, Grid, Button, Container, Divider, Accordion, AccordionSummary, AccordionDetails, ImageList, ImageListItem, Modal, Box } from '@mui/material';
 import EmojiPeopleOutlinedIcon from '@mui/icons-material/EmojiPeopleOutlined';
 import ChildCareOutlinedIcon from '@mui/icons-material/ChildCareOutlined';
 import PetsOutlinedIcon from '@mui/icons-material/PetsOutlined';
@@ -9,15 +9,36 @@ import LocationCityOutlinedIcon from '@mui/icons-material/LocationCityOutlined';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import { useEffect, useState } from "react";
 import service from '../../api/service';
+import cloudinaryResize from '../../utils/cloudinary';
+
+const modelBoxStyle = {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: '50%',
+    bgcolor: 'background.paper',
+    border: 0,
+    padding: 0,
+    boxShadow: 24,
+    '&:focus-visible': {
+        outline: 'none',
+    },
+};
 
 export default function CouchDetail(props) {
     const [couch, setCouch] = useState(undefined)
     // const [couchImg, setCouchImg] = useState(undefined);
+    const [modalImage, setModalImage] = useState(false);
+
+    const handleOpenModal = (img) => setModalImage(img);
+    const handleCloseModal = () => setModalImage(undefined);
 
     useEffect(() => {
         service.get(`/profile/${props.userId}/couch`)
             .then(({ data: couch }) => {
-                console.log(couch)
+                couch.couchImg = couch.couchImg || [];
+
                 setCouch(couch)
                 // setCouchImg(couch.couchImg);
             })
@@ -43,14 +64,6 @@ export default function CouchDetail(props) {
 
         // Case of other people profile goes here.
     }
-
-    // const allowWheelchair = () => {
-    //     if (couch.allowWheelchair === 1) {
-    //         return 'YES'
-    //     }
-
-    //     return 'NO'
-    // }
 
     return (
         <>
@@ -79,25 +92,25 @@ export default function CouchDetail(props) {
                             <Grid container direction="row" alignItems="center">
                                 <ChildCareOutlinedIcon sx={{ mr: 1 }} />
                                 <Typography align="jutify" color="text.secondary">
-                                    Kid Friendly: {couch.allowChildren ? "Yes": "No"}
+                                    Kid Friendly: {couch.allowChildren ? "Yes" : "No"}
                                 </Typography>
                             </Grid>
                             <Grid container direction="row" alignItems="center">
                                 <PetsOutlinedIcon sx={{ mr: 1 }} />
                                 <Typography align="jutify" color="text.secondary">
-                                    Pet Friendly: {couch.allowPets ? "Yes": "No"}
+                                    Pet Friendly: {couch.allowPets ? "Yes" : "No"}
                                 </Typography>
                             </Grid>
                             <Grid container direction="row" alignItems="center">
                                 <SmokingRoomsOutlinedIcon sx={{ mr: 1 }} />
                                 <Typography align="jutify" color="text.secondary">
-                                    Smoking Allowed: {couch.allowSmoking ? "Yes": "No"}
+                                    Smoking Allowed: {couch.allowSmoking ? "Yes" : "No"}
                                 </Typography>
                             </Grid>
                             <Grid container direction="row" alignItems="center">
                                 <AccessibleOutlinedIcon sx={{ mr: 1 }} />
                                 <Typography align="jutify" color="text.secondary">
-                                    Wheelchair Accessible: {couch.allowWheelchair ? "Yes": "No"}
+                                    Wheelchair Accessible: {couch.allowWheelchair ? "Yes" : "No"}
                                 </Typography>
                             </Grid>
                         </AccordionDetails>
@@ -149,17 +162,14 @@ export default function CouchDetail(props) {
                             </Typography>
                         </AccordionSummary>
                         <AccordionDetails>
-                            <ImageList sx={{ width: 500, height: 450 }} cols={3} rowHeight={164}>
-                                {/* {itemData.map((item) => (
-                                    <ImageListItem key={item.img}>
-                                        <img
-                                            src={`${item.img}?w=164&h=164&fit=crop&auto=format`}
-                                            srcSet={`${item.img}?w=164&h=164&fit=crop&auto=format&dpr=2 2x`}
-                                            alt={item.title}
-                                            loading="lazy"
-                                        />
+                            <Divider textAlign="left"></Divider>
+                            <br />
+                            <ImageList sx={{ width: '100%' }} cols={4}>
+                                {couch.couchImg.map((img, idx) => (
+                                    <ImageListItem key={`couch-image-${idx}`} onClick={() => handleOpenModal(img)} sx={{cursor: 'pointer'}}>
+                                        <img src={cloudinaryResize(img, "c_fill,w_336,h_336")} alt="" />
                                     </ImageListItem>
-                                ))} */}
+                                ))}
                             </ImageList>
                         </AccordionDetails>
 
@@ -169,7 +179,14 @@ export default function CouchDetail(props) {
                             </Button>
                         </Grid>
                     </Accordion>
-
+                    <Modal
+                        open={modalImage}
+                        onClose={handleCloseModal}
+                    >
+                        <Box sx={modelBoxStyle}>
+                            <img src={cloudinaryResize(modalImage, "c_fill,w_800,h_600")} alt="" style={{ width: '100%', height: 'auto', display: 'block' }} />
+                        </Box>
+                    </Modal>
                 </Container>
             }
         </>

@@ -35,7 +35,7 @@ const couchSchema = new Schema({
         distanceCityCenter: {
             type: String,
         },
-        couchImg: String
+        couchImg: [String]
     },
 
     {

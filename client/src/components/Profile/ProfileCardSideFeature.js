@@ -100,7 +100,7 @@ export default function ProfileCardSideFeature(props) {
 
     return (
         <>
-            <Card elevation={0} sx={{ maxWidth: 345, textAlign: 'center', marginTop: 8 }}>
+            <Card elevation={1} sx={{ maxWidth: 330, textAlign: 'center', marginTop: 6 }}>
                 <CardActionArea>
                     <CloudinaryAvatar alt={name} src={profileImg} width={150} height={150} />
                     <CardContent>
