@@ -21,7 +21,7 @@ import moment from "moment";
 
 export default function TripCard(props) {
     const [trips, setTrips] = useState([]);
-    // const [duration, setDuration] = useState(undefined);
+    const [, forceUpdate] = React.useReducer((x) => x + 1, 0);
 
     const deleteTrip = (idx, tripId) => {
         service
@@ -30,6 +30,7 @@ export default function TripCard(props) {
                 trips.splice(idx, 1);
 
                 setTrips(trips);
+                forceUpdate();
             })
             .catch((err) => alert(err));
     };
@@ -62,7 +63,7 @@ export default function TripCard(props) {
                 // setContent(response.data[0].setContent)
             })
             .catch((err) => console.log(err));
-    }, [props.userId, trips]);
+    }, [props.userId]);
 
     if (trips.length === 0 && props.userId !== "me") {
         return <></>;
