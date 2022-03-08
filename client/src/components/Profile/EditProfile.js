@@ -292,7 +292,7 @@ export default function EditProfile(props) {
                     badgeContent={
                         <UploadButton variant="contained" component="label" sx={{ left: -6, top: -6 }}>
                             <AddPhotoAlternateIcon fontSize="small" />
-                            <input type="file" hidden onChange={handleAvatar} />
+                            <input accept="image/*" type="file" hidden onChange={handleAvatar} />
                         </UploadButton>
                     }
                 >

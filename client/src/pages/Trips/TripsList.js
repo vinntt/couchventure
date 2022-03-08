@@ -13,7 +13,7 @@ import { Link } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import TripCard from '../../components/Trips/TripCard';
-import EditTrip from '../../components/Trips/EditTrip'
+// import EditTrip from '../../components/Trips/EditTrip'
 import Navbar from '../../components/Navbar';
 import service from '../../api/service';
 
@@ -43,7 +43,7 @@ export default function Tripslist() {
 
 
   { trips.map(trip => <TripCard key={trip._id} {...trip} />) }
-  <EditTrip refreshTrips={getAllTrips} />
+//   <EditTrip refreshTrips={getAllTrips} />
 
   return (
     <div>

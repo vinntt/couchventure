@@ -14,15 +14,15 @@ router.get('/', (req, res, next) => {
         })
 });
 
-// Create a trip.
 router.get("/", (req, res, next) => {
     User.find({})
-        .then(user => {
-            res.render('trips/:id', { user })
-        })
-        .catch(err => next(err))
+    .then(user => {
+        res.render('trips/:id', { user })
+    })
+    .catch(err => next(err))
 })
 
+// Create a trip.
 router.post('/', (req, res, next) => {
     const { startDate, endDate, country, city, numberOfPeople, content } = req.body
     const creator = req.user._id
@@ -42,30 +42,25 @@ router.post('/', (req, res, next) => {
         return;
     }
 
-
     const newTrip = {
         creator,
         startDate: new Date(startDate),
         endDate: new Date(endDate),
         country,
         city,
-        duration,
         numberOfPeople,
         content
     };
 
     Trip.create(newTrip)
         .then(trip => {
-            console.log("startDate", startDate, "endDate", endDate)
             res.status(201).json(trip)
         })
         .catch(err => next(err))
-        // res.render('trips/')
 })
 
 // Get a specific trip.
 router.get('/:id', (req, res, next) => {
-
     Trip.findById(req.params.id)
         .then(trip => {
             // Check for a valid mongoobjectid (mongoose.types.ObjectId.isValid(<id>)).

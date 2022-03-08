@@ -111,7 +111,17 @@ function App() {
                     />
 
                     <Route
-                        path='/profile/:userId/trip/edit'
+                        path='/profile/:userId/trips/new'
+                        element={
+                            <ProtectedRoute redirectTo='/login'>
+                                <Navbar />
+                                <ProfileEditTripPage />
+                            </ProtectedRoute>
+                        }
+                    />
+
+                    <Route
+                        path='/profile/:userId/trips/:tripId/edit'
                         element={
                             <ProtectedRoute redirectTo='/login'>
                                 <Navbar />

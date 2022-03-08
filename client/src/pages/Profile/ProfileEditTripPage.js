@@ -1,33 +1,49 @@
-import * as React from 'react';
-import { useParams } from 'react-router-dom';
-import { Container, Grid } from '@mui/material';
+import { useParams } from "react-router-dom";
+import { Container, Grid } from "@mui/material";
 
-import ProfileCardSideFeature from '../../components/Profile/ProfileCardSideFeature';
-import ProfileTabs from '../../components/ProfileTabs';
-import Footer from '../../components/Footer.js'
-import EditTrip from '../../components/Trips/EditTrip';
+import ProfileCardSideFeature from "../../components/Profile/ProfileCardSideFeature";
+import ProfileTabs from "../../components/ProfileTabs";
+import Footer from "../../components/Footer.js";
+import TripForm from "../../components/Trips/TripForm";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 export default function ProfileEditTripPage() {
-    const { userId } = useParams()
+    const userId = "me";
+    const { tripId } = useParams();
+    const [trip, setTrip] = useState({ id: undefined });
+
+    useEffect(() => {
+        if (!tripId) {
+            return;
+        }
+
+        axios
+            .get(`/trips/${tripId}`)
+            .then(({ data: trip }) => {
+                setTrip(trip);
+            })
+            .catch((err) => console.log(err));
+    }, [tripId]);
 
     return (
         <>
-            <Container maxWidth="lg">
+            <Container maxWidth='lg'>
                 <Grid container spacing={2}>
                     <Grid item xs={6} md={4}>
                         <ProfileCardSideFeature userId={userId} />
                     </Grid>
                     <Grid item xs={6} md={8}>
-                        <Grid item >
+                        <Grid item>
                             <ProfileTabs userId={userId} />
                         </Grid>
-                        <Grid item >
-                            <EditTrip userId={userId} />
+                        <Grid item>
+                            <TripForm userId={userId} trip={trip} />
                         </Grid>
                     </Grid>
                 </Grid>
                 <Footer />
             </Container>
         </>
-    )
-};
+    );
+}
