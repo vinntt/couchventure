@@ -6,7 +6,7 @@ import ProfileTabs from "../../components/ProfileTabs";
 import Footer from "../../components/Footer.js";
 import TripForm from "../../components/Trips/TripForm";
 import { useEffect, useState } from "react";
-import axios from "axios";
+import service from "../../api/service";
 
 export default function ProfileEditTripPage() {
     const userId = "me";
@@ -18,7 +18,7 @@ export default function ProfileEditTripPage() {
             return;
         }
 
-        axios
+        service
             .get(`/trips/${tripId}`)
             .then(({ data: trip }) => {
                 setTrip(trip);

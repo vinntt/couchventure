@@ -380,7 +380,7 @@ export default function EditCouch() {
                                 <ImageListItem>
                                     <Button variant="contained" component="label" sx={{ width: '100%', height: '100%', border: '2px dashed #4F606F', background: '#eee !important', boxShadown: 'none' }}>
                                         <AddPhotoAlternateIcon fontSize="large" color="info" />
-                                        <input type="file" hidden onChange={handleCouchImg} />
+                                        <input accept="image/*" type="file" hidden onChange={handleCouchImg} />
                                     </Button>
                                 </ImageListItem>
                             </ImageList>

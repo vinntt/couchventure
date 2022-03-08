@@ -17,7 +17,6 @@ import { Link, useNavigate } from "react-router-dom";
 import { Fragment, useEffect, useState } from "react";
 import Footer from "../Footer";
 import service from "../../api/service";
-import axios from "axios";
 import moment from "moment";
 
 export default function TripForm(props) {
@@ -103,9 +102,16 @@ export default function TripForm(props) {
             return;
         }
 
-        axios
+        service
             .get(`/trips/${props.trip.id}`)
-            .then(({ data: trip }) => {})
+            .then(({ data: trip }) => {
+                setCity(trip.city);
+                setCountry(trip.country);
+                setStartDate(trip.startDate);
+                setEndDate(trip.endDate);
+                setNumberOfPeople(trip.numberOfPeople);
+                setContent(trip.content);
+            })
             .catch((err) => console.log(err));
     }, [props.trip.id]);
 
