@@ -14,11 +14,11 @@ const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 router.post("/signup", (req, res, next) => {
     const { email, password, name, city, country, profileImg } = req.body;
 
-    if (email === '' ||
-        password === '' ||
-        name === '' ||
-        city === '' ||
-        country === ''
+    if (!email ||
+        !password ||
+        !name ||
+        !city ||
+        !country
     ) {
         res.status(400).json({ message: "Please provide information in the required fields" })
         return

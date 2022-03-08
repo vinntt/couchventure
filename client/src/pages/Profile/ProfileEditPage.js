@@ -1,14 +1,12 @@
 import * as React from 'react';
-import { useParams } from 'react-router-dom';
 import { Container, Grid } from '@mui/material';
 
 import ProfileCardSideFeature from '../../components/Profile/ProfileCardSideFeature';
-import ProfileDetail from '../../components/Profile/ProfileDetail';
 import ProfileTabs from '../../components/ProfileTabs';
-import TripCard from '../../components/Trips/TripCard';
+import EditProfile from '../../components/Profile/EditProfile';
 
-export default function ProfilePage() {
-    const { userId } = useParams()
+export default function ProfileEditPage() {
+    const userId = "me";
 
     return (
         <>
@@ -22,10 +20,7 @@ export default function ProfilePage() {
                         <ProfileTabs userId={userId} />
                     </Grid>
                     <Grid item >
-                        {/* <TripCard /> */}
-                    </Grid>
-                    <Grid item >
-                        <ProfileDetail userId={userId} />
+                        <EditProfile userId={userId} />
                     </Grid>
                     </Grid>
                 </Grid>

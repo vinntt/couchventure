@@ -14,12 +14,6 @@ const userSchema = new Schema({
             type: String,
             required: true,
         },
-        age: {
-            type: Number,
-        },
-        gender: {
-            type: String,
-        },
         city: {
             type: String,
             required: true,
@@ -27,6 +21,13 @@ const userSchema = new Schema({
         country: {
             type: String,
             required: true,
+        },
+        age: {
+            type: Number,
+        },
+        gender: {
+            type: String,
+            enum: ['male', 'female', 'diverse'],
         },
         language: [{
             type: String,

@@ -6,9 +6,9 @@ import { CssBaseline } from '@mui/material';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { useState, useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import axios from 'axios';
 import { AuthContext } from '../../context/auth'
 import Footer from '../../components/Footer';
+import service from '../../api/service';
 
 export default function SignIn() {
   const [email, setEmail] = useState('');
@@ -21,10 +21,13 @@ export default function SignIn() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
+
     const requestBody = { email, password }
-    axios.post('http://localhost:5005/auth/login', requestBody)
+
+    service.post('/auth/login', requestBody)
       .then(response => {
         const token = response.data.authToken
+
         storeToken(token)
         // verifyStoredToken return a promise now we can chain a .then and wait for the response
         verifyStoredToken()
@@ -37,15 +40,13 @@ export default function SignIn() {
         const errorDescription = err.response.data.message
         setErrorMessage(errorDescription)
       })
-    // reset the form
-    setEmail('')
-    setPassword('')
-    // refresh the input field
-  }
+
+    setEmail('');
+    setPassword('');
+  };
 
   const handleEmail = e => setEmail(e.target.value)
   const handlePassword = e => setPassword(e.target.value)
-
 
   return (
     <Grid container component="main" sx={{ height: '100vh' }}>
@@ -71,8 +72,8 @@ export default function SignIn() {
             alignItems: 'center',
           }}
         >
-          <Avatar sx={{ m: 1, bgcolor: 'secondary.main',  width: 50, height: 50  }}>
-            <LockOutlinedIcon sx={{ fontSize: 32}} />
+          <Avatar sx={{ m: 1, bgcolor: 'secondary.main', width: 50, height: 50 }}>
+            <LockOutlinedIcon sx={{ fontSize: 32 }} />
           </Avatar>
           <Typography component="h1" variant="h5">
             Sign in
@@ -108,7 +109,7 @@ export default function SignIn() {
               type="submit"
               fullWidth
               variant="contained"
-              sx={{ mt: 3, mb: 5 , py: 2}}
+              sx={{ mt: 3, mb: 5, py: 2 }}
             >
               Sign In
             </Button>
@@ -127,7 +128,7 @@ export default function SignIn() {
                 </Link>
               </Grid>
             </Grid>
-            <Footer/>
+            <Footer />
           </Box>
         </Box>
       </Grid>

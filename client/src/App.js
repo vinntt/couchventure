@@ -8,12 +8,12 @@ import Navbar from './components/Navbar'
 import { Routes, Route } from 'react-router-dom';
 import ProtectedRoute from './components/ProtectedRoute'
 import TripsList from './pages/Trips/TripsList';
-import AddCouch from './components/Couches/AddCouch';
 import TripDetails from './pages/Trips/TripDetails';
-import CouchPage from './pages/Couches/CouchPage';
+import ProfileCouchPage from './pages/Profile/ProfileCouchPage';
 import ProfilePage from './pages/Profile/ProfilePage';
+import ProfileEditPage from './pages/Profile/ProfileEditPage';
 import TripCard from './components/Trips/TripCard';
-import EditProfile from './components/Profile/EditProfile';
+import ProfileEditCouchPage from './pages/Profile/ProfileEditCouchPage';
 
 // https://mui.com/customization/theming/
 // https://mui.com/customization/palette/
@@ -59,9 +59,16 @@ function App() {
           <Route path='/signup' element={<Signup />} />
           <Route path='/login' element={<Login />} />
 
+          <Route path='/profile/me/edit' element={
+            <ProtectedRoute redirectTo='/login'>
+              <Navbar />
+              <ProfileEditPage />
+            </ProtectedRoute>
+          } />
+
           <Route path='/profile/:userId' element={
             <ProtectedRoute redirectTo='/login'>
-               <Navbar />
+              <Navbar />
               <ProfilePage />
             </ProtectedRoute>
           } />
@@ -74,7 +81,15 @@ function App() {
 
           <Route path='/profile/:userId/couch' element={
             <ProtectedRoute redirectTo='/login'>
-              <ProfilePage content={<CouchPage />} />
+              <Navbar />
+              <ProfileCouchPage />
+            </ProtectedRoute>
+          } />
+
+          <Route path='/profile/:userId/couch/edit' element={
+            <ProtectedRoute redirectTo='/login'>
+              <Navbar />
+              <ProfileEditCouchPage />
             </ProtectedRoute>
           } />
 
@@ -100,8 +115,7 @@ function App() {
           {/* <Route path='/trips' element={<TripsList />} /> */}
           <Route path='/test/trips/new' element={<TripCard />} />
           {/* <Route path='/test/trips/:id' element={<TripDetails />} /> */}
-          <Route path='/test/couches' element={<CouchPage userId="me" />} />
-          <Route path='/test/couches/new' element={<AddCouch />} />
+          {/* <Route path='/test/couches/edit' element={<EditCouch />} /> */}
         </Routes>
       </div>
     </ThemeProvider>

@@ -15,20 +15,18 @@ import axios from 'axios';
 import TripCard from '../../components/Trips/TripCard';
 import AddTrip from '../../components/Trips/AddTrip'
 import Navbar from '../../components/Navbar';
-
+import service from '../../api/service';
 
 const cards = [1, 2, 3];
 
 export default function Tripslist() {
   const [trips, setTrips] = useState([])
-  // console.log(trips)
 
-  const storedToken = localStorage.getItem('authToken')
   // get all the trips from the backend / server
   const getAllTrips = () => {
     // request 'api/trips'
     // for every request to a trip route we need to also send the token
-    axios.get('http://localhost:5005/trips', { headers: { Authorization: `Bearer ${storedToken}` } })
+    service.get('/trips')
       .then(response => {
         console.log(response.data)
         // set the state of projects

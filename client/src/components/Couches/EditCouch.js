@@ -2,19 +2,40 @@ import * as React from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
-import { MenuItem } from '@mui/material';
+import { Badge, ImageList, ImageListItem, MenuItem, styled } from '@mui/material';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
-import MapsHomeWorkOutlinedIcon from '@mui/icons-material/MapsHomeWorkOutlined';
 import SaveOutlinedIcon from '@mui/icons-material/SaveOutlined';
+import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
+import BackspaceIcon from '@mui/icons-material/Backspace';
+import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import { Link, useNavigate } from 'react-router-dom';
-import axios from 'axios';
-import { useState } from 'react';
-import Copyright from '../Copyright';
+import { useNavigate } from 'react-router-dom';
+import { useEffect, useState, useReducer } from 'react';
+import service from '../../api/service';
+import CloudinaryAvatar from '../UI/CloudinaryAvatar';
+
+const allowedTypes = [
+    'image/gif',
+    'image/jpg',
+    'image/jpeg',
+    'image/png',
+    'image/apng',
+    'image/webp',
+];
+
+const DeleteImageButton = styled(Button)(({ theme }) => ({
+    width: 28,
+    height: 28,
+    minWidth: 28,
+    minHeight: 28,
+    padding: 0,
+    margin: 0,
+    borderRadius: `50%`,
+}));
 
 export default function EditCouch() {
     const [status, setStatus] = useState('');
@@ -27,24 +48,26 @@ export default function EditCouch() {
     const [description, setDescription] = useState('');
     const [publicTransportation, setPublicTransportation] = useState('');
     const [distanceCityCenter, setDistanceCityCenter] = useState('');
+    const [couchImg, setCouchImg] = useState([]);
 
     const navigate = useNavigate();
+    const [, forceUpdate] = useReducer(x => x + 1, 0);
 
     const arrangements = [
         {
-            value: 'sharedBed',
+            value: 'Shared Bed',
             label: 'Shared Bed',
         },
         {
-            value: 'shareRoom',
+            value: 'Share Room',
             label: 'Share Room',
         },
         {
-            value: 'publicRoom',
-            label: 'Public Room/Living Room',
+            value: 'Public Room',
+            label: 'Public Room',
         },
         {
-            value: 'privateRoom',
+            value: 'Private Room',
             label: 'Private Room',
         },
         {
@@ -55,15 +78,15 @@ export default function EditCouch() {
 
     const hostStatus = [
         {
-            value: 'availableToHost',
+            value: 'Available To Host',
             label: 'Available To Host',
         },
         {
-            value: 'iAmBusy',
+            value: 'I Am Busy',
             label: 'I Am Busy',
         },
         {
-            value: 'mayBeAcceptingGuests',
+            value: 'May Be Accepting Guests',
             label: 'May Be Accepting Guests',
         },
     ];
@@ -80,10 +103,11 @@ export default function EditCouch() {
             allowWheelchair,
             description,
             publicTransportation,
-            distanceCityCenter
+            distanceCityCenter,
+            couchImg
         };
 
-        axios.post('http://localhost:5005/couches', requestBody)
+        service.post('/couches', requestBody)
             .then(response => {
                 // redirect to login
                 navigate('/')
@@ -92,55 +116,107 @@ export default function EditCouch() {
                 const errorDescription = err.response.data.message
                 setErrorMessage(errorDescription)
             })
-        // reset the form
-        setStatus('')
-        setArrangement('')
-        setNumberOfPeople('')
-        setAllowChildren('')
-        setAllowPets('')
-        setAllowSmoking('')
-        setAllowWheelchair('')
-        setDescription('')
-        setPublicTransportation('')
-        setDistanceCityCenter('')
-        // refresh the list of the projects in ProjectList
-        // props.refreshProjects()
+
+        setStatus('');
+        setArrangement('');
+        setNumberOfPeople('');
+        setAllowChildren('');
+        setAllowPets('');
+        setAllowSmoking('');
+        setAllowWheelchair('');
+        setDescription('');
+        setPublicTransportation('');
+        setDistanceCityCenter('');
+        setCouchImg([]);
     };
 
     const handleStatus = e => setStatus(e.target.value)
     const handleArrangement = e => setArrangement(e.target.value)
     const handleNumberOfPeople = e => setNumberOfPeople(e.target.value)
-
     const handleAllowChildren = e => setAllowChildren(e.target.checked)
     const handleAllowPets = e => setAllowPets(e.target.checked)
     const handleAllowSmoking = e => setAllowSmoking(e.target.checked)
     const handleAllowWheelchair = e => setAllowWheelchair(e.target.checked)
-
     const handleDescription = e => setDescription(e.target.value)
-    const handlePublicTransportation = e => setPublicTransportation(e.target.value)
+    // const handlePublicTransportation = e => setPublicTransportation(e.target.value)
     const handleDistanceCityCenter = e => setDistanceCityCenter(e.target.value)
+
+    const updateCouchImg = images => {
+        setCouchImg(images);
+
+        // https://reactjs.org/docs/hooks-faq.html#is-there-something-like-forceupdate
+        // Force update because react does not rerender when there is a new image. No idea why.
+        forceUpdate();
+    };
+
+    const handleCouchImg = e => {
+        if (!e.target.value) {
+            return;
+        }
+
+        const file = e.target.files[0];
+
+        if (!allowedTypes.includes(file.type)) {
+            // TODO: Display an error message.
+            console.log(`Invalid file type ${file.type}`);
+
+            return;
+        }
+
+        const fileReader = new FileReader();
+
+        fileReader.onload = function (upload) {
+            couchImg.push(upload.target.result);
+
+            updateCouchImg(couchImg);
+        };
+
+        fileReader.readAsDataURL(file);
+    };
+
+    const deleteCouchImg = idx => {
+        couchImg.splice(idx, 1);
+
+        updateCouchImg(couchImg);
+    };
+
     const [errorMessage, setErrorMessage] = useState(undefined);
+
+    useEffect(() => {
+        service.get("/profile/me/couch")
+            .then(({ data: couch }) => {
+                setStatus(couch.status);
+                setArrangement(couch.arrangement);
+                setNumberOfPeople(couch.numberOfPeople);
+                setAllowChildren(couch.allowChildren);
+                setAllowPets(couch.allowPets);
+                setAllowSmoking(couch.allowSmoking);
+                setAllowWheelchair(couch.allowWheelchair);
+                setDescription(couch.description);
+                // setPublicTransportation(couch.publicTransportation);
+                setDistanceCityCenter(couch.distanceCityCenter);
+                setCouchImg(couch.couchImg || []);
+            })
+            .catch(err => console.log(err))
+    }, []);
 
     return (
         <Container component="main" maxWidth="xs">
             <Box
                 sx={{
-                    marginTop: 8,
+                    marginTop: 7,
                     display: 'flex',
                     flexDirection: 'column',
                     alignItems: 'center',
                 }}
             >
-                <Avatar sx={{ m: 1, bgcolor: 'secondary.main', width: 50, height: 50 }}>
-                    <MapsHomeWorkOutlinedIcon sx={{ fontSize: 32 }} />
-                </Avatar>
                 <Typography component="h1" variant="h5">
                     My Home
                 </Typography>
 
                 <Box component="form" onSubmit={handleSubmit} sx={{ mt: 3 }}>
                     <Grid container spacing={2}>
-                    <Grid item xs={12}>
+                        <Grid item xs={12}>
                             <TextField
                                 id="status"
                                 select
@@ -220,9 +296,9 @@ export default function EditCouch() {
                         <Grid item xs={12} sm={6}>
                             <FormControlLabel control={
                                 <Checkbox
-                                    value={allowChildren}
+                                    size="small"
+                                    checked={allowChildren}
                                     onChange={handleAllowChildren}
-                                    sx={{ '& .MuiSvgIcon-root': { fontSize: 28 } }}
                                 />
                             }
                                 label="Kid Friendly"
@@ -231,9 +307,9 @@ export default function EditCouch() {
                         <Grid item xs={12} sm={6}>
                             <FormControlLabel control={
                                 <Checkbox
-                                    value={allowPets}
+                                    size="small"
+                                    checked={allowPets}
                                     onChange={handleAllowPets}
-                                    sx={{ '& .MuiSvgIcon-root': { fontSize: 28 } }}
                                 />
                             }
                                 label="Pets Friendly"
@@ -242,9 +318,9 @@ export default function EditCouch() {
                         <Grid item xs={12} sm={6}>
                             <FormControlLabel control={
                                 <Checkbox
-                                    value={allowSmoking}
+                                    size="small"
+                                    checked={allowSmoking}
                                     onChange={handleAllowSmoking}
-                                    sx={{ '& .MuiSvgIcon-root': { fontSize: 28 } }}
                                 />
                             }
                                 label="Smoking is Allowed"
@@ -253,9 +329,9 @@ export default function EditCouch() {
                         <Grid item xs={12} sm={6}>
                             <FormControlLabel control={
                                 <Checkbox
-                                    value={allowWheelchair}
+                                    size="small"
+                                    checked={allowWheelchair}
                                     onChange={handleAllowWheelchair}
-                                    sx={{ '& .MuiSvgIcon-root': { fontSize: 28 } }}
                                 />
                             }
                                 label="Wheelchair Accessible"
@@ -275,6 +351,33 @@ export default function EditCouch() {
                                 onChange={handleDescription}
                             />
                         </Grid>
+                        <Grid item xs={12}>
+                            <ImageList sx={{ width: 500, overflow: "visible" }} cols={3} rowHeight={164}>
+                                {couchImg.map((img, idx) => (
+                                    <Badge
+                                        key={`couch-image-${idx}`}
+                                        overlap="circular"
+                                        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+                                        badgeContent={
+                                            <DeleteImageButton variant="contained" component="label" color="error" onClick={() => deleteCouchImg(idx)}>
+                                                <HighlightOffIcon fontSize="small" />
+                                            </DeleteImageButton>
+                                        }
+                                    >
+                                        <ImageListItem sx={{ maxHeight: 164, overflow: "hidden"}}>
+                                            <img src={img} alt="" />
+                                        </ImageListItem>
+                                    </Badge>
+                                ))}
+
+                                <ImageListItem>
+                                    <Button variant="contained" component="label" sx={{ width: '100%', height: '100%', border: '2px dashed #4F606F', background: '#eee !important', boxShadown: 'none' }}>
+                                        <AddPhotoAlternateIcon fontSize="large" color="info" />
+                                        <input type="file" hidden onChange={handleCouchImg} />
+                                    </Button>
+                                </ImageListItem>
+                            </ImageList>
+                        </Grid>
                         {/* <Grid item xs={12}>
                             <TextField
                                 id="publicTransportation"
@@ -290,23 +393,20 @@ export default function EditCouch() {
 
                         </Grid> */}
 
-                        <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2, py: 2 }} endIcon={<SaveOutlinedIcon />}>
-                            Save
-                        </Button>
-
-                        {errorMessage && <h5>{errorMessage}</h5>}
-
-                        <Grid container justifyContent="flex-end">
-                            <Grid item>
-                                <Link to="/" variant="body2">
-                                    Back to the Homepage
-                                </Link>
-                            </Grid>
+                        <Grid item xs={12} sm={6}>
+                            <Button href='/' type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 1, py: 1 }} startIcon={<BackspaceIcon />}>
+                                Cancel
+                            </Button>
                         </Grid>
+                        <Grid item xs={12} sm={6}>
+                            <Button href='/' type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 1, py: 1 }} endIcon={<SaveOutlinedIcon />}>
+                                Save
+                            </Button>
+                        </Grid>
+                        {errorMessage && <h5>{errorMessage}</h5>}
                     </Grid>
                 </Box>
             </Box>
-            <Copyright sx={{ mt: 5 }} />
-        </Container>
+        </Container >
     );
 }

@@ -55,40 +55,38 @@ function Homepage(props) {
             .catch(err => console.log(err))
     }, [])
 
-    useEffect(() => {
-        axios.get(`http://localhost:5005/profile/${props.userId}`)
-            .then(response => {
-                console.log(response)
-                // Promise.all([
-                //     User.findById(req.params.id),
-                //     Couch.findOne({ creator: req.params.id })
-                // ])
-                //     .then(([user, couch]) => {
-                //         const { name, city, country, profileImg } = user
-                //         let status = ""
+    // useEffect(() => {
+    //     axios.get(`http://localhost:5005/profile/${props.userId}`)
+    //         .then(response => {
+    //             console.log(response)
+    //             // Promise.all([
+    //             //     User.findById(req.params.id),
+    //             //     Couch.findOne({ creator: req.params.id })
+    //             // ])
+    //             //     .then(([user, couch]) => {
+    //             //         const { name, city, country, profileImg } = user
+    //             //         let status = ""
 
-                //         if (couch) {
-                //             status = couch.status
-                //         }
+    //             //         if (couch) {
+    //             //             status = couch.status
+    //             //         }
 
-                //         res.status(200).json({ name, city, country, profileImg, status })
-                    })
-                    .catch(err => console.log(err))
-            })
+    //             //         res.status(200).json({ name, city, country, profileImg, status })
+    //                 })
+    //                 .catch(err => console.log(err))
+    //         })
 
 
         return (
             <article>
                 <Container maxWidth="lg">
-                    <main>
-                        <MainFeaturedPost post={mainFeaturedPost} />
-                        <Grid container spacing={3}>
-                            {featuredPosts.map((post) => (
-                                <FeaturedPost key={post.title} post={post} />
-                            ))}
-                            {/* <FeaturedPost /> */}
-                        </Grid>
-                    </main>
+                    <MainFeaturedPost post={mainFeaturedPost} />
+                    <Grid container spacing={3}>
+                        {featuredPosts.map((post) => (
+                            <FeaturedPost key={post.title} post={post} />
+                        ))}
+                        {/* <FeaturedPost /> */}
+                    </Grid>
                 </Container>
                 <Footer />
             </article>

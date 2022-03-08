@@ -14,9 +14,9 @@ import SendOutlinedIcon from '@mui/icons-material/SendOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { Link, useNavigate } from 'react-router-dom';
-import axios from 'axios';
 import { useState } from 'react';
 import Footer from '../Footer';
+import service from '../../api/service';
 
 function AddTrip(props) {
     const [city, setCity] = useState('');
@@ -71,7 +71,7 @@ function AddTrip(props) {
             content,
         };
 
-        axios.post('http://localhost:5005/trips', requestBody)
+        service.post('/trips', requestBody)
             .then(response => {
                 // redirect to login
                 navigate('/trips')

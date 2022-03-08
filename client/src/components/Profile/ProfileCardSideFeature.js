@@ -3,7 +3,7 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 // import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
-import { CardActionArea, CardActions, Avatar, Button } from '@mui/material';
+import { CardActionArea, CardActions, Button } from '@mui/material';
 import { Menu, MenuItem } from '@mui/material';
 import ChairOutlinedIcon from '@mui/icons-material/ChairOutlined';
 import EmailIcon from '@mui/icons-material/Email';
@@ -12,8 +12,9 @@ import GroupAddIcon from '@mui/icons-material/GroupAdd';
 import GradeIcon from '@mui/icons-material/Grade';
 import ReportProblemOutlinedIcon from '@mui/icons-material/ReportProblemOutlined';
 import { useState, useEffect } from 'react';
-import axios from 'axios';
 import { styled, alpha } from '@mui/material/styles';
+import service from '../../api/service';
+import CloudinaryAvatar from '../UI/CloudinaryAvatar';
 
 // https://codesandbox.io/s/tvkhzf?file=/demo.js:1909-2208
 const StyledMenu = styled((props) => (
@@ -57,12 +58,12 @@ const StyledMenu = styled((props) => (
     },
 }));
 
-
 export default function ProfileCardSideFeature(props) {
     const [name, setName] = useState(undefined)
     const [city, setCity] = useState(undefined)
     const [country, setCountry] = useState(undefined)
     const [status, setStatus] = useState(undefined);
+    const [profileImg, setProfileImg] = useState(undefined);
 
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = Boolean(anchorEl);
@@ -74,38 +75,34 @@ export default function ProfileCardSideFeature(props) {
     };
 
     useEffect(() => {
-        axios.get(`http://localhost:5005/profile/${props.userId}`)
-            .then(response => {
-                console.log(response)
-                setName(response.data.name)
-                setCity(response.data.city)
-                setCountry(response.data.country)
-                // setStatus(response.data.status)
+        service.get(`/profile/${props.userId}`)
+            .then(({ data: profile }) => {
+                setName(profile.name)
+                setCity(profile.city)
+                setCountry(profile.country)
+                // setStatus(profile.status)
                 setStatus(() => {
-                    if (response.data.status === 'availableToHost') {
+                    if (profile.status === 'availableToHost') {
                         return 'Available To Host'
                     }
-                    if (response.data.status === 'iAmBusy') {
+                    if (profile.status === 'iAmBusy') {
                         return 'I am Busy'
                     }
-                    if (response.data.status === 'mayBeAcceptingGuests') {
+                    if (profile.status === 'mayBeAcceptingGuests') {
                         return 'Maybe Accepting Guests'
                     }
                 })
-            }
-            )
+
+                setProfileImg(profile.profileImg);
+            })
             .catch(err => console.log(err))
     }, [props.userId])
 
     return (
         <>
-            <Card sx={{ maxWidth: 345, textAlign: 'center' }}>
+            <Card elevation={0} sx={{ maxWidth: 345, textAlign: 'center', marginTop: 8 }}>
                 <CardActionArea>
-                    <Avatar
-                        alt={name}
-                        // src="/static/images/avatar/1.jpg"
-                        sx={{ width: 150, height: 150, margin: "0 auto" }}
-                    />
+                    <CloudinaryAvatar alt={name} src={profileImg} width={150} height={150} />
                     <CardContent>
                         <Typography gutterBottom variant="h4" component="div">
                             {name}
@@ -118,11 +115,11 @@ export default function ProfileCardSideFeature(props) {
                         </Typography>
                     </CardContent>
                 </CardActionArea>
-                <CardActions>
+                <CardActions sx={{ margin: "0 auto"}}>
                     <Button
                         type="submit"
                         variant="contained"
-                        sx={{ mt: 3, mb: 2, py: 2 }}
+                        sx={{ mt: 2, mb: 1, py: 1}}
                         endIcon={<ChairOutlinedIcon
                         />}
                     >
@@ -131,7 +128,7 @@ export default function ProfileCardSideFeature(props) {
                     <Button
                         type="submit"
                         variant="contained"
-                        sx={{ mt: 3, mb: 2, py: 2 }}
+                        sx={{ mt: 2, mb: 1, py: 1 }}
                         onClick={handleClick}
                         aria-controls={open ? 'demo-customized-menu' : undefined}
                         aria-haspopup="true"

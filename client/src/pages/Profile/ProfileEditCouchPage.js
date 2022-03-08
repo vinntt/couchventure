@@ -3,11 +3,11 @@ import { useParams } from 'react-router-dom';
 import { Container, Grid } from '@mui/material';
 
 import ProfileCardSideFeature from '../../components/Profile/ProfileCardSideFeature';
-import ProfileDetail from '../../components/Profile/ProfileDetail';
 import ProfileTabs from '../../components/ProfileTabs';
-import TripCard from '../../components/Trips/TripCard';
+import EditCouch from '../../components/Couches/EditCouch';
+import Footer from '../../components/Footer.js'
 
-export default function ProfilePage() {
+export default function ProfileCouchPage() {
     const { userId } = useParams()
 
     return (
@@ -18,17 +18,15 @@ export default function ProfilePage() {
                         <ProfileCardSideFeature userId={userId} />
                     </Grid>
                     <Grid item xs={6} md={8}>
-                    <Grid item >
-                        <ProfileTabs userId={userId} />
-                    </Grid>
-                    <Grid item >
-                        {/* <TripCard /> */}
-                    </Grid>
-                    <Grid item >
-                        <ProfileDetail userId={userId} />
-                    </Grid>
+                        <Grid item >
+                            <ProfileTabs userId={userId} />
+                        </Grid>
+                        <Grid item >
+                            <EditCouch userId={userId} />
+                        </Grid>
                     </Grid>
                 </Grid>
+                <Footer />
             </Container>
         </>
     )

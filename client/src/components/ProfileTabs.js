@@ -1,40 +1,55 @@
 import React from 'react'
-import { Tabs, Tab } from '@mui/material'
-import { Link } from 'react-router-dom'
+import { Tabs, Tab, Box } from '@mui/material'
 
-export default function ProfileTabs() {
+function LinkTab(props) {
+    return (
+        <Tab component="a" {...props} />
+    );
+}
 
+export default function ProfileTabs(props) {
+    const tabs = [
+        {
+            href: `/profile/${props.userId}`,
+            text: "About me",
+        },
+        {
+            href: `/profile/${props.userId}/couch`,
+            text: "My Home",
+        },
+        {
+            href: `/profile/${props.userId}/friends`,
+            text: "Friends",
+        },
+        {
+            href: `/profile/${props.userId}/references`,
+            text: "References",
+        },
+    ];
+
+    let activeTab = tabs.findIndex(tab => tab.href === window.location.pathname);
+
+    if (activeTab < 0) {
+        activeTab = 0;
+    }
 
     return (
         <div>
             {/* https://mui.com/components/tabs/ */}
-            <Tabs
-                //   value={value}
-                //   onChange={handleChange}
-                variant="scrollable"
-                scrollButtons
-                allowScrollButtonsMobile
-                aria-label="scrollable force tabs example"
+            {/* https://mui.com/components/tooltips/ */}
+            <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+                <Tabs
+                    value={activeTab}
+                    variant="scrollable"
+                    scrollButtons
+                    allowScrollButtonsMobile
+                    aria-label="scrollable force tabs example"
                 >
-                <Link to='/'>
-                <Tab label="About Me" />
-                </Link>
-                <Link to='/'>
-                <Tab label="My Home" />
-                </Link>
-                <Link to='/'>
-                <Tab label="Photos" />
-                </Link>
-                <Link to='/'>
-                <Tab label="References" />
-                </Link>
-                <Link to='/'>
-                <Tab label="Friends" />
-                </Link>
-                <Link to='/'>
-                <Tab label="Favourites" />
-                </Link>
-            </Tabs>
+                    {tabs.map((tab, index) => (
+                        <LinkTab key={`profile-${props.userId}-${index}`} href={tab.href} label={tab.text} style={{ color: "orange", textDecoration: "none" }} />
+                    ))}
+                </Tabs>
+            </Box>
         </div>
     )
 }

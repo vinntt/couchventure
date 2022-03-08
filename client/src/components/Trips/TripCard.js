@@ -10,8 +10,8 @@ import AutoAwesomeOutlinedIcon from '@mui/icons-material/AutoAwesomeOutlined';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 import { useState, useEffect } from 'react';
-import axios from 'axios';
-
+import { Link } from 'react-router-dom';
+import service from '../../api/service';
 
 export default function TripCard(props) {
 	const [city, setCity] = useState(undefined)
@@ -23,7 +23,7 @@ export default function TripCard(props) {
 	const [duration, setDuration] = useState(undefined);
 
 	useEffect(() => {
-		axios.get(`http://localhost:5005/trips`)
+		service.get(`/trips`)
 			.then(response => {
 				// console.log(response)
 				setCity(response.data[0].city)
@@ -69,7 +69,7 @@ export default function TripCard(props) {
 				<Grid item xs={12}>
 					<Grid container direction="row" alignItems="center">
 						<Grid item>
-							<PushPinOutlinedIcon sx={{ mr : 1}} />
+							<PushPinOutlinedIcon sx={{ mr: 1 }} />
 						</Grid>
 						<Grid item>
 							{city}, {country}
@@ -77,7 +77,7 @@ export default function TripCard(props) {
 					</Grid>
 					<Grid container direction="row" alignItems="center">
 						<Grid item>
-							<PeopleAltOutlinedIcon sx={{ mr : 1}}/>
+							<PeopleAltOutlinedIcon sx={{ mr: 1 }} />
 						</Grid>
 						<Grid item>
 							{numberOfPeople} Travellers
@@ -85,7 +85,7 @@ export default function TripCard(props) {
 					</Grid>
 					<Grid container direction="row" alignItems="center">
 						<Grid item>
-							<AccessTimeOutlinedIcon sx={{ mr : 1}}/>
+							<AccessTimeOutlinedIcon sx={{ mr: 1 }} />
 						</Grid>
 						<Grid item>
 							duration
@@ -93,7 +93,7 @@ export default function TripCard(props) {
 					</Grid>
 					<Grid container direction="row" alignItems="center">
 						<Grid item>
-							<EventOutlinedIcon sx={{ mr : 1}}/>
+							<EventOutlinedIcon sx={{ mr: 1 }} />
 						</Grid>
 						<Grid item>
 							{startDate} - {endDate}
@@ -104,12 +104,16 @@ export default function TripCard(props) {
 					</Typography>
 				</Grid>
 				<Grid item xs={12} >
-					<Button type="submit" variant="contained" sx={{ mt: 3, mb: 2, py: 2 }} endIcon={<EditOutlinedIcon />}>
-						Edit
-					</Button>
-					<Button type="submit" variant="contained" sx={{ mt: 3, mb: 2, py: 2 }} endIcon={<DeleteOutlinedIcon />}>
-						Remove
-					</Button>
+					<Link>
+						<Button type="submit" variant="contained" sx={{ mt: 3, mb: 2, py: 2 }} endIcon={<EditOutlinedIcon />}>
+							Edit
+						</Button>
+					</Link>
+					<Link>
+						<Button type="submit" variant="contained" sx={{ mt: 3, mb: 2, py: 2 }} endIcon={<DeleteOutlinedIcon />}>
+							Remove
+						</Button>
+					</Link>
 				</Grid>
 			</Grid>
 		</>

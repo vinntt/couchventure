@@ -4,8 +4,6 @@ import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
-import { Tab } from '@mui/material';
-// import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import InputBase from '@mui/material/InputBase';
 import Badge from '@mui/material/Badge';
@@ -208,28 +206,23 @@ export default function Navbar() {
                     </Search>
                     <Box sx={{ flexGrow: 1 }} />
                     <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
-                        {/* <Button size="small" aria-label="#" color="inherit" variant="text">
-                            <Badge color="error">
-                                <DashboardOutlinedIcon />
-                            </Badge>
-                        </Button> */}
-                            <Link to='/' style={{ textDecoration: "none" }}>
-                        <IconButton size="small" style={{ color: "white", padding: "0", margin: "0" }}>
-                                <Tab icon={<DashboardOutlinedIcon />} label="Dashboard" style={{ fontSize: "12px" }}/>
-                        </IconButton>
-                            </Link>
-                            <Link to='/' style={{ textDecoration: "none" }}>
-                        <IconButton size="small" style={{ color: "white", padding: "0", margin: "0" }}>
-                                <Tab icon={<DateRangeOutlinedIcon />} label="Event" style={{ fontSize: "12px" }}/>
-                        </IconButton>
-                            </Link>
-                            <Link to='/' style={{ textDecoration: "none" }}>
-                        <IconButton size="small" aria-label="show 4 new mails" style={{ color: "white", padding: "0", margin: "0" }}>
-                                <Tab icon={<MailOutlinedIcon />} label={<Badge badgeContent={4} color="error">
-                                    Messages
-                                </Badge>} value="/messages" style={{ fontSize: "12px" }}/>
-                        </IconButton>
-                            </Link>
+                        <Link to='/' style={{ textDecoration: "none" }}>
+                            <IconButton size="small" style={{ color: "white", padding: "10px 8px" }}>
+                                <DashboardOutlinedIcon sx={{ fontSize: 24 }} />
+                            </IconButton>
+                        </Link>
+                        <Link to='/' style={{ textDecoration: "none" }}>
+                            <IconButton size="small" style={{ color: "white", padding: "10px 8px" }}>
+                                <DateRangeOutlinedIcon sx={{ fontSize: 24 }} />
+                            </IconButton>
+                        </Link>
+                        <Link to='/' style={{ textDecoration: "none" }}>
+                            <IconButton size="small" aria-label="show 4 new mails" style={{ color: "white", padding: "10px 8px" }}>
+                                <Badge badgeContent={4} color="error">
+                                <MailOutlinedIcon sx={{ fontSize: 24 }} />
+                                </Badge>
+                            </IconButton>
+                        </Link>
 
                         <Link to='/profile/me' style={{ textDecoration: "none" }}>
                             <IconButton
@@ -237,9 +230,10 @@ export default function Navbar() {
                                 // aria-controls={menuId}
                                 // aria-haspopup="true"
                                 // onClick={handleSettingsMenuOpen}
-                                style={{ color: "white", padding: "0", margin: "0" }}
+                                // style={{ color: "white", padding: "0", margin: "0" }}
+                                style={{ color: "white", padding: "10px 8px" }}
                             >
-                                <Tab icon={<AccountCircle />} label="Profile" style={{ fontSize: "12px" }} />
+                                <AccountCircle sx={{ fontSize: 24 }} />
                             </IconButton>
                         </Link>
                         <Link to='/' style={{ textDecoration: "none" }} >
@@ -248,9 +242,9 @@ export default function Navbar() {
                                 aria-controls={menuId}
                                 aria-haspopup="true"
                                 onClick={handleSettingsMenuOpen}
-                                style={{ color: "white", padding: "0", margin: "0" }}
+                                style={{ color: "white", padding: "10px 8px" }}
                             >
-                                <Tab icon={<SettingsIcon />} label="Setting" style={{ fontSize: "12px" }}/>
+                                <SettingsIcon sx={{ fontSize: 24 }} />
                             </IconButton>
                         </Link>
                     </Box>

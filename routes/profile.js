@@ -1,7 +1,8 @@
 const router = require("express").Router();
 const User = require('../models/User')
 const Couch = require('../models/Couch')
-const Trip = require('../models/Trip')
+const Trip = require('../models/Trip');
+const { cloudinaryUploader } = require("../middleware/cloudinary");
 
 // Get a user profile
 router.get('/:id', (req, res, next) => {
@@ -14,20 +15,44 @@ router.get('/:id', (req, res, next) => {
             Couch.findOne({ creator: req.params.id })
         ])
         .then(([user, couch]) => {
-            const { name, city, country, profileImg } = user
+            const {
+                name,
+                email,
+                city,
+                country,
+                age,
+                gender,
+                language,
+                visitedCountries,
+                introduction,
+                interestedTopics,
+                profileImg
+            } = user
             let status = ""
 
             if (couch) {
                 status = couch.status
             }
 
-            res.status(200).json({ name, city, country, profileImg, status })
+            res.status(200).json({
+                name,
+                email,
+                city,
+                country,
+                age,
+                gender,
+                language,
+                visitedCountries,
+                introduction,
+                interestedTopics,
+                profileImg
+            })
         })
-        .catch(err => next(err))
+        .catch(err => next(err));
 })
 
 // Update the user's profile.
-router.put('/', (req, res, next) => {
+router.put('/', cloudinaryUploader("profileImg", "couchventure/profiles"), (req, res, next) => {
     const {
         name,
         city,
@@ -41,7 +66,24 @@ router.put('/', (req, res, next) => {
         profileImg
     } = req.body
 
-    Couch.findByIdAndUpdate(req.user._id, {
+    console.log(profileImg);
+
+    if (!name) {
+        res.status(400).json({ message: "Name is missing" })
+        return
+    }
+
+    if (!city) {
+        res.status(400).json({ message: "City is missing" })
+        return
+    }
+
+    if (!country) {
+        res.status(400).json({ message: "Country is missing" })
+        return
+    }
+
+    User.findByIdAndUpdate(req.user._id, {
             name,
             city,
             country,

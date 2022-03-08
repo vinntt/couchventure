@@ -5,11 +5,11 @@ import { CssBaseline } from '@mui/material';
 import { MenuItem, Container, Avatar, Typography } from '@mui/material';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { Link, useNavigate } from 'react-router-dom';
-import axios from 'axios';
 import { useState } from 'react';
 import Footer from '../../components/Footer';
+import service from '../../api/service';
 
-function SignUp(props) {
+function SignUp() {
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -51,8 +51,10 @@ function SignUp(props) {
 
     const handleSubmit = (event) => {
         event.preventDefault();
+
         const requestBody = { email, password, name, city, country }
-        axios.post('http://localhost:5005/auth/signup', requestBody)
+
+        service.post('/auth/signup', requestBody)
             .then(response => {
                 // redirect to login
                 navigate('/login')
@@ -60,15 +62,13 @@ function SignUp(props) {
             .catch(err => {
                 const errorDescription = err.response.data.message
                 setErrorMessage(errorDescription)
-            })
-        // reset the form
-        setName('')
-        setEmail('')
-        setPassword('')
-        setCountry('')
-        setCity('')
-        // refresh the input field
-        props.refreshProjects()
+            });
+
+        setName('');
+        setEmail('');
+        setPassword('');
+        setCountry('');
+        setCity('');
     };
 
     const handleEmail = e => setEmail(e.target.value)
@@ -89,8 +89,8 @@ function SignUp(props) {
                     alignItems: 'center',
                 }}
             >
-                <Avatar sx={{ m: 1, bgcolor: 'secondary.main', width: 50, height: 50  }}>
-                    <LockOutlinedIcon sx={{ fontSize: 32}} />
+                <Avatar sx={{ m: 1, bgcolor: 'secondary.main', width: 50, height: 50 }}>
+                    <LockOutlinedIcon sx={{ fontSize: 32 }} />
                 </Avatar>
                 <Typography component="h1" variant="h5">
                     Sign up
@@ -173,12 +173,12 @@ function SignUp(props) {
                         </Grid>
                         <Grid item xs={12}>
                             <FormControlLabel
-                                control={<Checkbox value="allowExtraEmails" color="primary" required/>}
+                                control={<Checkbox value="allowExtraEmails" color="primary" required />}
                                 label="I want be a part of the Couchventure community"
                             />
                         </Grid>
                     </Grid>
-                    <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2, py: 2}}>
+                    <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2, py: 2 }}>
                         Sign Up
                     </Button>
 
@@ -193,7 +193,7 @@ function SignUp(props) {
                     </Grid>
                 </Box>
             </Box>
-            <Footer/>
+            <Footer />
         </Container>
     );
 }

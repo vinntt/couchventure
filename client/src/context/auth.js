@@ -1,22 +1,7 @@
-// useContext() hook.
-
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+import service from "../api/service";
 
-const API_URL = "http://localhost:5005";
 const AuthContext = React.createContext();
-
-axios.interceptors.request.use(
-    request => {
-        const storedToken = localStorage.getItem('authToken')
-
-        if (storedToken) {
-            request.headers.Authorization = `Bearer ${storedToken}`
-        }
-
-        return request
-    }
-);
 
 function AuthProviderWrapper(props) {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -42,7 +27,7 @@ function AuthProviderWrapper(props) {
 
         if (storedToken) {
             // Change: by adding this return we now return a promise
-            return axios.get('http://localhost:5005/auth/verify ', { headers: { Authorization: `Bearer ${storedToken}` } })
+            return service.get('/auth/verify')
                 .then(response => {
                     const user = response.data
                     setUser(user)
