@@ -39,27 +39,27 @@ export default function TripDetail(props) {
                         <Grid direction='row' xs={2} sx={{ textAlign: "right" }}>
                             <Link href={`/profile/me/trips/${trip.id}/edit`}>
                                 <IconButton size='small' aria-label='edit' component='span'>
-                                    <EditIcon />
+                                    <EditIcon fontSize='12' />
                                 </IconButton>
                             </Link>
                             <IconButton onClick={deleteTrip} size='small' aria-label='edit' component='span'>
-                                <DeleteIcon />
+                                <DeleteIcon fontSize='12' />
                             </IconButton>
                         </Grid>
                     )}
                 </Grid>
                 <Grid container direction='row' alignItems='center' sx={{ mb: 1 }}>
-                    <PeopleAltOutlinedIcon sx={{ mr: 1 }} color='disabled' />
+                    <PeopleAltOutlinedIcon sx={{ mr: 1 }} color='disabled' fontSize='small' />
                     <Typography align='justify' color='text.secondary'>
                         {trip.numberOfPeople} Travellers
                     </Typography>
                 </Grid>
                 <Grid container direction='row' alignItems='center' sx={{ mb: 1 }}>
-                    <EventOutlinedIcon sx={{ mr: 1 }} color='disabled' />
+                    <EventOutlinedIcon sx={{ mr: 1 }} color='disabled' fontSize='small' />
                     <Typography align='justify' color='text.secondary'>
                         {startDate}
                     </Typography>
-                    <ArrowForwardIcon />
+                    <ArrowForwardIcon fontSize='12' />
                     <Typography align='justify' color='text.secondary'>
                         {endDate}
                     </Typography>

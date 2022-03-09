@@ -355,7 +355,7 @@ export default function CouchForm() {
                         </Grid> */}
 
                         <Grid item xs={12} sm={6}>
-                            <Button href='/profile/me/couch' type='submit' fullWidth variant='contained' sx={{ mt: 3, mb: 1, py: 1 }} startIcon={<BackspaceIcon />}>
+                            <Button href='/profile/me/couch' type='submit' fullWidth variant='outlined' sx={{ mt: 3, mb: 1, py: 1 }} startIcon={<BackspaceIcon />}>
                                 Cancel
                             </Button>
                         </Grid>
