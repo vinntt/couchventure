@@ -24,7 +24,6 @@ export default function TripDetail(props) {
 
     return (
         <>
-            <Divider textAlign='left'></Divider>
             <Container maxWidth='md' disableGutters sx={{ mt: 3, mb: 3 }}>
                 <Grid container direction='row' alignItems='center' sx={{ mb: 1 }}>
                     <Grid direction='row' xs={10}>

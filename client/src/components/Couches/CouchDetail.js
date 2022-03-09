@@ -37,15 +37,18 @@ export default function CouchDetail(props) {
     const handleOpenModal = (img) => setModalImage(img);
     const handleCloseModal = () => setModalImage(undefined);
 
-    const editButton = props.userId === "me" ? (
-        <Grid direction='row' xs={2} sx={{ textAlign: "right" }}>
-            <Link href={`/profile/me/couch/edit`}>
-                <IconButton size='small' aria-label='edit' component='span'>
-                    <EditIcon fontSize="12" />
-                </IconButton>
-            </Link>
-        </Grid>
-    ) : '';
+    const editButton =
+        props.userId === "me" ? (
+            <Grid direction='row' xs={2} sx={{ textAlign: "right" }}>
+                <Link href={`/profile/me/couch/edit`}>
+                    <IconButton size='small' aria-label='edit' component='span'>
+                        <EditIcon fontSize='12' />
+                    </IconButton>
+                </Link>
+            </Grid>
+        ) : (
+            ""
+        );
 
     useEffect(() => {
         service
@@ -90,7 +93,7 @@ export default function CouchDetail(props) {
         <>
             {couch && (
                 <Container maxWidth='md' disableGutters>
-                    <Accordion expanded>
+                    <Accordion expanded disableGutters>
                         <AccordionSummary sx={{ margin: 0 }}>
                             <Grid container direction='row' alignItems='center'>
                                 <Typography
@@ -103,41 +106,42 @@ export default function CouchDetail(props) {
                             </Grid>
                             {editButton}
                         </AccordionSummary>
-                        <AccordionDetails>
-                            <Divider textAlign='left'></Divider>
-                            <br />
+                        <Divider textAlign='left'></Divider>
+                        <AccordionDetails sx={{ mt: 2 }}>
                             <Grid container direction='row' alignItems='center' sx={{ mb: 1 }}>
-                                <EmojiPeopleOutlinedIcon sx={{ mr: 1 }} color='disabled' fontSize="small" />
+                                <EmojiPeopleOutlinedIcon sx={{ mr: 1 }} color='disabled' fontSize='small' />
                                 <Typography align='justify' color='text.secondary'>
                                     <b>Max Number of Guests:</b> {couch.numberOfPeople}
                                 </Typography>
                             </Grid>
                             <Grid container direction='row' alignItems='center' sx={{ mb: 1 }}>
-                                <ChildCareOutlinedIcon sx={{ mr: 1 }} color='disabled' fontSize="small" />
+                                <ChildCareOutlinedIcon sx={{ mr: 1 }} color='disabled' fontSize='small' />
                                 <Typography align='justify' color='text.secondary'>
                                     <b>Kid Friendly:</b> {couch.allowChildren ? "Yes" : "No"}
                                 </Typography>
                             </Grid>
                             <Grid container direction='row' alignItems='center' sx={{ mb: 1 }}>
-                                <PetsOutlinedIcon sx={{ mr: 1 }} color='disabled' fontSize="small" />
+                                <PetsOutlinedIcon sx={{ mr: 1 }} color='disabled' fontSize='small' />
                                 <Typography align='justify' color='text.secondary'>
                                     <b>Pet Friendly:</b> {couch.allowPets ? "Yes" : "No"}
                                 </Typography>
                             </Grid>
                             <Grid container direction='row' alignItems='center' sx={{ mb: 1 }}>
-                                <SmokingRoomsOutlinedIcon sx={{ mr: 1 }} color='disabled' fontSize="small" />
+                                <SmokingRoomsOutlinedIcon sx={{ mr: 1 }} color='disabled' fontSize='small' />
                                 <Typography align='justify' color='text.secondary'>
                                     <b>Smoking Allowed:</b> {couch.allowSmoking ? "Yes" : "No"}
                                 </Typography>
                             </Grid>
                             <Grid container direction='row' alignItems='center' sx={{ mb: 1 }}>
-                                <AccessibleOutlinedIcon sx={{ mr: 1 }} color='disabled' fontSize="small" />
+                                <AccessibleOutlinedIcon sx={{ mr: 1 }} color='disabled' fontSize='small' />
                                 <Typography align='justify' color='text.secondary'>
                                     <b>Wheelchair Accessible:</b> {couch.allowWheelchair ? "Yes" : "No"}
                                 </Typography>
                             </Grid>
                         </AccordionDetails>
-                        <AccordionSummary sx={{ margin: 0 }} content={{ margin: 0 }}>
+                    </Accordion>
+                    <Accordion expanded disableGutters>
+                        <AccordionSummary sx={{ margin: 0 }}>
                             <Grid container direction='row' alignItems='center'>
                                 <Typography
                                     variant='h6'
@@ -148,17 +152,18 @@ export default function CouchDetail(props) {
                             </Grid>
                             {editButton}
                         </AccordionSummary>
-                        <AccordionDetails>
-                            <Divider textAlign='left'></Divider>
-                            <br />
+                        <Divider textAlign='left'></Divider>
+                        <AccordionDetails sx={{ mt: 2 }}>
                             <Grid container direction='row' alignItems='center'>
-                                <BedroomChildOutlinedIcon sx={{ mr: 1 }} color='disabled' fontSize="small" />
+                                <BedroomChildOutlinedIcon sx={{ mr: 1 }} color='disabled' fontSize='small' />
                                 <Typography align='justify' color='text.secondary'>
                                     {couch.arrangement}
                                 </Typography>
                             </Grid>
                         </AccordionDetails>
-                        <AccordionSummary sx={{ margin: 0 }} content={{ margin: 0 }}>
+                    </Accordion>
+                    <Accordion expanded disableGutters>
+                        <AccordionSummary sx={{ margin: 0 }}>
                             <Grid container direction='row' alignItems='center'>
                                 <Typography
                                     variant='h6'
@@ -169,11 +174,10 @@ export default function CouchDetail(props) {
                             </Grid>
                             {editButton}
                         </AccordionSummary>
-                        <AccordionDetails>
-                            <Divider textAlign='left'></Divider>
-                            <br />
+                        <Divider textAlign='left'></Divider>
+                        <AccordionDetails sx={{ mt: 2 }}>
                             <Grid container direction='row' alignItems='center'>
-                                <LocationCityOutlinedIcon sx={{ mr: 1 }} color='disabled' fontSize="small" />
+                                <LocationCityOutlinedIcon sx={{ mr: 1 }} color='disabled' fontSize='small' />
                                 <Typography align='justify' color='text.secondary'>
                                     <b>Distance to the city center:</b> {couch.distanceCityCenter}km
                                 </Typography>
@@ -184,7 +188,9 @@ export default function CouchDetail(props) {
                                 </Typography>
                             </Grid>
                         </AccordionDetails>
-                        <AccordionSummary sx={{ margin: 0 }} content={{ margin: 0 }}>
+                    </Accordion>
+                    <Accordion expanded disableGutters>
+                        <AccordionSummary sx={{ margin: 0 }}>
                             <Grid container direction='row' alignItems='center'>
                                 <Typography
                                     variant='h6'
@@ -195,9 +201,8 @@ export default function CouchDetail(props) {
                             </Grid>
                             {editButton}
                         </AccordionSummary>
-                        <AccordionDetails>
-                            <Divider textAlign='left'></Divider>
-                            <br />
+                        <Divider textAlign='left'></Divider>
+                        <AccordionDetails sx={{ mt: 2 }}>
                             <ImageList sx={{ width: "100%" }} cols={4}>
                                 {couch.couchImg.map((img, idx) => (
                                     <ImageListItem key={`couch-image-${idx}`} onClick={() => handleOpenModal(img)} sx={{ cursor: "pointer" }}>

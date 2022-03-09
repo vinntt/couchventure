@@ -84,7 +84,7 @@ export default function TripCard(props) {
         <>
             <Container maxWidth='md' disableGutters sx={{ mb: 2, mt: 2 }}>
                 {/* https://codesandbox.io/s/lioc4z?file=/demo.js:924-1359 */}
-                <Accordion expanded>
+                <Accordion expanded disableGutters>
                     <AccordionSummary sx={{ margin: 0 }} content={{ margin: 0 }}>
                         <Grid container direction='row' alignItems='center'>
                             <LuggageIcon sx={{ mr: 1 }} />
@@ -98,18 +98,22 @@ export default function TripCard(props) {
                             </Button>
                         )}
                     </AccordionSummary>
+                    <Divider textAlign='left'></Divider>
                     <AccordionDetails>
                         {trips.length === 0 ? (
-                            <Grid container direction='row'>
-                                <Divider textAlign='left'></Divider>
-                                <br />
+                            <Grid container direction='row' sx={{ mt: 2 }}>
                                 <Typography align='justify' color='text.secondary' sx={{ fontStyle: "italic" }}>
                                     <FormatQuoteIcon />
                                     Let make your trip great with a new adventure, have a thousand of memory, meet new friends, and stay with local hosts.
                                 </Typography>
                             </Grid>
                         ) : (
-                            trips.map((trip, idx) => <TripDetail userId={props.userId} trip={trip} onDelete={() => deleteTrip(idx)} />)
+                            trips.map((trip, idx) => (
+                                <>
+                                    {idx > 0 && <Divider textAlign='left'></Divider>}
+                                    <TripDetail userId={props.userId} trip={trip} onDelete={() => deleteTrip(idx)} />
+                                </>
+                            ))
                         )}
                     </AccordionDetails>
                 </Accordion>

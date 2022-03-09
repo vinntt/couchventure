@@ -56,7 +56,7 @@ export default function ProfileDetail(props) {
                 // https://blog.theashishmaurya.me/how-to-create-a-tag-input-feature-in-reactjs-and-material-ui
                 <Container maxWidth='md' disableGutters>
                     {/* https://codesandbox.io/s/lioc4z?file=/demo.js:924-1359 */}
-                    <Accordion expanded>
+                    <Accordion expanded disableGutters>
                         <AccordionSummary sx={{ margin: 0 }} content={{ margin: 0 }}>
                             <Grid container direction='row' alignItems='center'>
                                 <Typography
@@ -75,9 +75,8 @@ export default function ProfileDetail(props) {
                                 </Link>
                             )}
                         </AccordionSummary>
-                        <AccordionDetails>
-                            <Divider textAlign='left'></Divider>
-                            <br />
+                        <Divider textAlign='left'></Divider>
+                        <AccordionDetails sx={{ mt: 2 }}>
                             <Grid container direction='row' alignItems='center' sx={{ mb: 1 }}>
                                 <AccessibilityNewIcon sx={{ mr: 1 }} color='disabled' fontSize='small' />
                                 <Typography align='justify' color='text.secondary'>
