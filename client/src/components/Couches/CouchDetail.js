@@ -66,7 +66,7 @@ export default function CouchDetail(props) {
         if (isOwnCouch) {
             return (
                 <>
-                    <Container maxWidth='lg' disableGutters>
+                    <Container maxWidth='md' disableGutters>
                         <Grid item xs={12}>
                             <Typography align='justify' color='text.secondary' sx={{ fontStyle: "italic" }} variant='h6'>
                                 <FormatQuoteIcon />

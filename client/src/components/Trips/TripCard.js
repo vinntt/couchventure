@@ -82,8 +82,7 @@ export default function TripCard(props) {
 
     return (
         <>
-            <Container maxWidth='md' disableGutters>
-                <br />
+            <Container maxWidth='md' disableGutters sx={{ mb: 2, mt: 2 }}>
                 {/* https://codesandbox.io/s/lioc4z?file=/demo.js:924-1359 */}
                 <Accordion expanded>
                     <AccordionSummary sx={{ margin: 0 }} content={{ margin: 0 }}>
