@@ -4,7 +4,9 @@
     "private": true,
     "scripts": {
         "start": "node server.js",
-        "dev": "nodemon server.js --ignore ./client"
+        "dev": "nodemon server.js --ignore ./client",
+        "devServer": "nodemon server.js --ignore ./client",
+        "devClient": "cd ./client && npm start"
     },
     "dependencies": {
         "bcryptjs": "^2.4.3",
