@@ -197,7 +197,7 @@ export default function TripForm(props) {
                                     pattern: "[0-9]*",
                                     inputProps: { min: 0 },
                                 }}
-                                helperText='Maximum Accommocdate'
+                                helperText='Maximum Accommodate'
                             />
                         </Grid>
                         <Grid item xs={12}>
