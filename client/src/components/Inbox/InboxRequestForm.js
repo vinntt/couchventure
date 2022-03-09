@@ -1,4 +1,7 @@
+import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import SendIcon from "@mui/icons-material/Send";
+import EventOutlinedIcon from "@mui/icons-material/EventOutlined";
+import PeopleAltOutlinedIcon from "@mui/icons-material/PeopleAltOutlined";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import DateRangePicker from "@mui/lab/DateRangePicker";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
@@ -14,15 +17,22 @@ import { Fragment, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import service from "../../api/service";
 
+const SEND_REQUEST_PANEL_TITLE = "Request to stay with this host";
+const RECEIVE_REQUEST_PANEL_TITLE = "You received a request";
+
 export default function InboxRequestForm(props) {
     const recipientId = props.recipientId;
+    const onCancel = props.onCancel || (() => {});
+    const onRequest = props.onRequest || (() => {});
+
     const [request, setRequest] = useState(undefined);
     const [startDate, setStartDate] = useState(null);
     const [endDate, setEndDate] = useState(null);
     const [numberOfPeople, setNumberOfPeople] = useState("");
     const [content, setContent] = useState("");
-
-    const navigate = useNavigate();
+    const [panelTitle, setPanelTitle] = useState(SEND_REQUEST_PANEL_TITLE);
+    const [cancelActionText, setCancelActionText] = useState("");
+    const [cancelReason, setCancelReason] = useState("REQUEST_CANCEL");
 
     const handleOfferOrRequestSubmit = (event) => {
         event.preventDefault();
@@ -34,12 +44,63 @@ export default function InboxRequestForm(props) {
             content,
         };
 
-        service.post(`/inbox/${recipientId}/request`, requestBody)
+        service
+            .post(`/inbox/${recipientId}/request`, requestBody)
             .then(() => {
-                navigate("/profile/me");
+                setStartDate(null);
+                setEndDate(null);
+                setNumberOfPeople("");
+                setContent("");
+                getRequest();
+                onRequest();
             })
             .catch((err) => {
                 setErrorMessage(err.response.data.message);
+            });
+    };
+
+    const cancelRequest = () => {
+        service
+            .delete(`/inbox/${recipientId}/request`, { data: { reason: cancelReason } })
+            .then(onCancel)
+            .catch((err) => {
+                setErrorMessage(err.response.data.message);
+            });
+    };
+
+    const getRequest = () => {
+        service
+            .get(`/inbox/${recipientId}/request`)
+            .then(({ data: request }) => {
+                setRequest(request);
+
+                if (request.creator === recipientId) {
+                    // Offer
+                    setPanelTitle(RECEIVE_REQUEST_PANEL_TITLE);
+                    setCancelReason("REQUEST_DECLINE");
+                    setCancelActionText("Decline");
+                } else {
+                    if (request.host === recipientId) {
+                        setPanelTitle(SEND_REQUEST_PANEL_TITLE);
+                        setCancelReason("REQUEST_CANCEL");
+                        setCancelActionText("Cancel");
+                    } else {
+                        setPanelTitle(RECEIVE_REQUEST_PANEL_TITLE);
+                        setCancelReason("REQUEST_CANCEL");
+                        setCancelActionText("Decline");
+                    }
+                }
+            })
+            .catch((err) => {
+                if (!err.response || err.response.status !== 404) {
+                    setErrorMessage(err.response.data.message);
+                    return;
+                }
+
+                setPanelTitle(SEND_REQUEST_PANEL_TITLE);
+                setCancelReason("REQUEST_CANCEL");
+                setCancelActionText("Cancel");
+                setRequest(false);
             });
     };
 
@@ -52,24 +113,7 @@ export default function InboxRequestForm(props) {
         setEndDate(stayDuration[1]);
     };
 
-    useEffect(() => {
-        service
-            .get(`/profile/${recipientId}/request`)
-            .then(({ data: trip }) => {
-                setStartDate(trip.startDate);
-                setEndDate(trip.endDate);
-                setNumberOfPeople(trip.numberOfPeople);
-                setContent(trip.content);
-            })
-            .catch((err) => {
-                if (!err.response || err.response.status !== 404) {
-                    setErrorMessage(err.response.data.message);
-                    return
-                }
-
-                setRequest(false);
-            });
-    }, [recipientId]);
+    useEffect(getRequest, [recipientId, props.timestamp]);
 
     if (typeof request === "undefined") {
         return <></>;
@@ -85,14 +129,46 @@ export default function InboxRequestForm(props) {
                             // gutterBottom
                             // sx={{ marginTop: "10px", marginLeft: "0", padding: "0" }}
                         >
-                            Request to stay with this host
+                            {panelTitle}
                         </Typography>
                     </Grid>
+                    {request !== false && (
+                        <Grid item xs={2} sx={{ textAlign: "right" }}>
+                            <Button color='error' onClick={cancelRequest}>
+                                {cancelActionText}
+                            </Button>
+                        </Grid>
+                    )}
                 </AccordionSummary>
                 <Divider textAlign='left'></Divider>
                 <AccordionDetails sx={{ mt: 2 }}>
                     {request !== false ? (
-                        <>Hehe</>
+                        <Box>
+                            {errorMessage && (
+                                <Grid item xs={12}>
+                                    <Alert severity='error'>{errorMessage}</Alert>
+                                </Grid>
+                            )}
+                            <Grid container direction='row' alignItems='center' sx={{ mb: 1 }}>
+                                <PeopleAltOutlinedIcon sx={{ mr: 1 }} color='disabled' fontSize='small' />
+                                <Typography align='justify' color='text.secondary'>
+                                    {request.numberOfPeople} Travellers
+                                </Typography>
+                            </Grid>
+                            <Grid container direction='row' alignItems='center' sx={{ mb: 1 }}>
+                                <EventOutlinedIcon sx={{ mr: 1 }} color='disabled' fontSize='small' />
+                                <Typography align='justify' color='text.secondary'>
+                                    {moment(request.startDate).format("YYYY-MM-DD")}
+                                </Typography>
+                                <ArrowForwardIcon fontSize='12' />
+                                <Typography align='justify' color='text.secondary'>
+                                    {moment(request.endDate).format("YYYY-MM-DD")}
+                                </Typography>
+                            </Grid>
+                            <Typography align='justify' color='text.secondary' paragraph>
+                                {request.content}
+                            </Typography>
+                        </Box>
                     ) : (
                         <Box component='form' onSubmit={handleOfferOrRequestSubmit}>
                             <Grid container spacing={2}>

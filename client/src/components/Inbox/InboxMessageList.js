@@ -44,7 +44,7 @@ export default function InboxMessageList(props) {
 
     const handleMessageContent = (e) => setMessageContent(e.target.value);
 
-    useEffect(() => getMessages(), [props.recipientId]);
+    useEffect(() => getMessages(), [props.recipientId, props.timestamp]);
 
     return (
         <Container maxWidth='lg' disableGutters sx={{ mt: 2 }}>
@@ -57,7 +57,7 @@ export default function InboxMessageList(props) {
                             </Grid>
                         )}
                         <Grid item xs={12}>
-                            <TextField id='content' required fullWidth multiline rows={3} variant='outlined' label='Message' value={messageContent} onChange={handleMessageContent} sx={{backgroundColor: '#fff'}} />
+                            <TextField id='content' required fullWidth multiline rows={3} variant='outlined' label='Message' value={messageContent} onChange={handleMessageContent} sx={{ backgroundColor: "#fff" }} />
                         </Grid>
 
                         <Grid item xs={12}>
@@ -84,16 +84,17 @@ export default function InboxMessageList(props) {
                                     <Box sx={{ maxWidth: "45%", mb: 3 }}>
                                         <ListItemText
                                             primary={
-                                                <Typography component='span' variant='body2'>
-                                                    <strong>{title}</strong>
-                                                </Typography>
+                                                title && (
+                                                    <Typography component='span' variant='body2'>
+                                                        <strong>{title}</strong>
+                                                        <br />
+                                                    </Typography>
+                                                )
                                             }
                                             secondary={
-                                                <Box>
-                                                    <Typography component='span' variant='body2'>
-                                                        {content}
-                                                    </Typography>
-                                                </Box>
+                                                <Typography component='span' variant='body2'>
+                                                    {content}
+                                                </Typography>
                                             }
                                             sx={{ backgroundColor: ownMessage ? "#b3e5fc" : "#f5f5f5", m: 0, pt: 1, pb: 1, pl: 2, pr: 2, borderRadius: 5 }}
                                         />

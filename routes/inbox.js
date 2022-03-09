@@ -64,8 +64,6 @@ router.post(`/:id`, (req, res, next) => {
     const recipient = req.params.id;
     const { content } = req.body;
 
-    console.log(sender, recipient, content);
-
     if (!content || content.trim() === "") {
         res.status(400).json({ message: "Missing message content" });
     }
@@ -86,7 +84,14 @@ router.get(`/:id/request`, (req, res, next) => {
     const user = req.user._id;
     const host = req.params.id;
 
-    CouchRequest.findOne({ creator: user, host })
+    console.log();
+
+    CouchRequest.findOne({
+        $or: [
+            { creator: user, host },
+            { host: user, creator: host },
+        ],
+    })
         .then((request) => {
             if (!request) {
                 res.status(404).json({ message: "No request" });
@@ -101,12 +106,55 @@ router.get(`/:id/request`, (req, res, next) => {
                 host,
                 startDate,
                 endDate,
-                country,
-                city,
                 numberOfPeople,
                 content,
             });
         })
+        .catch((err) => next(err));
+});
+
+router.delete(`/:id/request`, (req, res, next) => {
+    const user = req.user._id;
+    const host = req.params.id;
+
+    if (host == "me" || host == user) {
+        res.status(400).json({ message: "Could not cancel yourself" });
+        return;
+    }
+
+    const { reason } = req.body;
+
+    CouchRequest.findOneAndDelete({
+        $or: [
+            { creator: user, host },
+            { host: user, creator: host },
+        ],
+    })
+        .then((request) => {
+            if (!request) {
+                res.status(404).json({ message: "No request to delete" });
+                return;
+            }
+
+            if (reason === "REQUEST_DECLINE") {
+                return Message.create({
+                    sender: user,
+                    recipient: host,
+                    title: `Request Declined`,
+                    content: `The request has been declined`,
+                    status: "UNREAD",
+                });
+            }
+
+            return Message.create({
+                sender: user,
+                recipient: host,
+                title: `Request Canceled`,
+                content: `The trip has been canceled`,
+                status: "UNREAD",
+            });
+        })
+        .then(() => res.status(204).json())
         .catch((err) => next(err));
 });
 
@@ -162,6 +210,7 @@ router.post(`/:id/request`, (req, res, next) => {
                 status: "UNREAD",
             });
         })
+        .then(() => res.status(204).json())
         .catch((err) => next(err));
 });
 
