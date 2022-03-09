@@ -19,7 +19,7 @@ import Container from '@mui/material/Container';
 export default function Footer() {
 
   return (
-    <Box component="footer" sx={{ bgcolor: 'background.paper', py: 6 }}>
+    <Box component="footer" sx={{ bgcolor: 'background.paper', py: 6, mt: 15 }}>
       <Container maxWidth="lg">
         <Typography variant="body2" color="text.secondary" align="center">
           {'Copyright © '}
