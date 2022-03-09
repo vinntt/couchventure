@@ -33,6 +33,9 @@ app.use("/trips", isAuthenticated, tripRouter);
 const couchRouter = require("./routes/couch");
 app.use("/couches", isAuthenticated, couchRouter);
 
+const inboxRouter = require("./routes/inbox");
+app.use("/inbox", isAuthenticated, inboxRouter);
+
 // const userRouter = require("./routes/")
 
 // ❗ To handle errors. Routes that don't exist or errors that you handle in specific routes
