@@ -5,20 +5,20 @@ import EventOutlinedIcon from "@mui/icons-material/EventOutlined";
 import PeopleAltOutlinedIcon from "@mui/icons-material/PeopleAltOutlined";
 import { Container, Divider, Grid, IconButton, Link } from "@mui/material";
 import Typography from "@mui/material/Typography";
-import service from "../../api/service";
 import moment from "moment";
-import { useReducer } from "react";
+import service from "../../api/service";
 
 export default function TripDetail(props) {
     const trip = props.trip;
     const startDate = moment(trip.startDate).format("DD-MM-YYYY");
     const endDate = moment(trip.endDate).format("DD-MM-YYYY");
-    const [, forceUpdate] = useReducer((x) => x + 1, 0);
+
+    const onDelete = props.onDelete || (() => {});
 
     const deleteTrip = () => {
         service
             .delete(`/trips/${trip.id}`)
-            .then(() => forceUpdate())
+            .then(() => onDelete(trip))
             .catch((err) => alert(err));
     };
 

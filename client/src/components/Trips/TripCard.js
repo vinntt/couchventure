@@ -12,21 +12,17 @@ import moment from "moment";
 import * as React from "react";
 import { useEffect, useState } from "react";
 import service from "../../api/service";
+import TripDetail from "./TripDetail";
 
 export default function TripCard(props) {
     const [trips, setTrips] = useState([]);
     const [, forceUpdate] = React.useReducer((x) => x + 1, 0);
 
-    const deleteTrip = (idx, tripId) => {
-        service
-            .delete(`/trips/${tripId}`)
-            .then(() => {
-                trips.splice(idx, 1);
+    const deleteTrip = (idx) => {
+        trips.splice(idx, 1);
 
-                setTrips(trips);
-                forceUpdate();
-            })
-            .catch((err) => alert(err));
+        setTrips(trips);
+        forceUpdate();
     };
 
     useEffect(() => {
@@ -114,74 +110,8 @@ export default function TripCard(props) {
                                 </Typography>
                             </Grid>
                         ) : (
-                            trips.map((trip, idx) => (
-                                <>
-                                    <Divider textAlign='left'></Divider>
-                                    <Container maxWidth='md' disableGutters sx={{ mt: 3, mb: 3 }}>
-                                        <Grid container direction='row' alignItems='center' sx={{ mb: 1 }}>
-                                            <Grid direction='row' xs={10}>
-                                                <Typography align='justify' color='text.secondary'>
-                                                    <span>Visiting:</span>&nbsp;
-                                                    <strong>
-                                                        {trip.city}, {trip.country}
-                                                    </strong>
-                                                </Typography>
-                                            </Grid>
-                                            <Grid direction='row' xs={2} sx={{ textAlign: "right" }}>
-                                                <Link href={`/profile/me/trips/${trip.id}/edit`}>
-                                                    <IconButton size='small' aria-label='edit' component='span'>
-                                                        <EditIcon />
-                                                    </IconButton>
-                                                </Link>
-                                                <IconButton onClick={() => deleteTrip(idx, trip.id)} size='small' aria-label='edit' component='span'>
-                                                    <DeleteIcon />
-                                                </IconButton>
-                                            </Grid>
-                                        </Grid>
-                                        <Grid container direction='row' alignItems='center' sx={{ mb: 1 }}>
-                                            <PeopleAltOutlinedIcon sx={{ mr: 1 }} color='disabled' />
-                                            <Typography align='justify' color='text.secondary'>
-                                                {trip.numberOfPeople} Travellers
-                                            </Typography>
-                                        </Grid>
-                                        <Grid container direction='row' alignItems='center' sx={{ mb: 1 }}>
-                                            <EventOutlinedIcon sx={{ mr: 1 }} color='disabled' />
-                                            <Typography align='justify' color='text.secondary'>
-                                                {moment(trip.startDate).format("DD-MM-YYYY")}
-                                            </Typography>
-                                            <ArrowForwardIcon />
-                                            <Typography align='justify' color='text.secondary'>
-                                                {moment(trip.endDate).format("DD-MM-YYYY")}
-                                            </Typography>
-                                        </Grid>
-                                        <Typography align='justify' color='text.secondary' paragraph>
-                                            {trip.content}
-                                        </Typography>
-                                    </Container>
-                                </>
-                            ))
+                            trips.map((trip, idx) => <TripDetail trip={trip} onDelete={() => deleteTrip(idx)} />)
                         )}
-                        {/* <Grid container direction="row" alignItems="center">
-                            <PushPinOutlinedIcon sx={{ mr: 1 }} />
-                            <Typography align="justify" color="text.secondary">
-                                {city}, {country}
-                            </Typography>
-                        </Grid>
-                        <Grid container direction="row" alignItems="center">
-                            <PeopleAltOutlinedIcon sx={{ mr: 1 }} />
-                            <Typography align="justify" color="text.secondary">
-                                {numberOfPeople} Travellers
-                            </Typography>
-                        </Grid>
-                        <Grid container direction="row" alignItems="center">
-                            <EventOutlinedIcon sx={{ mr: 1 }} />
-                            <Typography align="justify" color="text.secondary">
-                                {startDate} - {endDate}
-                            </Typography>
-                        </Grid>
-                        <Typography align="justify" color="text.secondary" paragraph>
-                            {content}
-                        </Typography> */}
                     </AccordionDetails>
                 </Accordion>
             </Container>
