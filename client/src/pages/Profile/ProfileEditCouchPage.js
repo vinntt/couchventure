@@ -4,7 +4,7 @@ import { Container, Grid } from '@mui/material';
 
 import ProfileCardSideFeature from '../../components/Profile/ProfileCardSideFeature';
 import ProfileTabs from '../../components/Profile/ProfileTabs';
-import EditCouch from '../../components/Couches/EditCouch';
+import CouchForm from "../../components/Couches/CouchForm";
 import Footer from '../../components/Footer.js'
 
 export default function ProfileEditCouchPage() {
@@ -22,7 +22,7 @@ export default function ProfileEditCouchPage() {
                             <ProfileTabs userId={userId} />
                         </Grid>
                         <Grid item>
-                            <EditCouch userId={userId} />
+                            <CouchForm userId={userId} />
                         </Grid>
                     </Grid>
                 </Grid>

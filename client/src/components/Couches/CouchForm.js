@@ -37,58 +37,58 @@ const DeleteImageButton = styled(Button)(({ theme }) => ({
     borderRadius: `50%`,
 }));
 
-export default function EditCouch() {
+export default function CouchForm() {
     const [couchId, setCouchId] = useState(undefined);
-    const [status, setStatus] = useState('');
-    const [arrangement, setArrangement] = useState('');
-    const [numberOfPeople, setNumberOfPeople] = useState('');
+    const [status, setStatus] = useState("");
+    const [arrangement, setArrangement] = useState("");
+    const [numberOfPeople, setNumberOfPeople] = useState("");
     const [allowChildren, setAllowChildren] = useState(false);
     const [allowPets, setAllowPets] = useState(false);
     const [allowSmoking, setAllowSmoking] = useState(false);
     const [allowWheelchair, setAllowWheelchair] = useState(false);
-    const [description, setDescription] = useState('');
-    const [publicTransportation, setPublicTransportation] = useState('');
-    const [distanceCityCenter, setDistanceCityCenter] = useState('');
+    const [description, setDescription] = useState("");
+    const [publicTransportation, setPublicTransportation] = useState("");
+    const [distanceCityCenter, setDistanceCityCenter] = useState("");
     const [couchImg, setCouchImg] = useState([]);
 
     const navigate = useNavigate();
-    const [, forceUpdate] = useReducer(x => x + 1, 0);
+    const [, forceUpdate] = useReducer((x) => x + 1, 0);
 
     const arrangements = [
         {
-            value: 'Shared Bed',
-            label: 'Shared Bed',
+            value: "Shared Bed",
+            label: "Shared Bed",
         },
         {
-            value: 'Share Room',
-            label: 'Share Room',
+            value: "Share Room",
+            label: "Share Room",
         },
         {
-            value: 'Public Room',
-            label: 'Public Room',
+            value: "Public Room",
+            label: "Public Room",
         },
         {
-            value: 'Private Room',
-            label: 'Private Room',
+            value: "Private Room",
+            label: "Private Room",
         },
         {
-            value: 'Others',
-            label: 'Others',
-        }
+            value: "Others",
+            label: "Others",
+        },
     ];
 
     const hostStatus = [
         {
-            value: 'Available To Host',
-            label: 'Available To Host',
+            value: "Available To Host",
+            label: "Available To Host",
         },
         {
-            value: 'I Am Busy',
-            label: 'I Am Busy',
+            value: "I Am Busy",
+            label: "I Am Busy",
         },
         {
-            value: 'May Be Accepting Guests',
-            label: 'May Be Accepting Guests',
+            value: "May Be Accepting Guests",
+            label: "May Be Accepting Guests",
         },
     ];
 
@@ -105,23 +105,24 @@ export default function EditCouch() {
             description,
             publicTransportation,
             distanceCityCenter,
-            couchImg
+            couchImg,
         };
 
         // https://github.com/axios/axios#request-method-aliases
-        service.request({
-            url: couchId ? `/couches/${couchId}` : '/couches',
-            method: couchId ? "put" : "post",
-            data: requestBody,
-        })
-            .then(response => {
+        service
+            .request({
+                url: couchId ? `/couches/${couchId}` : "/couches",
+                method: couchId ? "put" : "post",
+                data: requestBody,
+            })
+            .then((response) => {
                 // redirect to login
-                navigate('/profile/me/couch')
+                navigate("/profile/me/couch");
             })
-            .catch(err => {
-                const errorDescription = err.response.data.message
-                setErrorMessage(errorDescription)
-            })
+            .catch((err) => {
+                const errorDescription = err.response.data.message;
+                setErrorMessage(errorDescription);
+            });
 
         // setStatus('');
         // setArrangement('');
@@ -136,18 +137,18 @@ export default function EditCouch() {
         // setCouchImg([]);
     };
 
-    const handleStatus = e => setStatus(e.target.value)
-    const handleArrangement = e => setArrangement(e.target.value)
-    const handleNumberOfPeople = e => setNumberOfPeople(e.target.value)
-    const handleAllowChildren = e => setAllowChildren(e.target.checked)
-    const handleAllowPets = e => setAllowPets(e.target.checked)
-    const handleAllowSmoking = e => setAllowSmoking(e.target.checked)
-    const handleAllowWheelchair = e => setAllowWheelchair(e.target.checked)
-    const handleDescription = e => setDescription(e.target.value)
+    const handleStatus = (e) => setStatus(e.target.value);
+    const handleArrangement = (e) => setArrangement(e.target.value);
+    const handleNumberOfPeople = (e) => setNumberOfPeople(e.target.value);
+    const handleAllowChildren = (e) => setAllowChildren(e.target.checked);
+    const handleAllowPets = (e) => setAllowPets(e.target.checked);
+    const handleAllowSmoking = (e) => setAllowSmoking(e.target.checked);
+    const handleAllowWheelchair = (e) => setAllowWheelchair(e.target.checked);
+    const handleDescription = (e) => setDescription(e.target.value);
     // const handlePublicTransportation = e => setPublicTransportation(e.target.value)
-    const handleDistanceCityCenter = e => setDistanceCityCenter(e.target.value)
+    const handleDistanceCityCenter = (e) => setDistanceCityCenter(e.target.value);
 
-    const updateCouchImg = images => {
+    const updateCouchImg = (images) => {
         setCouchImg(images);
 
         // https://reactjs.org/docs/hooks-faq.html#is-there-something-like-forceupdate
@@ -155,7 +156,7 @@ export default function EditCouch() {
         forceUpdate();
     };
 
-    const handleCouchImg = e => {
+    const handleCouchImg = (e) => {
         if (!e.target.value) {
             return;
         }
@@ -180,7 +181,7 @@ export default function EditCouch() {
         fileReader.readAsDataURL(file);
     };
 
-    const deleteCouchImg = idx => {
+    const deleteCouchImg = (idx) => {
         couchImg.splice(idx, 1);
 
         updateCouchImg(couchImg);
@@ -189,7 +190,8 @@ export default function EditCouch() {
     const [errorMessage, setErrorMessage] = useState(undefined);
 
     useEffect(() => {
-        service.get("/profile/me/couch")
+        service
+            .get("/profile/me/couch")
             .then(({ data: couch }) => {
                 setCouchId(couch.id);
                 setStatus(couch.status);
@@ -204,35 +206,27 @@ export default function EditCouch() {
                 setDistanceCityCenter(couch.distanceCityCenter);
                 setCouchImg(couch.couchImg || []);
             })
-            .catch(err => console.log(err))
+            .catch((err) => console.log(err));
     }, []);
 
     return (
-        <Container component="main" maxWidth="xs">
+        <Container component='main' maxWidth='xs'>
             <Box
                 sx={{
                     marginTop: 7,
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
                 }}
             >
-                <Typography component="h1" variant="h5">
+                <Typography component='h1' variant='h5'>
                     My Home
                 </Typography>
 
-                <Box component="form" onSubmit={handleSubmit} sx={{ mt: 3 }}>
+                <Box component='form' onSubmit={handleSubmit} sx={{ mt: 3 }}>
                     <Grid container spacing={2}>
                         <Grid item xs={12}>
-                            <TextField
-                                id="status"
-                                select
-                                required
-                                fullWidth
-                                label="Host Status"
-                                value={status}
-                                onChange={handleStatus}
-                            >
+                            <TextField id='status' select required fullWidth label='Host Status' value={status} onChange={handleStatus}>
                                 {hostStatus.map((option) => (
                                     <MenuItem key={option.value} value={option.value}>
                                         {option.label}
@@ -243,15 +237,7 @@ export default function EditCouch() {
                         <Grid item xs={12}>
                             {/* https://codesandbox.io/s/pd6xel?file=/demo.js:166-361 */}
                             {/* https://mui.com/components/text-fields/ */}
-                            <TextField
-                                id="arrangement"
-                                select
-                                required
-                                fullWidth
-                                label="Sleeping Arrangement"
-                                value={arrangement}
-                                onChange={handleArrangement}
-                            >
+                            <TextField id='arrangement' select required fullWidth label='Sleeping Arrangement' value={arrangement} onChange={handleArrangement}>
                                 {arrangements.map((option) => (
                                     <MenuItem key={option.value} value={option.value}>
                                         {option.label}
@@ -262,98 +248,66 @@ export default function EditCouch() {
 
                         <Grid item xs={12} sm={6}>
                             <TextField
-                                id="numberOfPeople"
+                                id='numberOfPeople'
                                 required
                                 fullWidth
-                                label="Number of Guests"
-                                type="number"
+                                label='Number of Guests'
+                                type='number'
                                 value={numberOfPeople}
                                 onChange={handleNumberOfPeople}
                                 InputLabelProps={{
                                     shrink: true,
                                 }}
                                 InputProps={{
-                                    inputMode: 'numeric',
-                                    pattern: '[0-9]*',
-                                    inputProps: { min: 0 }
+                                    inputMode: "numeric",
+                                    pattern: "[0-9]*",
+                                    inputProps: { min: 0 },
                                 }}
-                                helperText="Maximum Accommocdate"
+                                helperText='Maximum Accommocdate'
                             />
                         </Grid>
                         <Grid item xs={12} sm={6}>
                             <TextField
-                                id="distanceCityCenter"
+                                id='distanceCityCenter'
                                 required
                                 fullWidth
-                                label="Distance (km)"
-                                type="number"
+                                label='Distance (km)'
+                                type='number'
                                 value={distanceCityCenter}
                                 onChange={handleDistanceCityCenter}
                                 InputLabelProps={{
                                     shrink: true,
                                 }}
                                 InputProps={{
-                                    inputMode: 'numeric',
-                                    pattern: '[0-9]*',
-                                    inputProps: { min: 0 }
+                                    inputMode: "numeric",
+                                    pattern: "[0-9]*",
+                                    inputProps: { min: 0 },
                                 }}
-                                helperText="To the City Center"
+                                helperText='To the City Center'
                             />
                         </Grid>
                         <Grid item xs={12} sm={6}>
-                            <FormControlLabel control={
-                                <Checkbox
-                                    size="small"
-                                    checked={allowChildren}
-                                    onChange={handleAllowChildren}
-                                />
-                            }
-                                label="Kid Friendly"
-                            />
+                            <FormControlLabel control={<Checkbox size='small' checked={allowChildren} onChange={handleAllowChildren} />} label='Kid Friendly' />
                         </Grid>
                         <Grid item xs={12} sm={6}>
-                            <FormControlLabel control={
-                                <Checkbox
-                                    size="small"
-                                    checked={allowPets}
-                                    onChange={handleAllowPets}
-                                />
-                            }
-                                label="Pets Friendly"
-                            />
+                            <FormControlLabel control={<Checkbox size='small' checked={allowPets} onChange={handleAllowPets} />} label='Pets Friendly' />
                         </Grid>
                         <Grid item xs={12} sm={6}>
-                            <FormControlLabel control={
-                                <Checkbox
-                                    size="small"
-                                    checked={allowSmoking}
-                                    onChange={handleAllowSmoking}
-                                />
-                            }
-                                label="Smoking is Allowed"
-                            />
+                            <FormControlLabel control={<Checkbox size='small' checked={allowSmoking} onChange={handleAllowSmoking} />} label='Smoking is Allowed' />
                         </Grid>
                         <Grid item xs={12} sm={6}>
-                            <FormControlLabel control={
-                                <Checkbox
-                                    size="small"
-                                    checked={allowWheelchair}
-                                    onChange={handleAllowWheelchair}
-                                />
-                            }
-                                label="Wheelchair Accessible"
-                            />
+                            <FormControlLabel control={<Checkbox size='small' checked={allowWheelchair} onChange={handleAllowWheelchair} />} label='Wheelchair Accessible' />
                         </Grid>
                         <Grid item xs={12}>
                             <TextField
-                                id="description"
+                                id='description'
                                 fullWidth
                                 multiline
                                 rows={3}
-                                variant="outlined"
-                                label="More Information"
-                                helperText="
-                                Roommate Situation or What I want to exchange with Guests"
+                                variant='outlined'
+                                label='More Information'
+                                helperText='
+                                Roommate Situation or What I want to exchange with Guests'
                                 value={description}
                                 onChange={handleDescription}
                             />
@@ -363,24 +317,24 @@ export default function EditCouch() {
                                 {couchImg.map((img, idx) => (
                                     <Badge
                                         key={`couch-image-${idx}`}
-                                        overlap="circular"
-                                        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+                                        overlap='circular'
+                                        anchorOrigin={{ vertical: "top", horizontal: "right" }}
                                         badgeContent={
-                                            <DeleteImageButton variant="contained" component="label" color="error" onClick={() => deleteCouchImg(idx)}>
-                                                <HighlightOffIcon fontSize="small" />
+                                            <DeleteImageButton variant='contained' component='label' color='error' onClick={() => deleteCouchImg(idx)}>
+                                                <HighlightOffIcon fontSize='small' />
                                             </DeleteImageButton>
                                         }
                                     >
                                         <ImageListItem sx={{ maxHeight: 164, overflow: "hidden" }}>
-                                            <img src={img} alt="" />
+                                            <img src={img} alt='' />
                                         </ImageListItem>
                                     </Badge>
                                 ))}
 
                                 <ImageListItem>
-                                    <Button variant="contained" component="label" sx={{ width: '100%', height: '100%', border: '2px dashed #4F606F', background: '#eee !important', boxShadown: 'none' }}>
-                                        <AddPhotoAlternateIcon fontSize="large" color="info" />
-                                        <input accept="image/*" type="file" hidden onChange={handleCouchImg} />
+                                    <Button variant='contained' component='label' sx={{ width: "100%", height: "100%", border: "2px dashed #4F606F", background: "#eee !important", boxShadown: "none" }}>
+                                        <AddPhotoAlternateIcon fontSize='large' color='info' />
+                                        <input accept='image/*' type='file' hidden onChange={handleCouchImg} />
                                     </Button>
                                 </ImageListItem>
                             </ImageList>
@@ -401,12 +355,12 @@ export default function EditCouch() {
                         </Grid> */}
 
                         <Grid item xs={12} sm={6}>
-                            <Button href='/profile/me/couch' type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 1, py: 1 }} startIcon={<BackspaceIcon />}>
+                            <Button href='/profile/me/couch' type='submit' fullWidth variant='contained' sx={{ mt: 3, mb: 1, py: 1 }} startIcon={<BackspaceIcon />}>
                                 Cancel
                             </Button>
                         </Grid>
                         <Grid item xs={12} sm={6}>
-                            <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 1, py: 1 }} endIcon={<SaveOutlinedIcon />}>
+                            <Button type='submit' fullWidth variant='contained' sx={{ mt: 3, mb: 1, py: 1 }} endIcon={<SaveOutlinedIcon />}>
                                 Save
                             </Button>
                         </Grid>
@@ -414,6 +368,6 @@ export default function EditCouch() {
                     </Grid>
                 </Box>
             </Box>
-        </Container >
+        </Container>
     );
 }
