@@ -110,7 +110,7 @@ export default function TripCard(props) {
                                 </Typography>
                             </Grid>
                         ) : (
-                            trips.map((trip, idx) => <TripDetail trip={trip} onDelete={() => deleteTrip(idx)} />)
+                            trips.map((trip, idx) => <TripDetail userId={props.userId} trip={trip} onDelete={() => deleteTrip(idx)} />)
                         )}
                     </AccordionDetails>
                 </Accordion>

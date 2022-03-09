@@ -35,16 +35,18 @@ export default function TripDetail(props) {
                             </strong>
                         </Typography>
                     </Grid>
-                    <Grid direction='row' xs={2} sx={{ textAlign: "right" }}>
-                        <Link href={`/profile/me/trips/${trip.id}/edit`}>
-                            <IconButton size='small' aria-label='edit' component='span'>
-                                <EditIcon />
+                    {props.userId === "me" && (
+                        <Grid direction='row' xs={2} sx={{ textAlign: "right" }}>
+                            <Link href={`/profile/me/trips/${trip.id}/edit`}>
+                                <IconButton size='small' aria-label='edit' component='span'>
+                                    <EditIcon />
+                                </IconButton>
+                            </Link>
+                            <IconButton onClick={deleteTrip} size='small' aria-label='edit' component='span'>
+                                <DeleteIcon />
                             </IconButton>
-                        </Link>
-                        <IconButton onClick={deleteTrip} size='small' aria-label='edit' component='span'>
-                            <DeleteIcon />
-                        </IconButton>
-                    </Grid>
+                        </Grid>
+                    )}
                 </Grid>
                 <Grid container direction='row' alignItems='center' sx={{ mb: 1 }}>
                     <PeopleAltOutlinedIcon sx={{ mr: 1 }} color='disabled' />
