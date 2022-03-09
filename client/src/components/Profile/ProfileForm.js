@@ -1,186 +1,178 @@
-import { styled } from '@mui/material/styles';
-import { Button, TextField, Checkbox, Box } from '@mui/material';
-import Badge from '@mui/material/Badge';
-import Grid from '@mui/material/Grid';
-import { ListItemText, InputLabel, Select} from '@mui/material';
-import { MenuItem, Container, Typography } from '@mui/material';
-import SaveOutlinedIcon from '@mui/icons-material/SaveOutlined';
-import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
-import BackspaceIcon from '@mui/icons-material/Backspace';
-import { useNavigate } from 'react-router-dom';
-import { useState, useEffect } from 'react';
-import service from '../../api/service';
-import CloudinaryAvatar from '../UI/CloudinaryAvatar';
+import { styled } from "@mui/material/styles";
+import { Button, TextField, Checkbox, Box } from "@mui/material";
+import Badge from "@mui/material/Badge";
+import Grid from "@mui/material/Grid";
+import { ListItemText, InputLabel, Select } from "@mui/material";
+import { MenuItem, Container, Typography } from "@mui/material";
+import SaveOutlinedIcon from "@mui/icons-material/SaveOutlined";
+import AddPhotoAlternateIcon from "@mui/icons-material/AddPhotoAlternate";
+import BackspaceIcon from "@mui/icons-material/Backspace";
+import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import service from "../../api/service";
+import CloudinaryAvatar from "../UI/CloudinaryAvatar";
 
-const allowedTypes = [
-    'image/gif',
-    'image/jpg',
-    'image/jpeg',
-    'image/png',
-    'image/apng',
-    'image/webp',
-];
+const allowedTypes = ["image/gif", "image/jpg", "image/jpeg", "image/png", "image/apng", "image/webp"];
 
 const countries = [
     {
-        value: 'Germany',
-        label: 'Germany',
-    }
+        value: "Germany",
+        label: "Germany",
+    },
 ];
 
 const cities = [
     {
-        value: 'Berlin',
-        label: 'Berlin',
+        value: "Berlin",
+        label: "Berlin",
     },
     {
-        value: 'Frankfurt',
-        label: 'Frankfurt',
+        value: "Frankfurt",
+        label: "Frankfurt",
     },
     {
-        value: 'Hamburg',
-        label: 'Hamburg',
+        value: "Hamburg",
+        label: "Hamburg",
     },
     {
-        value: 'Munich',
-        label: 'Munich',
+        value: "Munich",
+        label: "Munich",
     },
     {
-        value: 'Others',
-        label: 'Others',
-    }
-
+        value: "Others",
+        label: "Others",
+    },
 ];
-
 
 const genders = [
     {
-        value: 'Male',
-        label: 'Male',
+        value: "Male",
+        label: "Male",
     },
     {
-        value: 'Female',
-        label: 'Female',
-    }, {
-        value: 'Diverse',
-        label: 'Diverse',
-    }
-]
+        value: "Female",
+        label: "Female",
+    },
+    {
+        value: "Diverse",
+        label: "Diverse",
+    },
+];
 
 const languages = [
     {
         value: "Arabic",
-        label: "Arabic"
+        label: "Arabic",
     },
     {
         value: "Bulgarian",
-        label: "Bulgarian"
+        label: "Bulgarian",
     },
     {
         value: "Burmese",
-        label: "Burmese"
+        label: "Burmese",
     },
     {
         value: "Chinese",
-        label: "Chinese"
+        label: "Chinese",
     },
     {
         value: "Croatian",
-        label: "Croatian"
+        label: "Croatian",
     },
     {
         value: "Danish",
-        label: "Danish"
+        label: "Danish",
     },
     {
         value: "English",
-        label: "English"
+        label: "English",
     },
     {
         value: "French",
-        label: "French"
+        label: "French",
     },
     {
         value: "German",
-        label: "German"
+        label: "German",
     },
     {
         value: "Hebrew",
-        label: "Hebrew"
+        label: "Hebrew",
     },
     {
         value: "Hindi",
-        label: "Hindi"
+        label: "Hindi",
     },
     {
         value: "Italian",
-        label: "Italian"
+        label: "Italian",
     },
     {
         value: "Japanese",
-        label: "Japanese"
+        label: "Japanese",
     },
     {
         value: "Korean",
-        label: "Korean"
+        label: "Korean",
     },
     {
         value: "Kurdish",
-        label: "Kurdish"
+        label: "Kurdish",
     },
     {
         value: "Latin",
-        label: "Latin"
+        label: "Latin",
     },
     {
         value: "Norwegian",
-        label: "Norwegian"
+        label: "Norwegian",
     },
     {
         value: "Polish",
-        label: "Polish"
+        label: "Polish",
     },
     {
         value: "Portuguese",
-        label: "Portuguese"
+        label: "Portuguese",
     },
     {
         value: "Russian",
-        label: "Russian"
+        label: "Russian",
     },
     {
         value: "Swedish",
-        label: "Swedish"
+        label: "Swedish",
     },
     {
         value: "Thai",
-        label: "Thai"
+        label: "Thai",
     },
     {
         value: "Tagalog",
-        label: "Tagalog"
+        label: "Tagalog",
     },
     {
         value: "Turkish",
-        label: "Turkish"
+        label: "Turkish",
     },
     {
         value: "Ukrainian",
-        label: "Ukrainian"
+        label: "Ukrainian",
     },
     {
         value: "Vietnamese",
-        label: "Vietnamese"
+        label: "Vietnamese",
     },
     {
         value: "Yiddish",
-        label: "Yiddish"
+        label: "Yiddish",
     },
     {
         value: "Others",
-        label: "Others"
-    }
-]
+        label: "Others",
+    },
+];
 
 const UploadButton = styled(Button)(({ theme }) => ({
     width: 36,
@@ -193,48 +185,51 @@ const UploadButton = styled(Button)(({ theme }) => ({
 }));
 
 export default function ProfileForm(props) {
-    const [name, setName] = useState('');
-    const [country, setCountry] = useState('');
-    const [city, setCity] = useState('');
-    const [age, setAge] = useState('')
-    const [gender, setGender] = useState('')
-    const [language, setLanguage] = useState([])
+    const [name, setName] = useState("");
+    const [country, setCountry] = useState("");
+    const [city, setCity] = useState("");
+    const [age, setAge] = useState("");
+    const [gender, setGender] = useState("");
+    const [language, setLanguage] = useState([]);
     // const [visitedCountries, setVisitedCountries] = useState([]);
-    const [introduction, setIntroduction] = useState('');
-    const [profileImg, setProfileImg] = useState('');
+    const [introduction, setIntroduction] = useState("");
+    const [profileImg, setProfileImg] = useState("");
 
     const navigate = useNavigate();
 
     const handleSubmit = (event) => {
         event.preventDefault();
 
-        const requestBody = { name, city, country, age, gender, language, introduction, profileImg }
+        const requestBody = { name, city, country, age, gender, language, introduction, profileImg };
 
-        service.put('/profile', requestBody)
-            .then(response => {
-                navigate('/profile/me')
+        service
+            .put("/profile", requestBody)
+            .then((response) => {
+                navigate("/profile/me");
             })
-            .catch(err => {
-                const errorDescription = err.response.data.message
-                setErrorMessage(errorDescription)
+            .catch((err) => {
+                const errorDescription = err.response.data.message;
+                setErrorMessage(errorDescription);
             });
     };
 
-    const handleName = e => setName(e.target.value)
-    const handleCountry = e => setCountry(e.target.value)
-    const handleCity = e => setCity(e.target.value)
-    const handleAge = e => setAge(e.target.value)
-    const handleGender = e => setGender(e.target.value)
-    const handleIntroduction = e => setIntroduction(e.target.value)
+    const handleName = (e) => setName(e.target.value);
+    const handleCountry = (e) => setCountry(e.target.value);
+    const handleCity = (e) => setCity(e.target.value);
+    const handleAge = (e) => setAge(e.target.value);
+    const handleGender = (e) => setGender(e.target.value);
+    const handleIntroduction = (e) => setIntroduction(e.target.value);
     const handleLanguage = (event) => {
-        const { target: { value } } = event;
+        const {
+            target: { value },
+        } = event;
         setLanguage(
             // On autofill we get a stringified value.
-            typeof value === 'string' ? value.split(',') : value,
-        )
+            typeof value === "string" ? value.split(",") : value
+        );
     };
 
-    const handleAvatar = e => {
+    const handleAvatar = (e) => {
         if (!e.target.value) {
             return;
         }
@@ -262,7 +257,8 @@ export default function ProfileForm(props) {
     const [errorMessage, setErrorMessage] = useState(undefined);
 
     useEffect(() => {
-        service.get("/profile/me")
+        service
+            .get("/profile/me")
             .then(({ data: profile }) => {
                 setName(profile.name);
                 setCountry(profile.country);
@@ -273,61 +269,42 @@ export default function ProfileForm(props) {
                 setIntroduction(profile.introduction);
                 setProfileImg(profile.profileImg);
             })
-            .catch(err => console.log(err))
+            .catch((err) => console.log(err));
     }, []);
 
     return (
-        <Container component="main" maxWidth="xs">
+        <Container component='main' maxWidth='xs'>
             <Box
                 sx={{
                     marginTop: 7,
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
                 }}
             >
                 <Badge
-                    overlap="circular"
-                    anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+                    overlap='circular'
+                    anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
                     badgeContent={
-                        <UploadButton variant="contained" component="label" sx={{ left: -6, top: -6 }}>
-                            <AddPhotoAlternateIcon fontSize="small" />
-                            <input accept="image/*" type="file" hidden onChange={handleAvatar} />
+                        <UploadButton variant='contained' component='label' sx={{ left: -6, top: -6 }}>
+                            <AddPhotoAlternateIcon fontSize='small' />
+                            <input accept='image/*' type='file' hidden onChange={handleAvatar} />
                         </UploadButton>
                     }
                 >
                     <CloudinaryAvatar alt={name} src={profileImg} width={150} height={150} />
                 </Badge>
-                <Typography component="h1" variant="h5">
+                <Typography component='h1' variant='h5'>
                     My Profile
                 </Typography>
 
-                <Box component="form" onSubmit={handleSubmit} sx={{ mt: 3 }}>
-
+                <Box component='form' onSubmit={handleSubmit} sx={{ mt: 3 }}>
                     <Grid container spacing={2}>
                         <Grid item xs={12}>
-                            <TextField
-                                name="name"
-                                required
-                                fullWidth
-                                id="name"
-                                label="Name"
-                                autoFocus
-                                type="text"
-                                value={name}
-                                onChange={handleName}
-                            />
+                            <TextField name='name' required fullWidth id='name' label='Name' autoFocus type='text' value={name} onChange={handleName} />
                         </Grid>
                         <Grid item xs={12} sm={6}>
-                            <TextField
-                                id="country"
-                                select
-                                required
-                                fullWidth
-                                label="Country"
-                                value={country}
-                                onChange={handleCountry}
-                            >
+                            <TextField id='country' select required fullWidth label='Country' value={country} onChange={handleCountry}>
                                 {countries.map((option) => (
                                     <MenuItem key={option.value} value={option.value}>
                                         {option.label}
@@ -336,15 +313,7 @@ export default function ProfileForm(props) {
                             </TextField>
                         </Grid>
                         <Grid item xs={12} sm={6}>
-                            <TextField
-                                id="city"
-                                select
-                                required
-                                fullWidth
-                                label="City"
-                                value={city}
-                                onChange={handleCity}
-                            >
+                            <TextField id='city' select required fullWidth label='City' value={city} onChange={handleCity}>
                                 {cities.map((option) => (
                                     <MenuItem key={option.value} value={option.value}>
                                         {option.label}
@@ -354,31 +323,24 @@ export default function ProfileForm(props) {
                         </Grid>
                         <Grid item xs={12} sm={6}>
                             <TextField
-                                id="age"
+                                id='age'
                                 fullWidth
-                                label="Age"
-                                type="number"
+                                label='Age'
+                                type='number'
                                 value={age}
                                 onChange={handleAge}
                                 InputLabelProps={{
                                     shrink: true,
                                 }}
                                 InputProps={{
-                                    inputMode: 'numeric',
-                                    pattern: '[0-9]*',
-                                    inputProps: { min: 0 }
+                                    inputMode: "numeric",
+                                    pattern: "[0-9]*",
+                                    inputProps: { min: 0 },
                                 }}
                             />
                         </Grid>
                         <Grid item xs={12} sm={6}>
-                            <TextField
-                                id="gender"
-                                select
-                                fullWidth
-                                label="Gender"
-                                value={gender}
-                                onChange={handleGender}
-                            >
+                            <TextField id='gender' select fullWidth label='Gender' value={gender} onChange={handleGender}>
                                 {genders.map((option) => (
                                     <MenuItem key={option.value} value={option.value}>
                                         {option.label}
@@ -386,19 +348,11 @@ export default function ProfileForm(props) {
                                 ))}
                             </TextField>
                         </Grid>
-                        <Grid item xs={12} sm={6} >
+                        <Grid item xs={12} sm={6}>
                             {/* https://mui.com/components/selects/ */}
                             {/* <FormControl sx={{ m: 1, width: 195, mt: 1 }}> */}
-                            <InputLabel id="demo-multiple-checkbox-label">Spoken Languages</InputLabel>
-                            <Select
-                                labelId="demo-multiple-checkbox-label"
-                                id="demo-multiple-checkbox"
-                                multiple
-                                value={language}
-                                onChange={handleLanguage}
-                                renderValue={(selected) => selected.join(', ')}
-                                MenuProps={{ PaperProps: { style: { maxHeight: 48 * 4.5 + 8, width: 250 } } }}
-                            >
+                            <InputLabel id='demo-multiple-checkbox-label'>Spoken Languages</InputLabel>
+                            <Select labelId='demo-multiple-checkbox-label' id='demo-multiple-checkbox' multiple value={language} onChange={handleLanguage} renderValue={(selected) => selected.join(", ")} MenuProps={{ PaperProps: { style: { maxHeight: 48 * 4.5 + 8, width: 250 } } }}>
                                 {languages.map((option) => (
                                     <MenuItem key={option.value} value={option.value}>
                                         <Checkbox checked={language.indexOf(option.value) > -1} />
@@ -410,29 +364,19 @@ export default function ProfileForm(props) {
                         </Grid>
                         {/* https://codesandbox.io/s/givp5 */}
                         <Grid item xs={12}>
-                            <TextField
-                                id="introduction"
-                                fullWidth
-                                multiline
-                                rows={3}
-                                variant="outlined"
-                                label="More Information"
-                                helperText="Let the others travellers know more about you"
-                                value={introduction}
-                                onChange={handleIntroduction}
-                            />
+                            <TextField id='introduction' fullWidth multiline rows={3} variant='outlined' label='More Information' helperText='Let the others travellers know more about you' value={introduction} onChange={handleIntroduction} />
                         </Grid>
                         <Grid item xs={12} sm={6}>
-                            <Button href='/profile/me' fullWidth variant="outlined" sx={{ mt: 3, mb: 2, py: 1 }} startIcon={<BackspaceIcon />}>
+                            <Button href='/profile/me' fullWidth variant='outlined' sx={{ mt: 3, mb: 2, py: 1 }} startIcon={<BackspaceIcon />}>
                                 Cancel
                             </Button>
                         </Grid>
                         <Grid item xs={12} sm={6}>
-                            <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2, py: 1 }} endIcon={<SaveOutlinedIcon />}>
+                            <Button type='submit' fullWidth variant='contained' sx={{ mt: 3, mb: 2, py: 1 }} endIcon={<SaveOutlinedIcon />}>
                                 Save
                             </Button>
                         </Grid>
-                    </Grid >
+                    </Grid>
                     {errorMessage && <h5>{errorMessage}</h5>}
                 </Box>
             </Box>

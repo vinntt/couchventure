@@ -32,11 +32,6 @@ const couchRequestSchema = new Schema(
             type: String,
             required: true,
         },
-        status: {
-            type: String,
-            required: true,
-            enum: ["PENDING", "ACCEPTED", "DECLINED", "CANCELED"],
-        },
     },
 
     {

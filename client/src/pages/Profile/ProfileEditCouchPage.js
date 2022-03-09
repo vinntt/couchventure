@@ -26,7 +26,6 @@ export default function ProfileEditCouchPage() {
                         </Grid>
                     </Grid>
                 </Grid>
-                <Footer />
             </Container>
         </>
     );

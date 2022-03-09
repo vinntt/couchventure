@@ -1,14 +1,18 @@
-import * as React from "react";
-import { useParams } from "react-router-dom";
 import { Container, Grid } from "@mui/material";
-
+import { Navigate, useParams, useSearchParams } from "react-router-dom";
+import InboxMessageList from "../../components/Inbox/InboxMessageList";
+import InboxRequestForm from "../../components/Inbox/InboxRequestForm";
 import ProfileCardSideFeature from "../../components/Profile/ProfileCardSideFeature";
-import ProfileDetail from "../../components/Profile/ProfileDetail";
-import ProfileTabs from "../../components/Profile/ProfileTabs";
-import TripCard from "../../components/Trips/TripCard";
 
-export default function ProfilePage() {
+export default function InboxDetailPage() {
     const { userId } = useParams();
+    const [searchParams] = useSearchParams();
+
+    if (userId === "me") {
+        return <Navigate to='/inbox' />;
+    }
+
+    const offer = searchParams.get("offer");
 
     return (
         <>
@@ -19,13 +23,10 @@ export default function ProfilePage() {
                     </Grid>
                     <Grid item xs={6} md={8}>
                         <Grid item>
-                            <ProfileTabs userId={userId} />
+                            <InboxRequestForm recipientId={userId} offer={offer} />
                         </Grid>
-                        <Grid item>
-                            <TripCard userId={userId} />
-                        </Grid>
-                        <Grid item>
-                            <ProfileDetail userId={userId} />
+                        <Grid item sx={{ mt: 2 }}>
+                            <InboxMessageList recipientId={userId} />
                         </Grid>
                     </Grid>
                 </Grid>

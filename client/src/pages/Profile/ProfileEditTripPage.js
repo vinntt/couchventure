@@ -42,7 +42,6 @@ export default function ProfileEditTripPage() {
                         </Grid>
                     </Grid>
                 </Grid>
-                <Footer />
             </Container>
         </>
     );

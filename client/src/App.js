@@ -1,19 +1,20 @@
-import "./App.css";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { CssBaseline } from "@mui/material";
-import Signup from "./pages/Profile/Signup";
-import Login from "./pages/Profile/Login";
-import Homepage from "./pages/Homepage";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { Route, Routes } from "react-router-dom";
+import "./App.css";
+import Footer from "./components/Footer";
 import Navbar from "./components/Navbar";
-import { Routes, Route } from "react-router-dom";
 import ProtectedRoute from "./components/ProtectedRoute";
-import TripsList from "./pages/Trips/TripsList";
+import Homepage from "./pages/Homepage";
+import InboxDetailPage from "./pages/Inbox/InboxDetailPage";
+import InboxPage from "./pages/Inbox/InboxPage";
+import Login from "./pages/Profile/Login";
 import ProfileCouchPage from "./pages/Profile/ProfileCouchPage";
-import ProfilePage from "./pages/Profile/ProfilePage";
-import ProfileEditPage from "./pages/Profile/ProfileEditPage";
-import TripCard from "./components/Trips/TripCard";
 import ProfileEditCouchPage from "./pages/Profile/ProfileEditCouchPage";
+import ProfileEditPage from "./pages/Profile/ProfileEditPage";
 import ProfileEditTripPage from "./pages/Profile/ProfileEditTripPage";
+import ProfilePage from "./pages/Profile/ProfilePage";
+import Signup from "./pages/Profile/Signup";
 import SearchPage from "./pages/SearchPage";
 
 // https://mui.com/customization/theming/
@@ -131,6 +132,26 @@ function App() {
                     />
 
                     <Route
+                        path='/inbox'
+                        element={
+                            <ProtectedRoute redirectTo='/login'>
+                                <Navbar />
+                                <InboxPage />
+                            </ProtectedRoute>
+                        }
+                    />
+
+                    <Route
+                        path='/inbox/:userId'
+                        element={
+                            <ProtectedRoute redirectTo='/login'>
+                                <Navbar />
+                                <InboxDetailPage />
+                            </ProtectedRoute>
+                        }
+                    />
+
+                    <Route
                         path='/search'
                         element={
                             <ProtectedRoute redirectTo='/login'>
@@ -140,6 +161,7 @@ function App() {
                         }
                     />
                 </Routes>
+                <Footer />
             </div>
         </ThemeProvider>
     );

@@ -2,8 +2,85 @@ const router = require("express").Router();
 const User = require("../models/User");
 const CouchRequest = require("../models/CouchRequest");
 const Message = require("../models/Message");
+const moment = require("moment");
 
 const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
+
+// Get the messages with the user.
+router.get(`/:id`, (req, res, next) => {
+    const sender = req.user._id;
+    const recipient = req.params.id;
+
+    Message.find({
+        $or: [
+            { sender, recipient },
+            { sender: recipient, recipient: sender },
+        ],
+        status: { $in: ["READ", "UNREAD"] },
+    })
+        .sort({ createdAt: -1 })
+        .populate("sender", "_id name profileImg")
+        .populate("recipient", "_id name profileImg")
+        .then((messages) => {
+            if (!Array.isArray(messages)) {
+                console.log(messages);
+                res.status(500).json({ message: "Unexpected data" });
+                return;
+            }
+
+            res.status(200).json(
+                messages.map((message) => {
+                    const {
+                        sender: { _id: senderId, name: senderName, profileImg: senderProfileImg },
+                        recipient: { _id: recipientId, name: recipientName, profileImg: recipientProfileImg },
+                        title,
+                        content,
+                        createdAt,
+                    } = message;
+
+                    return {
+                        sender: {
+                            id: senderId,
+                            name: senderName,
+                            profileImg: senderProfileImg,
+                        },
+                        recipient: {
+                            id: recipientId,
+                            name: recipientName,
+                            profileImg: recipientProfileImg,
+                        },
+                        title,
+                        content,
+                        createdAt,
+                    };
+                })
+            );
+        })
+        .catch((err) => next(err));
+});
+
+router.post(`/:id`, (req, res, next) => {
+    const sender = req.user._id;
+    const recipient = req.params.id;
+    const { content } = req.body;
+
+    console.log(sender, recipient, content);
+
+    if (!content || content.trim() === "") {
+        res.status(400).json({ message: "Missing message content" });
+    }
+
+    const message = {
+        sender,
+        recipient,
+        content: content.trim(),
+        status: "UNREAD",
+    };
+
+    Message.create(message)
+        .then(() => res.status(204).json())
+        .catch((err) => next(err));
+});
 
 router.get(`/:id/request`, (req, res, next) => {
     const user = req.user._id;
@@ -16,9 +93,12 @@ router.get(`/:id/request`, (req, res, next) => {
                 return;
             }
 
-            const { startDate, endDate, numberOfPeople, content } = request;
+            const { creator, traveler, host, startDate, endDate, numberOfPeople, content } = request;
 
             res.status(200).json({
+                creator,
+                traveler,
+                host,
                 startDate,
                 endDate,
                 country,
@@ -58,7 +138,7 @@ router.post(`/:id/request`, (req, res, next) => {
 
     CouchRequest.findOne({ creator, host })
         .then((request) => {
-            if (!request) {
+            if (request) {
                 res.status(400).json({ message: "You already requested this host" });
                 return;
             }
@@ -79,7 +159,7 @@ router.post(`/:id/request`, (req, res, next) => {
                 recipient: host,
                 title: `Requested from ${moment(startDate).format("YYYY-MM-DD")} to ${moment(endDate).format("YYYY-MM-DD")}`,
                 content,
-                status: 'UNREAD',
+                status: "UNREAD",
             });
         })
         .catch((err) => next(err));

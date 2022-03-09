@@ -1,14 +1,13 @@
-import * as React from 'react';
-import { useParams } from 'react-router-dom';
-import { Container, Grid } from '@mui/material';
+import { Container, Grid } from "@mui/material";
+import * as React from "react";
+import { useParams } from "react-router-dom";
+import CouchDetail from "../../components/Couches/CouchDetail";
+import ProfileCardSideFeature from "../../components/Profile/ProfileCardSideFeature";
+import ProfileTabs from "../../components/Profile/ProfileTabs";
 
-import ProfileCardSideFeature from '../../components/Profile/ProfileCardSideFeature';
-import ProfileTabs from '../../components/Profile/ProfileTabs';
-import CouchDetail from '../../components/Couches/CouchDetail';
-import Footer from '../../components/Footer';
 
 export default function ProfileCouchPage() {
-    const { userId } = useParams()
+    const { userId } = useParams();
 
     return (
         <>
@@ -26,8 +25,7 @@ export default function ProfileCouchPage() {
                         </Grid>
                     </Grid>
                 </Grid>
-                <Footer />
             </Container>
         </>
     );
-};
+}

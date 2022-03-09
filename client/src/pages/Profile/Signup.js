@@ -1,12 +1,9 @@
-import * as React from 'react';
-import { Button, TextField, FormControlLabel, Checkbox, Box } from '@mui/material';
-import Grid from '@mui/material/Grid';
-import { CssBaseline } from '@mui/material';
-import { MenuItem, Container, Avatar, Typography } from '@mui/material';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import { Link, useNavigate } from 'react-router-dom';
+import { Avatar, Box, Button, Checkbox, Container, CssBaseline, FormControlLabel, MenuItem, TextField, Typography } from '@mui/material';
+import Grid from '@mui/material/Grid';
+import * as React from 'react';
 import { useState } from 'react';
-import Footer from '../../components/Footer';
+import { Link, useNavigate } from 'react-router-dom';
 import service from '../../api/service';
 
 function SignUp() {
@@ -193,7 +190,6 @@ function SignUp() {
                     </Grid>
                 </Box>
             </Box>
-            <Footer />
         </Container>
     );
 }

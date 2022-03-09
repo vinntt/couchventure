@@ -15,6 +15,7 @@ import { useState, useEffect } from "react";
 import { styled, alpha } from "@mui/material/styles";
 import service from "../../api/service";
 import CloudinaryAvatar from "../UI/CloudinaryAvatar";
+import { useNavigate } from "react-router-dom";
 
 // https://codesandbox.io/s/tvkhzf?file=/demo.js:1909-2208
 const StyledMenu = styled((props) => (
@@ -54,6 +55,8 @@ const StyledMenu = styled((props) => (
 }));
 
 export default function ProfileCardSideFeature(props) {
+    const navigate = useNavigate();
+
     const [name, setName] = useState(undefined);
     const [city, setCity] = useState(undefined);
     const [country, setCountry] = useState(undefined);
@@ -85,7 +88,7 @@ export default function ProfileCardSideFeature(props) {
     return (
         <>
             <Card elevation={1} sx={{ textAlign: "center" }}>
-                <CardActionArea>
+                <CardActionArea onClick={() => navigate(`/profile/${props.userId}`)}>
                     <br />
                     {typeof profileImg !== "undefined" ? <CloudinaryAvatar alt={name} src={profileImg} width={150} height={150} /> : <Skeleton variant='circular' width={150} height={150} sx={{ margin: "0 auto" }} />}
                     <CardContent>
