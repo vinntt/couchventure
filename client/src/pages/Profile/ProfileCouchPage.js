@@ -12,22 +12,22 @@ export default function ProfileCouchPage() {
 
     return (
         <>
-            <Container maxWidth="lg">
+            <Container maxWidth='lg' disableGutters sx={{ mt: 2 }}>
                 <Grid container spacing={2}>
                     <Grid item xs={6} md={4}>
                         <ProfileCardSideFeature userId={userId} />
                     </Grid>
                     <Grid item xs={6} md={8}>
-                        <Grid item sx={{mb: 2}}>
+                        <Grid item sx={{ mb: 2 }}>
                             <ProfileTabs userId={userId} />
                         </Grid>
-                        <Grid item >
+                        <Grid item>
                             <CouchDetail userId={userId} />
                         </Grid>
                     </Grid>
                 </Grid>
-                < Footer />
+                <Footer />
             </Container>
         </>
-    )
+    );
 };

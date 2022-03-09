@@ -12,16 +12,16 @@ export default function ProfileEditCouchPage() {
 
     return (
         <>
-            <Container maxWidth="lg">
+            <Container maxWidth='lg' disableGutters sx={{ mt: 2 }}>
                 <Grid container spacing={2}>
                     <Grid item xs={6} md={4}>
                         <ProfileCardSideFeature userId={userId} />
                     </Grid>
                     <Grid item xs={6} md={8}>
-                        <Grid item >
+                        <Grid item>
                             <ProfileTabs userId={userId} />
                         </Grid>
-                        <Grid item >
+                        <Grid item>
                             <EditCouch userId={userId} />
                         </Grid>
                     </Grid>
@@ -29,5 +29,5 @@ export default function ProfileEditCouchPage() {
                 <Footer />
             </Container>
         </>
-    )
+    );
 };

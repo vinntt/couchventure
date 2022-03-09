@@ -28,7 +28,7 @@ export default function ProfileEditTripPage() {
 
     return (
         <>
-            <Container maxWidth='lg'>
+            <Container maxWidth='lg' disableGutters sx={{ mt: 2 }}>
                 <Grid container spacing={2}>
                     <Grid item xs={6} md={4}>
                         <ProfileCardSideFeature userId={userId} />
