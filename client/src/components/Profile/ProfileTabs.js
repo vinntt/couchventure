@@ -1,10 +1,7 @@
-import React from 'react'
-import { Tabs, Tab, Box } from '@mui/material'
+import { Box, Card, Tab, Tabs } from "@mui/material";
 
 function LinkTab(props) {
-    return (
-        <Tab component="a" {...props} />
-    );
+    return <Tab component='a' {...props} />;
 }
 
 export default function ProfileTabs(props) {
@@ -34,22 +31,18 @@ export default function ProfileTabs(props) {
     }
 
     return (
-        <div>
+        <>
             {/* https://mui.com/components/tabs/ */}
             {/* https://mui.com/components/tooltips/ */}
-            <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-                <Tabs
-                    value={activeTab}
-                    variant="scrollable"
-                    scrollButtons
-                    allowScrollButtonsMobile
-                    aria-label="scrollable force tabs example"
-                >
-                    {tabs.map((tab, index) => (
-                        <LinkTab key={`profile-${props.userId}-${index}`} href={tab.href} label={tab.text} style={{ color: "#ff9800", textDecoration: "none" }} />
-                    ))}
-                </Tabs>
-            </Box>
-        </div>
-    )
+            <Card elevation={1}>
+                <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+                    <Tabs value={activeTab} variant='scrollable' scrollButtons allowScrollButtonsMobile aria-label='scrollable force tabs example'>
+                        {tabs.map((tab, index) => (
+                            <LinkTab key={`profile-${props.userId}-${index}`} href={tab.href} label={tab.text} style={{ color: "#ff9800", textDecoration: "none" }} />
+                        ))}
+                    </Tabs>
+                </Box>
+            </Card>
+        </>
+    );
 }

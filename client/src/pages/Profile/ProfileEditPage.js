@@ -2,8 +2,8 @@ import * as React from 'react';
 import { Container, Grid } from '@mui/material';
 
 import ProfileCardSideFeature from '../../components/Profile/ProfileCardSideFeature';
-import ProfileTabs from '../../components/ProfileTabs';
-import EditProfile from '../../components/Profile/EditProfile';
+import ProfileTabs from '../../components/Profile/ProfileTabs';
+import ProfileForm from '../../components/Profile/ProfileForm';
 
 export default function ProfileEditPage() {
     const userId = "me";
@@ -20,7 +20,7 @@ export default function ProfileEditPage() {
                             <ProfileTabs userId={userId} />
                         </Grid>
                         <Grid item>
-                            <EditProfile userId={userId} />
+                            <ProfileForm userId={userId} />
                         </Grid>
                     </Grid>
                 </Grid>

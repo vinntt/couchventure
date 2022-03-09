@@ -4,7 +4,7 @@ import { Container, Grid } from '@mui/material';
 
 import ProfileCardSideFeature from '../../components/Profile/ProfileCardSideFeature';
 import ProfileDetail from '../../components/Profile/ProfileDetail';
-import ProfileTabs from '../../components/ProfileTabs';
+import ProfileTabs from '../../components/Profile/ProfileTabs';
 import TripCard from '../../components/Trips/TripCard';
 
 export default function ProfilePage() {

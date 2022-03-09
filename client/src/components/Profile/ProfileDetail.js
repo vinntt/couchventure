@@ -57,7 +57,6 @@ export default function ProfileDetail(props) {
                 // https://mui.com/api/container/
                 // https://blog.theashishmaurya.me/how-to-create-a-tag-input-feature-in-reactjs-and-material-ui
                 <Container maxWidth="md" disableGutters>
-                    <br />
                     {/* https://codesandbox.io/s/lioc4z?file=/demo.js:924-1359 */}
                     <Accordion expanded>
                         <AccordionSummary sx={{ margin: 0 }} content={{ margin: 0 }}>

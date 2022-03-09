@@ -2,7 +2,7 @@ import { useParams } from "react-router-dom";
 import { Container, Grid } from "@mui/material";
 
 import ProfileCardSideFeature from "../../components/Profile/ProfileCardSideFeature";
-import ProfileTabs from "../../components/ProfileTabs";
+import ProfileTabs from "../../components/Profile/ProfileTabs";
 import Footer from "../../components/Footer.js";
 import TripForm from "../../components/Trips/TripForm";
 import { useEffect, useState } from "react";

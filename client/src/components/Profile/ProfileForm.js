@@ -192,7 +192,7 @@ const UploadButton = styled(Button)(({ theme }) => ({
     borderRadius: `50%`,
 }));
 
-export default function EditProfile(props) {
+export default function ProfileForm(props) {
     const [name, setName] = useState('');
     const [country, setCountry] = useState('');
     const [city, setCity] = useState('');
