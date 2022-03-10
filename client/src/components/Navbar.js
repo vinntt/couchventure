@@ -62,7 +62,8 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 export default function Navbar() {
-    const { isLoggedIn, user, logoutUser } = useContext(AuthContext);
+    // const { isLoggedIn, user, logoutUser } = useContext(AuthContext);
+    const [search, setSearch] = useState('')
 
     const [anchorEl, setAnchorEl] = React.useState(null);
     const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
