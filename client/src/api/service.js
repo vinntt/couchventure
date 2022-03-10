@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const APP_URL = process.env.APP_URL || `http://localhost:${process.env.PORT || 5005}`;
+const APP_URL = 'https://couchventure.herokuapp.com';
 
 const service = axios.create({
     baseURL: `${APP_URL}/api`,
