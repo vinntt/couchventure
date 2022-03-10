@@ -19,7 +19,8 @@ import MoreIcon from "@mui/icons-material/MoreVert";
 import { useContext } from "react";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../context/auth";
-import { Container } from "@mui/material";
+import { Container, Input } from "@mui/material";
+import SearchAutocomplete from "./SearchAutocomplete";
 
 const Search = styled("div")(({ theme }) => ({
     position: "relative",
@@ -63,7 +64,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 
 export default function Navbar() {
     // const { isLoggedIn, user, logoutUser } = useContext(AuthContext);
-    const [search, setSearch] = useState('')
+    // const [search, setSearch] = useState('')
 
     const [anchorEl, setAnchorEl] = React.useState(null);
     const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
@@ -178,12 +179,13 @@ export default function Navbar() {
                                 Couchventure
                             </Typography>
                         </Link>
-                        <Search>
+                        {/* <Search>
                             <SearchIconWrapper>
-                                <SearchIcon />
-                            </SearchIconWrapper>
-                            <StyledInputBase placeholder='Search…' inputProps={{ "aria-label": "search" }} />
-                        </Search>
+                                <SearchIcon /> */}
+                                <SearchAutocomplete />
+                            {/* </SearchIconWrapper>
+                            <StyledInputBase placeholder='Search…' autoComplete="location" inputProps={{ "aria-label": "search" }} />
+                        </Search> */}
                         <Box sx={{ flexGrow: 1 }} />
                         <Box sx={{ display: { xs: "none", md: "flex" } }}>
                             <Link to='/' style={{ textDecoration: "none" }}>
