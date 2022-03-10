@@ -5,28 +5,52 @@ const Trip = require("../models/Trip");
 const { cloudinaryUploader } = require("../middleware/cloudinary");
 
 // Search users by city/country
-router.get("/search", (req, res, next) => {
+router.get("/", (req, res, next) => {
+    const {city, country, type} = req.query;
+    const query = {};
 
-    User.find({ location: { city: req.query.city, country: req.query.country } })
-        .then(user => {
-            const { profileImg, name, city, country, language, status, description } = user
-            res.render("profile/search", { user, location })
+    if (city) {
+        query.city = city;
+    }
+
+    if (country) {
+        query.country = country;
+    }
+
+    User.find(query)
+        .then(users => {
+            res.status(200).json(users.map(user => {
+                const { name, email, city, country, age, gender, language, visitedCountries, introduction, interestedTopics, profileImg } = user;
+
+                return {
+                    name,
+                    email,
+                    city,
+                    country,
+                    age,
+                    gender,
+                    language,
+                    visitedCountries,
+                    introduction,
+                    interestedTopics,
+                    profileImg,
+                };
+            }));
         })
         .catch(err => next(err))
 });
-
 
 // Search users by host/couch
-router.get("/search", (req, res, next) => {
+// router.get("/search", (req, res, next) => {
 
-    User.find({ location: { city: req.query.city, country: req.query.country } })
-        .populate('status')
-        .then(user => {
-            const { profileImg, name, city, country, language, status, description } = user
-            res.render("profile/search", { user, location })
-        })
-        .catch(err => next(err))
-});
+//     User.find({ location: { city: req.query.city, country: req.query.country } })
+//         .populate('status')
+//         .then(user => {
+//             const { profileImg, name, city, country, language, status, description } = user
+//             res.render("profile/search", { user, location })
+//         })
+//         .catch(err => next(err))
+// });
 
 // Search users by traveller/trip
 // router.get("/search", (req, res, next) => {

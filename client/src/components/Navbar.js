@@ -1,4 +1,3 @@
-import * as React from "react";
 import { styled, alpha } from "@mui/material/styles";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
@@ -9,6 +8,7 @@ import InputBase from "@mui/material/InputBase";
 import Badge from "@mui/material/Badge";
 import MenuItem from "@mui/material/MenuItem";
 import Menu from "@mui/material/Menu";
+import ClearIcon from "@mui/icons-material/Clear";
 import SearchIcon from "@mui/icons-material/Search";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import MailOutlinedIcon from "@mui/icons-material/MailOutlined";
@@ -16,10 +16,10 @@ import DateRangeOutlinedIcon from "@mui/icons-material/DateRangeOutlined";
 import SettingsIcon from "@mui/icons-material/Settings";
 import DashboardOutlinedIcon from "@mui/icons-material/DashboardOutlined";
 import MoreIcon from "@mui/icons-material/MoreVert";
-import { useContext } from "react";
-import { Link } from "react-router-dom";
+import { useContext, useEffect, useState } from "react";
+import { createSearchParams, Link, useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { AuthContext } from "../context/auth";
-import { Container, Input } from "@mui/material";
+import { Autocomplete, Container, createFilterOptions, Input, TextField } from "@mui/material";
 import SearchAutocomplete from "./SearchAutocomplete";
 
 const Search = styled("div")(({ theme }) => ({
@@ -50,6 +50,7 @@ const SearchIconWrapper = styled("div")(({ theme }) => ({
 
 const StyledInputBase = styled(InputBase)(({ theme }) => ({
     color: "inherit",
+    // background: "red",
     "& .MuiInputBase-input": {
         padding: theme.spacing(1, 1, 1, 0),
         // vertical padding + font size from searchIcon
@@ -62,13 +63,76 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
     },
 }));
 
+const StyledTextField = styled(TextField)(({ theme }) => ({
+    color: "inherit",
+    // background: "red",
+    "& .MuiOutlinedInput-root": {
+        padding: 0,
+        // vertical padding + font size from searchIcon
+        paddingLeft: `calc(1em + ${theme.spacing(4)})`,
+        transition: theme.transitions.create("width"),
+        [theme.breakpoints.up("md")]: {
+            width: "28ch",
+        },
+        "& fieldset": {
+            border: 0,
+            "&:hover": {
+                border: 0,
+            },
+        }
+    },
+    "& .MuiInputBase-input": {
+        padding: theme.spacing(1, 1, 1, 0),
+        // vertical padding + font size from searchIcon
+        paddingLeft: `calc(1em + ${theme.spacing(4)})`,
+        transition: theme.transitions.create("width"),
+        width: "100%",
+        color: '#fff',
+    },
+}));
+
+const filterOptions = createFilterOptions({
+    matchFrom: 'start',
+    stringify: (option) => `${option.city}, ${option.country}`,
+});
+
+const locationOptions = [
+
+    {
+        city: "Berlin",
+        country: "Germany",
+    },
+    {
+        city: "Frankfurt",
+        country: "Germany",
+    },
+    {
+        city: "Hamburg",
+        country: "Germany",
+    },
+    {
+        city: "Munich",
+        country: "Germany",
+    },
+    {
+        city: "Others",
+        country: "Germany",
+    },
+];
+
 export default function Navbar() {
+    const navigate = useNavigate();
+    const [searchParams] = useSearchParams();
     // const { isLoggedIn, user, logoutUser } = useContext(AuthContext);
     // const [search, setSearch] = useState('')
+    const [searchOption, setSearchOption] = useState(undefined);
 
-    const [anchorEl, setAnchorEl] = React.useState(null);
-    const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
+    // console.log(searchParams.get("q"));
 
+    const [anchorEl, setAnchorEl] = useState(null);
+    const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
+
+    const searchKeyword = searchParams.get('q');
     const isMenuOpen = Boolean(anchorEl);
     const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
@@ -88,6 +152,26 @@ export default function Navbar() {
     const handleMobileMenuOpen = (event) => {
         setMobileMoreAnchorEl(event.currentTarget);
     };
+
+    const handleLocationChange = (e, value) => {
+        if (!value) {
+            navigate(`/search`);
+            return;
+        }
+
+        const params = createSearchParams({ q: `${value.city}, ${value.country}` }).toString();
+
+        navigate(`/search?${params}`);
+    }
+
+    useEffect(() => {
+        if (searchKeyword && searchKeyword !== "") {
+            const [city, country] = searchKeyword.split(", ");
+            setSearchOption({city, country})
+        } else {
+            setSearchOption(undefined);
+        }
+    }, [searchKeyword]);
 
     const menuId = "primary-search-account-menu";
     const renderMenu = (
@@ -179,13 +263,22 @@ export default function Navbar() {
                                 Couchventure
                             </Typography>
                         </Link>
-                        {/* <Search>
+                        <Search>
                             <SearchIconWrapper>
-                                <SearchIcon /> */}
-                                <SearchAutocomplete />
-                            {/* </SearchIconWrapper>
-                            <StyledInputBase placeholder='Search…' autoComplete="location" inputProps={{ "aria-label": "search" }} />
-                        </Search> */}
+                                <SearchIcon />
+                            </SearchIconWrapper>
+                            <Autocomplete
+                                value={searchOption}
+                                // inputValue={searchOption ? `${searchOption.city}, ${searchOption.country}` : ""}
+                                options={locationOptions}
+                                getOptionLabel={(option) => `${option.city}, ${option.country}`}
+                                filterOptions={filterOptions}
+                                clearIcon={<ClearIcon fontSize="small" sx={{ color: '#fff' }} />}
+                                popupIcon={null}
+                                renderInput={(params) => <StyledTextField {...params} placeholder='Search…' />}
+                                onChange={handleLocationChange}
+                            />
+                        </Search>
                         <Box sx={{ flexGrow: 1 }} />
                         <Box sx={{ display: { xs: "none", md: "flex" } }}>
                             <Link to='/' style={{ textDecoration: "none" }}>

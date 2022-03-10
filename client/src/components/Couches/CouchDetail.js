@@ -71,7 +71,7 @@ export default function CouchDetail(props) {
                 <>
                     <Container maxWidth='md' disableGutters>
                         <Grid item xs={12}>
-                            <Typography align='justify' color='text.secondary' sx={{ fontStyle: "italic" }} variant='h6'>
+                            <Typography align='justify' color='text.secondary' sx={{ fontStyle: "italic" }} >
                                 <FormatQuoteIcon />
                                 There is a thousand "cool way" to meet people around the world, and Couchventure is one of them. Open the door, get to know more friends, exchange culture, and listen to amazing stories
                             </Typography>

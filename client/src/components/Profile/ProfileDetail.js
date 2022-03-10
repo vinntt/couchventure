@@ -1,6 +1,7 @@
 import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
 import EditIcon from "@mui/icons-material/Edit";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
+import FormatQuoteIcon from "@mui/icons-material/FormatQuote";
 import SmsIcon from "@mui/icons-material/Sms";
 import { Accordion, AccordionDetails, AccordionSummary, Button, Container, Divider, Grid, IconButton, Link, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
@@ -86,6 +87,12 @@ export default function ProfileDetail(props) {
                                 <SmsIcon sx={{ mr: 1 }} color='disabled' fontSize='small' />
                                 <Typography align='justify' color='text.secondary'>
                                     Fluent in {profile.language.join(", ")}
+                                </Typography>
+                            </Grid>
+                            <Grid container direction='row' alignItems='center' sx={{ mb: 1, mt: 2 }}>
+                            <FormatQuoteIcon />
+                                <Typography align='justify' color='text.secondary' sx={{ fontStyle: "italic" }}>
+                                   {profile.introduction}
                                 </Typography>
                             </Grid>
                         </AccordionDetails>

@@ -12,7 +12,7 @@ import * as React from "react";
 
 export default function FeaturedPost(props) {
     const { post } = props;
-    console.log(post);
+
     return (
         <Grid item xs={12} md={4}>
             <CardActionArea component='a' href={post.href}>
@@ -26,8 +26,8 @@ export default function FeaturedPost(props) {
                             {post.description}
                         </Typography>
                         <AvatarGroup total={19} max={10}>
-                            {post.avatars.map((avatar) => (
-                                <Avatar alt='' src={avatar} />
+                            {post.avatars.map((avatar, idx) => (
+                                <Avatar key={`feature-avatar-${idx}`} alt='' src={avatar} />
                             ))}
                         </AvatarGroup>
                         <Grid item sx={{ mt: 4, textAlign: "center" }}>
@@ -46,7 +46,6 @@ FeaturedPost.propTypes = {
     post: PropTypes.shape({
         description: PropTypes.string.isRequired,
         image: PropTypes.string.isRequired,
-        imageLabel: PropTypes.string.isRequired,
         title: PropTypes.string.isRequired,
     }).isRequired,
 };

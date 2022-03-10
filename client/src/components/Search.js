@@ -31,24 +31,24 @@ export default function Search(props) {
                             )}
                         </Grid>
                         <Grid item xs={12} sm={6} alignItems="left">
-                            <Typography gutterBottom variant="body1" color="grey" align="left" noWrap="true" >
+                            <Typography gutterBottom variant="body1" color="grey" align="left" noWrap={true} >
                                 <strong>{result.name}</strong>
                             </Typography>
                             <Grid container direction="row" alignItems="left" sx={{ mb: 1 }} wrap='nowrap' >
                                 <LocationOnIcon fontSize="small" />
-                                <Typography gutterBottom variant="caption" color="grey" noWrap="true" sx={{ ml: 0.5 }}>
-                                    {result.location}
+                                <Typography gutterBottom variant="caption" color="grey" noWrap={true} sx={{ ml: 0.5 }}>
+                                    {result.city}, {result.country}
                                 </Typography>
                             </Grid>
                             <Grid container direction="row" alignItems="left" sx={{ mb: 1 }} wrap='nowrap'>
                                 <LanguageIcon fontSize="small" />
-                                <Typography gutterBottom variant="caption" color="grey" noWrap="true" sx={{ ml: 0.5 }}>
-                                    {result.language}
+                                <Typography gutterBottom variant="caption" color="grey" noWrap={true} sx={{ ml: 0.5 }}>
+                                    {result.language.join(", ")}
                                 </Typography>
                             </Grid>
                             <Grid container direction="row" alignItems="left" sx={{ mb: 1 }} wrap='nowrap'>
                                 <ChairIcon fontSize="small" />
-                                <Typography gutterBottom variant="caption" color="grey" noWrap="true" sx={{ ml: 0.5 }}>
+                                <Typography gutterBottom variant="caption" color="grey" noWrap={true} sx={{ ml: 0.5 }}>
                                     {result.status}
                                 </Typography>
                             </Grid>
@@ -58,7 +58,7 @@ export default function Search(props) {
                 <Grid container direction="row" alignItems="left" sx={{ m: 1, maxHeight: 54, minHeight: 54 }} wrap='nowrap' >
                     <AccountCircleIcon fontSize="small" />
                     <Typography gutterBottom alignt="justify" variant="caption" color="grey"  >
-                        {result.description}
+                        {result.introduction}
                     </Typography>
                 </Grid>
             </Card>

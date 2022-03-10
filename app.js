@@ -36,6 +36,9 @@ app.use("/couches", isAuthenticated, couchRouter);
 const inboxRouter = require("./routes/inbox");
 app.use("/inbox", isAuthenticated, inboxRouter);
 
+const searchRouter = require("./routes/search");
+app.use("/search", isAuthenticated, searchRouter);
+
 // const userRouter = require("./routes/")
 
 // ❗ To handle errors. Routes that don't exist or errors that you handle in specific routes
