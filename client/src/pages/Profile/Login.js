@@ -1,14 +1,11 @@
-import * as React from "react";
-import { Avatar, Typography, Paper } from "@mui/material";
-import { Button, TextField, FormControlLabel, Checkbox, Box } from "@mui/material";
-import Grid from "@mui/material/Grid";
-import { CssBaseline } from "@mui/material";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import { useState, useContext } from "react";
+import { Avatar, Box, Button, Checkbox, CssBaseline, FormControlLabel, Paper, TextField, Typography } from "@mui/material";
+import Grid from "@mui/material/Grid";
+import * as React from "react";
+import { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { AuthContext } from "../../context/auth";
-import Footer from "../../components/Footer";
 import service from "../../api/service";
+import { AuthContext } from "../../context/auth";
 
 export default function SignIn() {
     const [email, setEmail] = useState("");

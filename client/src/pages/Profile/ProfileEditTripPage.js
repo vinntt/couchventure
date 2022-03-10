@@ -1,12 +1,11 @@
-import { useParams } from "react-router-dom";
 import { Container, Grid } from "@mui/material";
-
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import service from "../../api/service";
 import ProfileCardSideFeature from "../../components/Profile/ProfileCardSideFeature";
 import ProfileTabs from "../../components/Profile/ProfileTabs";
-import Footer from "../../components/Footer.js";
 import TripForm from "../../components/Trips/TripForm";
-import { useEffect, useState } from "react";
-import service from "../../api/service";
+
 
 export default function ProfileEditTripPage() {
     const userId = "me";

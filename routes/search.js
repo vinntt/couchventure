@@ -2,7 +2,6 @@ const router = require("express").Router();
 const User = require("../models/User");
 const Couch = require("../models/Couch");
 const Trip = require("../models/Trip");
-const { cloudinaryUploader } = require("../middleware/cloudinary");
 
 // Search users by city/country
 router.get("/search", (req, res, next) => {
@@ -76,7 +75,8 @@ router.get("/search", (req, res, next) => {
         req.params.id = req.user._id;
     }
 
-    Trip.find({ creator: req.params.id }).sort({ startDate: -1, endDate: -1 })
+    Trip.find({ creator: req.params.id })
+        .sort({ startDate: -1, endDate: -1 })
         .then((trips) => {
             const result = [];
 
