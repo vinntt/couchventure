@@ -72,14 +72,14 @@ const StyledTextField = styled(TextField)(({ theme }) => ({
         paddingLeft: `calc(1em + ${theme.spacing(4)})`,
         transition: theme.transitions.create("width"),
         [theme.breakpoints.up("md")]: {
-            width: "28ch",
+            width: "30ch",
         },
         "& fieldset": {
             border: 0,
             "&:hover": {
                 border: 0,
             },
-        }
+        },
     },
     "& .MuiInputBase-input": {
         padding: theme.spacing(1, 1, 1, 0),
@@ -87,17 +87,16 @@ const StyledTextField = styled(TextField)(({ theme }) => ({
         paddingLeft: `calc(1em + ${theme.spacing(4)})`,
         transition: theme.transitions.create("width"),
         width: "100%",
-        color: '#fff',
+        color: "#fff",
     },
 }));
 
 const filterOptions = createFilterOptions({
-    matchFrom: 'start',
+    matchFrom: "start",
     stringify: (option) => `${option.city}, ${option.country}`,
 });
 
 const locationOptions = [
-
     {
         city: "Berlin",
         country: "Germany",
@@ -123,16 +122,16 @@ const locationOptions = [
 export default function Navbar() {
     const navigate = useNavigate();
     const [searchParams] = useSearchParams();
-    // const { isLoggedIn, user, logoutUser } = useContext(AuthContext);
+    const { logoutUser } = useContext(AuthContext);
     // const [search, setSearch] = useState('')
-    const [searchOption, setSearchOption] = useState(undefined);
+    const [searchOption, setSearchOption] = useState(null);
+    const [searchOptionText, setSearchOptionText] = useState("");
 
     // console.log(searchParams.get("q"));
 
     const [anchorEl, setAnchorEl] = useState(null);
     const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
 
-    const searchKeyword = searchParams.get('q');
     const isMenuOpen = Boolean(anchorEl);
     const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
@@ -153,6 +152,18 @@ export default function Navbar() {
         setMobileMoreAnchorEl(event.currentTarget);
     };
 
+    const setKeyword = (keyword) => {
+        if (keyword && keyword !== "") {
+            const [city, country] = keyword.split(", ");
+
+            setSearchOption({ city, country });
+            setSearchOptionText(`${city}, ${country}`);
+        } else {
+            setSearchOption(null);
+            setSearchOptionText("");
+        }
+    };
+
     const handleLocationChange = (e, value) => {
         if (!value) {
             navigate(`/search`);
@@ -162,16 +173,11 @@ export default function Navbar() {
         const params = createSearchParams({ q: `${value.city}, ${value.country}` }).toString();
 
         navigate(`/search?${params}`);
-    }
+    };
 
     useEffect(() => {
-        if (searchKeyword && searchKeyword !== "") {
-            const [city, country] = searchKeyword.split(", ");
-            setSearchOption({city, country})
-        } else {
-            setSearchOption(undefined);
-        }
-    }, [searchKeyword]);
+        setKeyword(searchParams.get("q"));
+    }, [window.location.search]);
 
     const menuId = "primary-search-account-menu";
     const renderMenu = (
@@ -191,7 +197,7 @@ export default function Navbar() {
             onClose={handleMenuClose}
         >
             <MenuItem onClick={handleMenuClose}>Account & Settings</MenuItem>
-            <MenuItem onClick={handleMenuClose}>Log Out</MenuItem>
+            <MenuItem onClick={logoutUser}>Log Out</MenuItem>
         </Menu>
     );
 
@@ -269,9 +275,10 @@ export default function Navbar() {
                             </SearchIconWrapper>
                             <Autocomplete
                                 value={searchOption}
-                                // inputValue={searchOption ? `${searchOption.city}, ${searchOption.country}` : ""}
+                                inputValue={searchOptionText}
                                 options={locationOptions}
                                 getOptionLabel={(option) => `${option.city}, ${option.country}`}
+                                isOptionEqualToValue={(option, value) => option.city === value.city && option.country === value.country}
                                 filterOptions={filterOptions}
                                 clearIcon={<ClearIcon fontSize="small" sx={{ color: '#fff' }} />}
                                 popupIcon={null}
@@ -311,11 +318,11 @@ export default function Navbar() {
                                     <AccountCircle sx={{ fontSize: 24 }} />
                                 </IconButton>
                             </Link>
-                            <Link to='/' style={{ textDecoration: "none" }}>
+                            {/* <Link to='#' style={{ textDecoration: "none" }}> */}
                                 <IconButton size='small' aria-controls={menuId} aria-haspopup='true' onClick={handleSettingsMenuOpen} style={{ color: "white", padding: "10px 8px" }}>
                                     <SettingsIcon sx={{ fontSize: 24 }} />
                                 </IconButton>
-                            </Link>
+                            {/* </Link> */}
                         </Box>
                         <Box sx={{ display: { xs: "flex", md: "none" } }}>
                             <IconButton size='small' aria-label='show more' aria-controls={mobileMenuId} aria-haspopup='true' onClick={handleMobileMenuOpen} color='inherit'>

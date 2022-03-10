@@ -1,25 +1,26 @@
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import { Avatar, Box, Button, Checkbox, CssBaseline, FormControlLabel, Paper, TextField, Typography } from "@mui/material";
+import { Alert, Avatar, Box, Button, Checkbox, CssBaseline, FormControlLabel, Paper, TextField, Typography } from "@mui/material";
 import Grid from "@mui/material/Grid";
-import * as React from "react";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import service from "../../api/service";
 import { AuthContext } from "../../context/auth";
 
 export default function SignIn() {
+    const navigate = useNavigate();
+    const { isLoggedIn, storeToken, verifyStoredToken } = useContext(AuthContext);
+
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [errorMessage, setErrorMessage] = useState(undefined);
-
-    const navigate = useNavigate();
-
-    const { storeToken, verifyStoredToken } = useContext(AuthContext);
+    const [loading, setLoading] = useState(false);
 
     const handleSubmit = (event) => {
         event.preventDefault();
 
         const requestBody = { email, password };
+
+        setLoading(true);
 
         service
             .post("/auth/login", requestBody)
@@ -36,14 +37,16 @@ export default function SignIn() {
                 console.log(err);
                 const errorDescription = err.response.data.message;
                 setErrorMessage(errorDescription);
-            });
-
-        setEmail("");
-        setPassword("");
+            })
+            .finally(() => setLoading(false));
     };
 
     const handleEmail = (e) => setEmail(e.target.value);
     const handlePassword = (e) => setPassword(e.target.value);
+
+    if (!loading && isLoggedIn) {
+        navigate("/");
+    }
 
     return (
         <Grid container component='main' sx={{ height: "100vh" }}>
@@ -79,6 +82,11 @@ export default function SignIn() {
                         Sign in
                     </Typography>
                     <Box component='form' onSubmit={handleSubmit} sx={{ mt: 1 }}>
+                        {errorMessage && (
+                            <Grid item xs={12} sx={{mb:2}}>
+                                <Alert severity='error'>{errorMessage}</Alert>
+                            </Grid>
+                        )}
                         <TextField margin='normal' required fullWidth id='email' label='Email Address' name='email' type='text' value={email} onChange={handleEmail} />
                         <TextField margin='normal' required fullWidth name='password' label='Password' type='password' id='password' value={password} onChange={handlePassword} />
                         <FormControlLabel control={<Checkbox value='remember' color='primary' />} label='Remember me' />

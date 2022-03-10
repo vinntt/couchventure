@@ -39,7 +39,7 @@ export default function CouchDetail(props) {
 
     const editButton =
         props.userId === "me" ? (
-            <Grid direction='row' xs={2} sx={{ textAlign: "right" }}>
+            <Grid item xs={2} sx={{ textAlign: "right" }}>
                 <Link href={`/profile/me/couch/edit`}>
                     <IconButton size='small' aria-label='edit' component='span'>
                         <EditIcon fontSize='12' />

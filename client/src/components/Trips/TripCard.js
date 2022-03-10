@@ -1,16 +1,15 @@
 import AddCircleOutline from "@mui/icons-material/AddCircleOutline";
 import FormatQuoteIcon from "@mui/icons-material/FormatQuote";
 import LuggageIcon from "@mui/icons-material/Luggage";
-import { Accordion, AccordionDetails, AccordionSummary, Button, Container, Divider, Grid} from "@mui/material";
+import { Accordion, AccordionDetails, AccordionSummary, Button, Container, Divider, Grid } from "@mui/material";
 import Typography from "@mui/material/Typography";
-import * as React from "react";
-import { useEffect, useState } from "react";
+import { Fragment, useEffect, useReducer, useState } from "react";
 import service from "../../api/service";
 import TripDetail from "./TripDetail";
 
 export default function TripCard(props) {
     const [trips, setTrips] = useState([]);
-    const [, forceUpdate] = React.useReducer((x) => x + 1, 0);
+    const [, forceUpdate] = useReducer((x) => x + 1, 0);
 
     const deleteTrip = (idx) => {
         trips.splice(idx, 1);
@@ -61,10 +60,10 @@ export default function TripCard(props) {
                             </Grid>
                         ) : (
                             trips.map((trip, idx) => (
-                                <>
+                                <Fragment key={`trip-${idx}`}>
                                     {idx > 0 && <Divider textAlign='left'></Divider>}
                                     <TripDetail userId={props.userId} trip={trip} onDelete={() => deleteTrip(idx)} />
-                                </>
+                                </Fragment>
                             ))
                         )}
                     </AccordionDetails>

@@ -26,7 +26,7 @@ export default function TripDetail(props) {
         <>
             <Container maxWidth='md' disableGutters sx={{ mt: 3, mb: 3 }}>
                 <Grid container direction='row' alignItems='center' sx={{ mb: 1 }}>
-                    <Grid direction='row' xs={10}>
+                    <Grid item xs={10}>
                         <Typography align='justify' color='text.secondary'>
                             <span>Visiting:</span>&nbsp;
                             <strong>
@@ -35,7 +35,7 @@ export default function TripDetail(props) {
                         </Typography>
                     </Grid>
                     {props.userId === "me" && (
-                        <Grid direction='row' xs={2} sx={{ textAlign: "right" }}>
+                        <Grid item xs={2} sx={{ textAlign: "right" }}>
                             <Link href={`/profile/me/trips/${trip.id}/edit`}>
                                 <IconButton size='small' aria-label='edit' component='span'>
                                     <EditIcon fontSize='12' />

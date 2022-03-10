@@ -4,18 +4,27 @@ import { Button } from "@mui/material";
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
 import { useEffect, useState } from "react";
-import { createSearchParams, useSearchParams } from "react-router-dom";
+import { createSearchParams, useNavigate, useSearchParams } from "react-router-dom";
 import service from "../api/service";
 import Search from "../components/Search";
 
 export default function SearchPage() {
     const [searchParams] = useSearchParams();
+    const navigate = useNavigate();
 
     const [searchResults, setSearchResults] = useState([]);
+    const [searchType, setSearchType] = useState("host");
+
+    const setType = (type) => {
+        searchParams.set("type", type);
+
+        navigate("/search?" + searchParams.toString());
+    };
 
     useEffect(() => {
-        const params = { city: '', country: '', type: '' };
-        const keyword = searchParams.get('q');
+        const params = { city: "", country: "" };
+        const keyword = searchParams.get("q");
+        let type = searchParams.get("type");
 
         if (keyword && keyword !== "") {
             const [city, country] = keyword.split(", ");
@@ -24,53 +33,26 @@ export default function SearchPage() {
             params.country = country;
         }
 
-        service.get('/search?' + createSearchParams(params).toString())
+        if (!type || type !== "traveler") {
+            type = "host";
+        }
+
+        setSearchType(type);
+
+        service
+            .get(`/search/host?` + createSearchParams(params).toString())
+            // .get(`/search/${type}?` + createSearchParams(params).toString())
             .then(({ data: results }) => setSearchResults(results))
-            .catch(error => console.log(error));
-    }, [searchParams]);
-
-    // const searchResults = [
-    //     {
-    //         profileImg: "https://source.unsplash.com/random/50x50?face,1",
-    //         name: "Local Hosts",
-    //         location: "Stay with the local host in your upcoming trips",
-    //         language: "English",
-    //         status: "Available to Host",
-    //         description: "Find a Host",
-    //         buttonDisabled: false,
-    //         href: "/search?type=host",
-    //     },
-    //     {
-    //         profileImg: "https://source.unsplash.com/random/50x50?face,6",
-    //         name: "Upcoming Visitors",
-    //         location: "Meet or Host the upcoming visitors in your city",
-    //         language: "German",
-    //         status: "Maybe Accepting Guest",
-    //         description: "Meet Travelers",
-    //         buttonDisabled: false,
-    //         href: "/search?type=traveler",
-    //     },
-    //     {
-    //         // profileImg: "https://source.unsplash.com/random/50x50?face,12",
-    //         profileImg: "",
-    //         name: "Hangouts",
-    //         location: "Some nearby members are available to meet now",
-    //         language: "French",
-    //         status: "I am Busy",
-    //         description: "Coming Soon!",
-    //         buttonDisabled: true,
-    //         href: "#",
-    //     },
-
-    // ];
+            .catch((error) => console.log(error));
+    }, [window.location.search]);
 
     return (
         <Container maxWidth='lg'>
             <Grid container>
-                <Button href='/profile/me/couch' type='submit' variant='outlined' sx={{ mt: 8, ml: 10, mb: 1, py: 1, mr: 1 }}>
+                <Button onClick={() => setType("host")} variant='outlined' sx={{ mt: 8, ml: 10, mb: 1, py: 1, mr: 1 }}>
                     Hosts
                 </Button>
-                <Button type='submit' variant='outlined' sx={{ mt: 8, mb: 1, py: 1 }}>
+                <Button onClick={() => setType("traveler")} variant='outlined' sx={{ mt: 8, mb: 1, py: 1 }}>
                     Travellers
                 </Button>
             </Grid>
