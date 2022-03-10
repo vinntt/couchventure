@@ -1,7 +1,9 @@
 import axios from "axios";
 
+const APP_URL = process.env.APP_URL || `http://localhost:${process.env.PORT || 5005}`;
+
 const service = axios.create({
-    baseURL: "http://localhost:5005"
+    baseURL: `${APP_URL}/api`,
 });
 
 service.interceptors.request.use(

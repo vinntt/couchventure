@@ -22,22 +22,22 @@ const { isAuthenticated } = require('./middleware/jwt')
 // app.use("/api", allRoutes);
 
 const authRouter = require("./routes/auth");
-app.use("/auth", authRouter);
+app.use("/api/auth", authRouter);
 
 const profileRouter = require("./routes/profile");
-app.use("/profile", isAuthenticated, profileRouter);
+app.use("/api/profile", isAuthenticated, profileRouter);
 
 const tripRouter = require("./routes/trip");
-app.use("/trips", isAuthenticated, tripRouter);
+app.use("/api/trips", isAuthenticated, tripRouter);
 
 const couchRouter = require("./routes/couch");
-app.use("/couches", isAuthenticated, couchRouter);
+app.use("/api/couches", isAuthenticated, couchRouter);
 
 const inboxRouter = require("./routes/inbox");
-app.use("/inbox", isAuthenticated, inboxRouter);
+app.use("/api/inbox", isAuthenticated, inboxRouter);
 
 const searchRouter = require("./routes/search");
-app.use("/search", isAuthenticated, searchRouter);
+app.use("/api/search", isAuthenticated, searchRouter);
 
 // const userRouter = require("./routes/")
 const path = require('path');
