@@ -47,16 +47,16 @@ export default function SearchPage() {
     }, [window.location.search]);
 
     return (
-        <Container maxWidth='lg'>
+        <Container maxWidth='lg' disableGutters>
             <Grid container>
-                <Button onClick={() => setType("host")} variant='outlined' sx={{ mt: 8, ml: 10, mb: 1, py: 1, mr: 1 }}>
+                <Button onClick={() => setType("host")} variant='outlined' sx={{ mt: 4, ml: 6, mb: 1, py: 1, mr: 1 }}>
                     Hosts
                 </Button>
-                <Button onClick={() => setType("traveler")} variant='outlined' sx={{ mt: 8, mb: 1, py: 1 }}>
+                <Button onClick={() => setType("traveler")} variant='outlined' sx={{ mt: 4, mb: 1, py: 1 }}>
                     Travellers
                 </Button>
             </Grid>
-            <Grid container spacing={3}>
+            <Grid container spacing={0} sx={{ pl: 4, pr: 4 }}>
                 {searchResults.map((result, index) => (
                     <Search key={`result-${index}`} result={result} />
                 ))}

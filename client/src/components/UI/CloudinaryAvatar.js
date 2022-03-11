@@ -4,7 +4,7 @@ import cloudinaryResize from '../../utils/cloudinary'
 
 export default function CloudinaryAvatar(props) {
     const transform = props.transform || 'c_fill';
-    const variant = props.variant || "rounded";
+    const variant = props.variant || "circular";
 
     return (
         <Avatar
