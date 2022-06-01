@@ -1,6 +1,6 @@
 # COUCHVENTURE 🛋️
-- **Website preview: [click me](https://couchventure.herokuapp.com/)**
-- **Live video preview: [click me](https://drive.google.com/file/d/1FDHbpHfsIa3HcFZCoshmxOW-H_xcbRGf/view)**
+- **Demo: [click me](https://couchventure.herokuapp.com/)**
+- **Live screen recording preview: [click me](https://drive.google.com/file/d/1FDHbpHfsIa3HcFZCoshmxOW-H_xcbRGf/view)**
 - **Short Presentation: [click me](https://www.canva.com/design/DAE6qZbSgxM/MFxgJegLKmkaWPS1Aq6Qog/view?utm_content=DAE6qZbSgxM&utm_campaign=designshare&utm_medium=link&utm_source=publishsharelink)**
 
 ## Description
